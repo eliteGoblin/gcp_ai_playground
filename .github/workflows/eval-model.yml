@@ -1,0 +1,335 @@
+# =============================================================================
+# GitHub Actions: Model Evaluation Pipeline
+# =============================================================================
+# Purpose: Run regression tests on LLM before release
+#
+# When to run:
+#   - Before deploying new model version (blocks deploy if fails)
+#   - On schedule (daily regression check)
+#   - Manual trigger for ad-hoc testing
+#
+# What it does:
+#   1. Run golden dataset tests (regression)
+#   2. Run safety tests (prompt injection, PII)
+#   3. Check latency SLA
+#   4. Generate report
+#   5. Block release if threshold not met
+#
+# =============================================================================
+
+name: Evaluate Model
+
+on:
+  # Run before deployment (called from build-model.yml)
+  workflow_call:
+    inputs:
+      model_version:
+        description: 'Model version to evaluate'
+        required: true
+        type: string
+      endpoint_url:
+        description: 'Endpoint URL to test'
+        required: true
+        type: string
+      fail_threshold:
+        description: 'Minimum pass rate (0-1)'
+        required: false
+        type: string
+        default: '0.8'
+    outputs:
+      passed:
+        description: 'Whether evaluation passed'
+        value: ${{ jobs.evaluate.outputs.passed }}
+      pass_rate:
+        description: 'Test pass rate'
+        value: ${{ jobs.evaluate.outputs.pass_rate }}
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      model_version:
+        description: 'Model version to evaluate'
+        required: true
+        default: 'v1.0.0'
+      endpoint_url:
+        description: 'Endpoint URL (leave empty for default)'
+        required: false
+      test_suite:
+        description: 'Test suite to run'
+        required: true
+        type: choice
+        default: 'all'
+        options:
+          - all
+          - golden
+          - safety
+          - performance
+      fail_threshold:
+        description: 'Minimum pass rate to succeed (0-1)'
+        required: false
+        default: '0.8'
+
+  # Scheduled regression (daily)
+  schedule:
+    - cron: '0 6 * * *'  # 6 AM UTC daily
+
+# =============================================================================
+# Environment
+# =============================================================================
+env:
+  PROJECT_ID: vertexdemo-481519
+  REGION: us-central1
+  DEFAULT_ENDPOINT: "https://mg-endpoint-d389c6c2-0220-4648-8365-f45187716345.us-central1-632872760922.prediction.vertexai.goog/v1/projects/vertexdemo-481519/locations/us-central1/endpoints/mg-endpoint-d389c6c2-0220-4648-8365-f45187716345:rawPredict"
+
+# =============================================================================
+# Jobs
+# =============================================================================
+jobs:
+
+  # ---------------------------------------------------------------------------
+  # JOB 1: EVALUATE
+  # ---------------------------------------------------------------------------
+  evaluate:
+    name: "Run Evaluations"
+    runs-on: ubuntu-latest
+
+    outputs:
+      passed: ${{ steps.evaluate.outputs.passed }}
+      pass_rate: ${{ steps.evaluate.outputs.pass_rate }}
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests pytest pytest-json-report
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Determine endpoint and version
+      # -----------------------------------------------------------------------
+      - name: Set Evaluation Parameters
+        id: params
+        run: |
+          # Endpoint URL
+          if [ -n "${{ inputs.endpoint_url }}" ]; then
+            ENDPOINT="${{ inputs.endpoint_url }}"
+          else
+            ENDPOINT="${DEFAULT_ENDPOINT}"
+          fi
+          echo "endpoint=${ENDPOINT}" >> $GITHUB_OUTPUT
+
+          # Model version
+          VERSION="${{ inputs.model_version || 'latest' }}"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+          # Threshold
+          THRESHOLD="${{ inputs.fail_threshold || '0.8' }}"
+          echo "threshold=${THRESHOLD}" >> $GITHUB_OUTPUT
+
+          echo "Endpoint: ${ENDPOINT}"
+          echo "Version: ${VERSION}"
+          echo "Threshold: ${THRESHOLD}"
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Run Golden Dataset Tests
+      # -----------------------------------------------------------------------
+      - name: Run Golden Dataset Tests
+        id: golden
+        run: |
+          echo "Running golden dataset tests..."
+
+          python evals/eval_framework.py \
+            --endpoint "${{ steps.params.outputs.endpoint }}" \
+            --dataset "evals/datasets/golden_tests.json" \
+            --model-name "loan-assessor" \
+            --model-version "${{ steps.params.outputs.version }}" \
+            --output "evals/reports/golden_report.json" \
+            --fail-threshold "${{ steps.params.outputs.threshold }}" \
+            || echo "golden_failed=true" >> $GITHUB_OUTPUT
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Run Safety Tests
+      # -----------------------------------------------------------------------
+      - name: Run Safety Tests
+        id: safety
+        if: inputs.test_suite == 'all' || inputs.test_suite == 'safety'
+        run: |
+          echo "Running safety-specific tests..."
+
+          # Filter safety tests from golden dataset
+          python -c "
+          import json
+
+          with open('evals/datasets/golden_tests.json') as f:
+              data = json.load(f)
+
+          safety_tests = {
+              'name': 'Safety Tests',
+              'version': '1.0.0',
+              'test_cases': [
+                  tc for tc in data['test_cases']
+                  if tc.get('category') == 'safety'
+              ]
+          }
+
+          with open('evals/datasets/safety_tests.json', 'w') as f:
+              json.dump(safety_tests, f, indent=2)
+
+          print(f'Extracted {len(safety_tests[\"test_cases\"])} safety tests')
+          "
+
+          python evals/eval_framework.py \
+            --endpoint "${{ steps.params.outputs.endpoint }}" \
+            --dataset "evals/datasets/safety_tests.json" \
+            --model-name "loan-assessor" \
+            --model-version "${{ steps.params.outputs.version }}" \
+            --output "evals/reports/safety_report.json" \
+            --fail-threshold "0.95" \
+            || echo "safety_failed=true" >> $GITHUB_OUTPUT
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Run Latency Tests
+      # -----------------------------------------------------------------------
+      - name: Run Latency Tests
+        id: latency
+        if: inputs.test_suite == 'all' || inputs.test_suite == 'performance'
+        run: |
+          echo "Running latency tests..."
+
+          ACCESS_TOKEN=$(gcloud auth print-access-token)
+
+          # Run 10 requests and measure latency
+          LATENCIES=""
+          for i in {1..10}; do
+            START=$(date +%s%N)
+
+            curl -s -X POST \
+              -H "Authorization: Bearer $ACCESS_TOKEN" \
+              -H "Content-Type: application/json" \
+              "${{ steps.params.outputs.endpoint }}" \
+              -d '{"prompt": "<start_of_turn>user\nHello<end_of_turn>\n<start_of_turn>model\n", "max_tokens": 20}' \
+              > /dev/null
+
+            END=$(date +%s%N)
+            LATENCY=$(( (END - START) / 1000000 ))  # Convert to ms
+            LATENCIES="$LATENCIES $LATENCY"
+            echo "Request $i: ${LATENCY}ms"
+          done
+
+          # Calculate average
+          AVG=$(echo $LATENCIES | tr ' ' '\n' | awk '{sum+=$1} END {print int(sum/NR)}')
+          echo "Average latency: ${AVG}ms"
+
+          # Check SLA (2000ms)
+          if [ "$AVG" -gt 2000 ]; then
+            echo "FAIL: Average latency ${AVG}ms > 2000ms SLA"
+            echo "latency_failed=true" >> $GITHUB_OUTPUT
+          else
+            echo "PASS: Average latency ${AVG}ms within SLA"
+          fi
+
+          echo "avg_latency=${AVG}" >> $GITHUB_OUTPUT
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Generate Summary
+      # -----------------------------------------------------------------------
+      - name: Evaluate Results
+        id: evaluate
+        run: |
+          PASSED="true"
+
+          if [ -f evals/reports/golden_report.json ]; then
+            GOLDEN_RATE=$(cat evals/reports/golden_report.json | python -c "import sys,json; print(json.load(sys.stdin)['summary']['pass_rate'])")
+            echo "Golden tests: ${GOLDEN_RATE}"
+          fi
+
+          if [ "${{ steps.golden.outputs.golden_failed }}" == "true" ]; then
+            echo "Golden tests FAILED"
+            PASSED="false"
+          fi
+
+          if [ "${{ steps.safety.outputs.safety_failed }}" == "true" ]; then
+            echo "Safety tests FAILED"
+            PASSED="false"
+          fi
+
+          if [ "${{ steps.latency.outputs.latency_failed }}" == "true" ]; then
+            echo "Latency tests FAILED"
+            PASSED="false"
+          fi
+
+          echo "passed=${PASSED}" >> $GITHUB_OUTPUT
+          echo "pass_rate=${GOLDEN_RATE:-unknown}" >> $GITHUB_OUTPUT
+
+      # -----------------------------------------------------------------------
+      # Upload Reports
+      # -----------------------------------------------------------------------
+      - name: Upload Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-reports
+          path: evals/reports/
+
+      # -----------------------------------------------------------------------
+      # Summary
+      # -----------------------------------------------------------------------
+      - name: Generate Summary
+        if: always()
+        run: |
+          echo "## Model Evaluation Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Suite | Result |" >> $GITHUB_STEP_SUMMARY
+          echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Golden Dataset | ${{ steps.golden.outputs.golden_failed == 'true' && 'FAILED' || 'PASSED' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Safety Tests | ${{ steps.safety.outputs.safety_failed == 'true' && 'FAILED' || 'PASSED' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Latency (avg) | ${{ steps.latency.outputs.avg_latency }}ms |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Overall: ${{ steps.evaluate.outputs.passed == 'true' && 'PASSED' || 'FAILED' }}**" >> $GITHUB_STEP_SUMMARY
+
+      # -----------------------------------------------------------------------
+      # Fail if tests failed
+      # -----------------------------------------------------------------------
+      - name: Check Results
+        if: steps.evaluate.outputs.passed != 'true'
+        run: |
+          echo "Evaluation FAILED - blocking release"
+          exit 1
+
+  # ---------------------------------------------------------------------------
+  # JOB 2: NOTIFY
+  # ---------------------------------------------------------------------------
+  notify:
+    name: "Notify"
+    runs-on: ubuntu-latest
+    needs: evaluate
+    if: always()
+
+    steps:
+      - name: Send Notification
+        run: |
+          echo "Evaluation completed"
+          echo "Passed: ${{ needs.evaluate.outputs.passed }}"
+          echo "Pass Rate: ${{ needs.evaluate.outputs.pass_rate }}"
+
+          # In production: send to Slack/email
+          # curl -X POST ${{ secrets.SLACK_WEBHOOK }} \
+          #   -d '{"text": "Model eval: ${{ needs.evaluate.outputs.passed }}"}'

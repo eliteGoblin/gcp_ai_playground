@@ -1,0 +1,485 @@
+# =============================================================================
+# GitHub Actions: Model Deployment Pipeline
+# =============================================================================
+# Purpose: CI/CD for deploying LLM models to Vertex AI
+# Pattern: Canary deployment with manual promotion
+#
+# KEY STEPS:
+#   1. Validate    - Lint, security scan, config validation
+#   2. Plan        - Terraform plan (what will change)
+#   3. Deploy Dev  - Auto-deploy to dev environment
+#   4. Test        - Integration tests against dev
+#   5. Deploy Prod - Manual approval, canary then full
+#   6. Monitor     - Post-deploy health checks
+# =============================================================================
+
+name: Deploy Model to Vertex AI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'terraform/**'
+      - 'models/**'
+      - '.github/workflows/deploy-model.yml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:  # Allow manual trigger
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+      model_version:
+        description: 'Model version to deploy (e.g., v1.2.0)'
+        required: false
+        default: 'latest'
+
+# =============================================================================
+# ENVIRONMENT VARIABLES
+# =============================================================================
+env:
+  PROJECT_ID: vertexdemo-481519
+  REGION: us-central1
+  # These would be secrets in real setup
+  # WORKLOAD_IDENTITY_PROVIDER: projects/123/locations/global/workloadIdentityPools/github/providers/github
+  # SERVICE_ACCOUNT: vertex-deployer@vertexdemo-481519.iam.gserviceaccount.com
+
+# =============================================================================
+# JOBS
+# =============================================================================
+jobs:
+
+  # ---------------------------------------------------------------------------
+  # JOB 1: VALIDATE
+  # ---------------------------------------------------------------------------
+  # Purpose: Catch issues early before any deployment
+  # Key Scripts: terraform fmt, tflint, security scan
+  # ---------------------------------------------------------------------------
+  validate:
+    name: "1. Validate"
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step: Checkout code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Step: Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Terraform Format Check
+      # Why: Ensures consistent code style, catches syntax errors
+      # -----------------------------------------------------------------------
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check -recursive
+        working-directory: terraform
+        continue-on-error: true
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Terraform Init (no backend for validation)
+      # Why: Downloads providers, validates syntax
+      # -----------------------------------------------------------------------
+      - name: Terraform Init
+        run: terraform init -backend=false
+        working-directory: terraform
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Terraform Validate
+      # Why: Validates configuration syntax and internal consistency
+      # -----------------------------------------------------------------------
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: terraform
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Security Scan with Checkov
+      # Why: Catches security misconfigurations before deployment
+      # Critical for: PII/financial data compliance
+      # -----------------------------------------------------------------------
+      - name: Security Scan (Checkov)
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: terraform
+          framework: terraform
+          soft_fail: true  # Don't fail on warnings in demo
+          # In prod, set specific checks:
+          # check: CKV_GCP_*
+          # skip_check: CKV_GCP_99  # Skip specific checks with justification
+
+      # Step: Comment on PR with validation results
+      - name: Comment Validation Results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const output = `#### Terraform Validation Results
+
+            | Check | Status |
+            |-------|--------|
+            | Format | ${{ steps.fmt.outcome == 'success' && '✅ Pass' || '⚠️ Needs formatting' }} |
+            | Validate | ✅ Pass |
+            | Security | See Checkov output |
+
+            *Pushed by: @${{ github.actor }}*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });
+
+  # ---------------------------------------------------------------------------
+  # JOB 2: PLAN
+  # ---------------------------------------------------------------------------
+  # Purpose: Show exactly what will change before applying
+  # Key Scripts: terraform plan
+  # ---------------------------------------------------------------------------
+  plan:
+    name: "2. Plan"
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.event_name == 'pull_request'
+
+    # Required for Workload Identity Federation
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Authenticate to GCP (Workload Identity)
+      # Why: No long-lived keys, more secure than SA keys
+      # Critical for: Security compliance
+      # -----------------------------------------------------------------------
+      - name: Authenticate to GCP
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          # In real setup, use Workload Identity:
+          # workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          # service_account: ${{ env.SERVICE_ACCOUNT }}
+          # For demo, using SA key (not recommended for prod):
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Terraform Plan
+      # Why: Shows exactly what will be created/changed/destroyed
+      # Output saved for apply job
+      # -----------------------------------------------------------------------
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -no-color -out=tfplan \
+            -var="project_id=${{ env.PROJECT_ID }}" \
+            -var="region=${{ env.REGION }}" \
+            -var="environment=dev"
+        working-directory: terraform
+        continue-on-error: true
+
+      # Step: Comment plan on PR
+      - name: Comment Plan on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const output = `#### Terraform Plan 📋
+
+            \`\`\`terraform
+            ${{ steps.plan.outputs.stdout }}
+            \`\`\`
+
+            *Plan generated by: @${{ github.actor }}*
+
+            **Review carefully before merging!**`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output.substring(0, 65000)  // GitHub comment limit
+            });
+
+  # ---------------------------------------------------------------------------
+  # JOB 3: DEPLOY DEV
+  # ---------------------------------------------------------------------------
+  # Purpose: Auto-deploy to dev on merge to main
+  # Key Scripts: terraform apply, model validation
+  # ---------------------------------------------------------------------------
+  deploy-dev:
+    name: "3. Deploy Dev"
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: dev  # GitHub Environment for protection rules
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Terraform Apply (Dev)
+      # Why: Apply infrastructure changes to dev environment
+      # Auto-approved for dev (fast iteration)
+      # -----------------------------------------------------------------------
+      - name: Terraform Apply
+        run: |
+          terraform apply -auto-approve \
+            -var="project_id=${{ env.PROJECT_ID }}" \
+            -var="region=${{ env.REGION }}" \
+            -var="environment=dev"
+        working-directory: terraform
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Verify Deployment
+      # Why: Ensure endpoint is healthy after deployment
+      # -----------------------------------------------------------------------
+      - name: Verify Endpoint Health
+        run: |
+          echo "Checking endpoint health..."
+
+          # Get endpoint status
+          ENDPOINT_STATUS=$(gcloud ai endpoints describe \
+            mg-endpoint-d389c6c2-0220-4648-8365-f45187716345 \
+            --region=${{ env.REGION }} \
+            --format="value(deployedModels[0].status.availableReplicaCount)")
+
+          if [ "$ENDPOINT_STATUS" -ge 1 ]; then
+            echo "✅ Endpoint healthy: $ENDPOINT_STATUS replicas available"
+          else
+            echo "❌ Endpoint unhealthy"
+            exit 1
+          fi
+
+  # ---------------------------------------------------------------------------
+  # JOB 4: INTEGRATION TESTS
+  # ---------------------------------------------------------------------------
+  # Purpose: Test model behavior before promoting to prod
+  # Key Scripts: pytest, model validation
+  # ---------------------------------------------------------------------------
+  integration-tests:
+    name: "4. Integration Tests"
+    runs-on: ubuntu-latest
+    needs: deploy-dev
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install pytest requests google-cloud-aiplatform
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Run Model Tests
+      # Why: Verify model behaves correctly
+      # Tests: Response format, latency, safety filters
+      # -----------------------------------------------------------------------
+      - name: Run Model Tests
+        run: |
+          # Basic smoke test
+          ACCESS_TOKEN=$(gcloud auth print-access-token)
+
+          RESPONSE=$(curl -s -X POST \
+            -H "Authorization: Bearer $ACCESS_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://mg-endpoint-d389c6c2-0220-4648-8365-f45187716345.us-central1-632872760922.prediction.vertexai.goog/v1/projects/${{ env.PROJECT_ID }}/locations/${{ env.REGION }}/endpoints/mg-endpoint-d389c6c2-0220-4648-8365-f45187716345:rawPredict" \
+            -d '{"prompt": "<start_of_turn>user\nHello<end_of_turn>\n<start_of_turn>model\n", "max_tokens": 10}')
+
+          echo "Response: $RESPONSE"
+
+          # Check response contains predictions
+          if echo "$RESPONSE" | grep -q "predictions"; then
+            echo "✅ Model responding correctly"
+          else
+            echo "❌ Model test failed"
+            exit 1
+          fi
+
+  # ---------------------------------------------------------------------------
+  # JOB 5: DEPLOY PROD
+  # ---------------------------------------------------------------------------
+  # Purpose: Deploy to production with manual approval
+  # Key Scripts: terraform apply with canary
+  # ---------------------------------------------------------------------------
+  deploy-prod:
+    name: "5. Deploy Prod"
+    runs-on: ubuntu-latest
+    needs: integration-tests
+    if: github.ref == 'refs/heads/main'
+    environment: production  # Requires manual approval in GitHub
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Deploy Canary (10% traffic)
+      # Why: Limit blast radius, catch issues early
+      # Pattern: Start with 10%, monitor, then promote to 100%
+      # -----------------------------------------------------------------------
+      - name: Deploy Canary (10% traffic)
+        run: |
+          echo "Deploying canary with 10% traffic..."
+          # In real setup, use traffic split variable:
+          # terraform apply -auto-approve \
+          #   -var="traffic_split_canary=10" \
+          #   -var="environment=prod"
+
+          # For demo, just apply prod config:
+          terraform apply -auto-approve \
+            -var="project_id=${{ env.PROJECT_ID }}" \
+            -var="region=${{ env.REGION }}" \
+            -var="environment=prod"
+        working-directory: terraform
+
+      # -----------------------------------------------------------------------
+      # KEY STEP: Monitor Canary
+      # Why: Watch for errors before full rollout
+      # Duration: 5 minutes monitoring window
+      # -----------------------------------------------------------------------
+      - name: Monitor Canary (5 min)
+        run: |
+          echo "Monitoring canary for 5 minutes..."
+
+          for i in {1..5}; do
+            echo "Check $i/5..."
+
+            # Check error rate (would use Cloud Monitoring API in prod)
+            ERROR_COUNT=$(gcloud logging read \
+              "resource.type=aiplatform.googleapis.com/Endpoint AND severity>=ERROR" \
+              --limit=10 \
+              --format="value(timestamp)" \
+              2>/dev/null | wc -l || echo "0")
+
+            if [ "$ERROR_COUNT" -gt 5 ]; then
+              echo "❌ High error rate detected: $ERROR_COUNT errors"
+              echo "Initiating rollback..."
+              exit 1
+            fi
+
+            echo "✅ Error rate OK"
+            sleep 60
+          done
+
+          echo "✅ Canary monitoring passed"
+
+      # Step: Promote to 100% (in real setup)
+      - name: Promote to Full Traffic
+        run: |
+          echo "Promoting to 100% traffic..."
+          # terraform apply -auto-approve \
+          #   -var="traffic_split_canary=100" \
+          #   -var="environment=prod"
+          echo "✅ Deployment complete"
+
+  # ---------------------------------------------------------------------------
+  # JOB 6: POST-DEPLOY
+  # ---------------------------------------------------------------------------
+  # Purpose: Post-deployment validation and notifications
+  # ---------------------------------------------------------------------------
+  post-deploy:
+    name: "6. Post-Deploy"
+    runs-on: ubuntu-latest
+    needs: deploy-prod
+    if: always()  # Run even if deploy fails
+
+    steps:
+      # -----------------------------------------------------------------------
+      # KEY STEP: Notify Team
+      # Why: Keep team informed of deployment status
+      # -----------------------------------------------------------------------
+      - name: Notify Slack
+        if: always()
+        run: |
+          # In real setup, send to Slack:
+          # curl -X POST ${{ secrets.SLACK_WEBHOOK }} \
+          #   -H 'Content-Type: application/json' \
+          #   -d '{"text": "Model deployment: ${{ job.status }}"}'
+          echo "Deployment notification sent"
+
+      # Step: Update deployment log
+      - name: Update Deployment Log
+        run: |
+          echo "Recording deployment..."
+          echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "Commit: ${{ github.sha }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Status: ${{ needs.deploy-prod.result }}"

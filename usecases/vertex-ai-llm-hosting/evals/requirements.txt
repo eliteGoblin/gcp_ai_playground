@@ -1,0 +1,17 @@
+# =============================================================================
+# LLM Evaluation Dependencies
+# =============================================================================
+
+# Core
+requests>=2.31.0
+pytest>=7.4.0
+pytest-json-report>=1.5.0
+
+# Optional: for semantic similarity
+# google-cloud-aiplatform>=1.38.0
+# vertexai>=0.0.1
+
+# Optional: for advanced evals
+# deepeval>=0.20.0
+# ragas>=0.1.0
+# langsmith>=0.0.50
