@@ -1,0 +1,27 @@
+{
+  "conversation_id": "6a4a8f17-6c6f-4a2a-9b1b-5c0d8e2e42c9",
+  "direction": "OUTBOUND",
+  "business_line": "COLLECTIONS",
+  "queue": "STANDARD",
+  "agent_id": "A3099",
+  "agent_name": "Sam Taylor",
+  "team": "COLL_TEAM_3",
+  "site": "SYD",
+  "portfolio_id": "PORTFOLIO_P3",
+  "campaign_id": "DEC_OUTBOUND_REMINDER",
+  "call_outcome": "WRONG_PARTY",
+  "started_at": "2025-12-28T13:08:11+11:00",
+  "ended_at": "2025-12-28T13:11:05+11:00",
+  "duration_sec": 174,
+  "labels": {
+    "priority": "HIGH",
+    "test_case": "wrong_party_privacy_remove_number",
+    "expected_risk_flags": ["WRONG_PARTY_CONTACT", "PRIVACY_COMPLIANCE_CHECK"],
+    "expected_next_actions": ["REMOVE_PHONE_NUMBER", "FLAG_WRONG_PARTY", "UPDATE_CONTACT_RECORDS"],
+    "expected_compliance_checks": {
+      "no_disclosure_to_third_party": "PASS",
+      "correct_identification_attempt": "PASS"
+    }
+  }
+}
+

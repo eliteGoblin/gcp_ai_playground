@@ -1,0 +1,36 @@
+{
+  "conversation_id": "3f2d9e4b-1a74-4f35-8bb2-9d8f8df0b6a7",
+  "channel": "VOICE",
+  "language": "en-AU",
+  "started_at": "2025-12-28T11:14:03+11:00",
+  "ended_at": "2025-12-28T11:26:40+11:00",
+  "duration_sec": 757,
+  "turns": [
+    { "turn_index": 0, "speaker": "AGENT", "text": "Thanks for calling Example Finance. You're speaking with Chris. How can I help today?", "ts_offset_sec": 0 },
+    { "turn_index": 1, "speaker": "CUSTOMER", "text": "Um, hi. I got messages about my overdue account. I'm... I'm stressed. I just— I can't pay what you're asking.", "ts_offset_sec": 6 },
+    { "turn_index": 2, "speaker": "AGENT", "text": "I'm sorry you're going through that. I can definitely help look at some options with you. Before we discuss the account details though, I just need to confirm your identity. Can I confirm your full name please?", "ts_offset_sec": 14 },
+    { "turn_index": 3, "speaker": "CUSTOMER", "text": "Priya Nair.", "ts_offset_sec": 23 },
+    { "turn_index": 4, "speaker": "AGENT", "text": "Thanks, Priya. And can you confirm your date of birth for me?", "ts_offset_sec": 30 },
+    { "turn_index": 5, "speaker": "CUSTOMER", "text": "Second of February, 1989.", "ts_offset_sec": 38 },
+    { "turn_index": 6, "speaker": "AGENT", "text": "Great. And the postcode on your account?", "ts_offset_sec": 45 },
+    { "turn_index": 7, "speaker": "CUSTOMER", "text": "2010.", "ts_offset_sec": 50 },
+    { "turn_index": 8, "speaker": "AGENT", "text": "Thank you, Priya. I can see the overdue amount is $1,180.65. Can you tell me a bit about what's making it difficult at the moment?", "ts_offset_sec": 58 },
+    { "turn_index": 9, "speaker": "CUSTOMER", "text": "I'm behind on rent. My hours at work got cut back... and I'm just— I'm barely sleeping. Look, I'm not trying to avoid paying, I just...", "ts_offset_sec": 72 },
+    { "turn_index": 10, "speaker": "AGENT", "text": "I completely understand, and thanks for being open about that. It sounds like you're under some real pressure right now. Look, we do have hardship options and flexible payment plans available. What sort of amount do you think would feel manageable on a weekly or fortnightly basis?", "ts_offset_sec": 90 },
+    { "turn_index": 11, "speaker": "CUSTOMER", "text": "I could maybe do... $25 a week? That's honestly all I can manage. Please don't set me up to fail here.", "ts_offset_sec": 110 },
+    { "turn_index": 12, "speaker": "AGENT", "text": "That's a reasonable starting point, Priya. We can absolutely set up $25 a week and review it in about a month to see how you're going. Would Fridays or Mondays work better for the payments?", "ts_offset_sec": 125 },
+    { "turn_index": 13, "speaker": "CUSTOMER", "text": "Fridays would be better. After I get paid. But not during school pickup time.", "ts_offset_sec": 140 },
+    { "turn_index": 14, "speaker": "AGENT", "text": "No worries. What time window should we avoid for calls, and when's best to contact you?", "ts_offset_sec": 152 },
+    { "turn_index": 15, "speaker": "CUSTOMER", "text": "Avoid 3pm to 4pm. Best time is evenings. And my mobile is 0403 112 778.", "ts_offset_sec": 164 },
+    { "turn_index": 16, "speaker": "AGENT", "text": "Thanks for that. And if we need to send you the plan details, do you prefer email?", "ts_offset_sec": 178 },
+    { "turn_index": 17, "speaker": "CUSTOMER", "text": "Yeah, email is fine. It's priya.nair89@gmail.com.", "ts_offset_sec": 186 },
+    { "turn_index": 18, "speaker": "AGENT", "text": "Perfect, I've got that. Just one more thing—are there any sensitive circumstances we should be aware of so we can handle your account appropriately? For example, if there's any serious illness or family violence support needs?", "ts_offset_sec": 198 },
+    { "turn_index": 19, "speaker": "CUSTOMER", "text": "No family violence or anything like that. But... my mental health hasn't been great. I get panic attacks sometimes.", "ts_offset_sec": 220 },
+    { "turn_index": 20, "speaker": "AGENT", "text": "Thank you for sharing that with me, Priya. I'll make a note that you prefer calmer contact and evening calls, and we'll make sure to keep our communications respectful and minimal. So we'll set up $25 a week from next Friday and review it in four weeks. Does that work?", "ts_offset_sec": 238 },
+    { "turn_index": 21, "speaker": "CUSTOMER", "text": "Okay. And please— don't call my workplace. It just makes everything worse.", "ts_offset_sec": 260 },
+    { "turn_index": 22, "speaker": "AGENT", "text": "Absolutely understood. I'll mark your account as 'no workplace contact'. I'll email you the payment plan summary today. And if anything changes in your situation, just give us a call and we can adjust things.", "ts_offset_sec": 272 },
+    { "turn_index": 23, "speaker": "CUSTOMER", "text": "Thank you. Just... please be patient with me.", "ts_offset_sec": 288 },
+    { "turn_index": 24, "speaker": "AGENT", "text": "Of course, Priya. You're not alone in this—we'll work through it step by step. Take care.", "ts_offset_sec": 296 }
+  ]
+}
+

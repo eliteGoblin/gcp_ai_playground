@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "weekly_agent_report",
+  "title": "Weekly Agent Report Schema",
+  "description": "Weekly coaching report with radar chart data and trend analysis. One row per agent per week.",
+  "version": "2.0.0",
+  "bigquery": {
+    "table_name": "weekly_agent_report",
+    "clustering_fields": ["agent_id", "business_line"],
+    "partition_field": "week_start",
+    "partition_type": "DAY"
+  },
+  "fields": [
+    {
+      "name": "agent_id",
+      "type": "STRING",
+      "mode": "REQUIRED",
+      "description": "Agent identifier"
+    },
+    {
+      "name": "business_line",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Business line: COLLECTIONS or LOANS"
+    },
+    {
+      "name": "team",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Team identifier"
+    },
+    {
+      "name": "week_start",
+      "type": "DATE",
+      "mode": "REQUIRED",
+      "description": "Monday of the week"
+    },
+    {
+      "name": "generated_at",
+      "type": "TIMESTAMP",
+      "mode": "NULLABLE",
+      "description": "When this report was generated"
+    },
+    {
+      "name": "empathy_score",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Week average empathy score (for radar chart)"
+    },
+    {
+      "name": "compliance_score",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Week average compliance score"
+    },
+    {
+      "name": "resolution_score",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Week average resolution score"
+    },
+    {
+      "name": "professionalism_score",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Week average professionalism score"
+    },
+    {
+      "name": "efficiency_score",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Week average efficiency score"
+    },
+    {
+      "name": "de_escalation_score",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Week average de-escalation score"
+    },
+    {
+      "name": "empathy_delta",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Change vs previous week"
+    },
+    {
+      "name": "compliance_delta",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Change vs previous week"
+    },
+    {
+      "name": "resolution_delta",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Change vs previous week"
+    },
+    {
+      "name": "total_calls",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Total calls this week"
+    },
+    {
+      "name": "resolution_rate",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Percentage of calls resolved"
+    },
+    {
+      "name": "compliance_breach_count",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Total compliance breaches this week"
+    },
+    {
+      "name": "top_issues",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Most frequent issue types this week"
+    },
+    {
+      "name": "top_strengths",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Most frequent strengths this week"
+    },
+    {
+      "name": "recommended_training",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Suggested training modules"
+    },
+    {
+      "name": "weekly_summary",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "LLM-generated 3-5 sentence weekly summary"
+    },
+    {
+      "name": "trend_analysis",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "What's improving or declining"
+    },
+    {
+      "name": "action_plan",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "2-3 specific actions for next week"
+    },
+    {
+      "name": "example_conversations",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "description": "Rich example references for the week",
+      "fields": [
+        {
+          "name": "conversation_id",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Conversation identifier"
+        },
+        {
+          "name": "example_type",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "GOOD_EXAMPLE or NEEDS_WORK"
+        },
+        {
+          "name": "headline",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Short description of the call"
+        },
+        {
+          "name": "key_moment",
+          "type": "RECORD",
+          "mode": "NULLABLE",
+          "description": "Most notable moment",
+          "fields": [
+            {
+              "name": "turn_index",
+              "type": "INTEGER",
+              "mode": "NULLABLE",
+              "description": "Turn number"
+            },
+            {
+              "name": "quote",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "description": "The key quote"
+            },
+            {
+              "name": "why_notable",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "description": "Why this is notable"
+            }
+          ]
+        },
+        {
+          "name": "outcome",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Call outcome description"
+        },
+        {
+          "name": "sentiment_journey",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Sentiment change: -1.0 -> +1.0"
+        },
+        {
+          "name": "scores",
+          "type": "JSON",
+          "mode": "NULLABLE",
+          "description": "Scores: {empathy: 9, compliance: 10, ...}"
+        },
+        {
+          "name": "call_type",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Type of call"
+        },
+        {
+          "name": "date",
+          "type": "DATE",
+          "mode": "NULLABLE",
+          "description": "Date of the call"
+        }
+      ]
+    },
+    {
+      "name": "daily_scores",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "description": "Daily score breakdown for trend charts",
+      "fields": [
+        {
+          "name": "date",
+          "type": "DATE",
+          "mode": "NULLABLE",
+          "description": "Date"
+        },
+        {
+          "name": "call_count",
+          "type": "INTEGER",
+          "mode": "NULLABLE",
+          "description": "Calls that day"
+        },
+        {
+          "name": "avg_empathy",
+          "type": "FLOAT",
+          "mode": "NULLABLE",
+          "description": "Average empathy"
+        },
+        {
+          "name": "avg_compliance",
+          "type": "FLOAT",
+          "mode": "NULLABLE",
+          "description": "Average compliance"
+        },
+        {
+          "name": "avg_resolution",
+          "type": "FLOAT",
+          "mode": "NULLABLE",
+          "description": "Average resolution"
+        }
+      ]
+    }
+  ]
+}

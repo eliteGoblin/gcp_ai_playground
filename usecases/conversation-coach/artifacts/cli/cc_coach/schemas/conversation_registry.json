@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "conversation_registry",
+  "title": "Conversation Registry Schema",
+  "description": "Tracks conversation lifecycle from ingestion through coaching. This is the central registry for all conversations in the pipeline.",
+  "version": "1.0.0",
+  "bigquery": {
+    "table_name": "conversation_registry",
+    "clustering_fields": null,
+    "partition_field": null
+  },
+  "fields": [
+    {
+      "name": "conversation_id",
+      "type": "STRING",
+      "mode": "REQUIRED",
+      "description": "Unique identifier for the conversation (UUID format)"
+    },
+    {
+      "name": "transcript_uri_raw",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "GCS URI for raw transcript file (before PII redaction)"
+    },
+    {
+      "name": "metadata_uri_raw",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "GCS URI for raw metadata file"
+    },
+    {
+      "name": "audio_uri_raw",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "GCS URI for raw audio file"
+    },
+    {
+      "name": "transcript_uri_sanitized",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "GCS URI for PII-redacted transcript file"
+    },
+    {
+      "name": "metadata_uri_sanitized",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "GCS URI for sanitized metadata file"
+    },
+    {
+      "name": "audio_uri_sanitized",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "GCS URI for PII-redacted audio file"
+    },
+    {
+      "name": "has_transcript",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE",
+      "description": "Whether transcript file exists"
+    },
+    {
+      "name": "has_metadata",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE",
+      "description": "Whether metadata file exists"
+    },
+    {
+      "name": "has_audio",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE",
+      "description": "Whether audio file exists"
+    },
+    {
+      "name": "status",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Pipeline status: INGESTED, SANITIZED, CI_UPLOADED, CI_ANALYZED, ENRICHED, COACHED, ERROR"
+    },
+    {
+      "name": "redaction_version",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Version of PII redaction applied (e.g., 'v1.0')"
+    },
+    {
+      "name": "pii_types_found",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Types of PII detected and redacted: PERSON_NAME, PHONE_NUMBER, EMAIL_ADDRESS, etc."
+    },
+    {
+      "name": "ci_conversation_name",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Full CI resource name (projects/.../conversations/...)"
+    },
+    {
+      "name": "ci_analysis_id",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "CI analysis operation ID"
+    },
+    {
+      "name": "last_error",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Last error message if status is ERROR"
+    },
+    {
+      "name": "retry_count",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Number of retry attempts for failed operations"
+    },
+    {
+      "name": "created_at",
+      "type": "TIMESTAMP",
+      "mode": "NULLABLE",
+      "description": "When conversation record was created"
+    },
+    {
+      "name": "updated_at",
+      "type": "TIMESTAMP",
+      "mode": "NULLABLE",
+      "description": "When conversation record was last updated"
+    },
+    {
+      "name": "ingested_at",
+      "type": "TIMESTAMP",
+      "mode": "NULLABLE",
+      "description": "When conversation was ingested from source"
+    },
+    {
+      "name": "enriched_at",
+      "type": "TIMESTAMP",
+      "mode": "NULLABLE",
+      "description": "When CI enrichment data was extracted to BQ"
+    },
+    {
+      "name": "coached_at",
+      "type": "TIMESTAMP",
+      "mode": "NULLABLE",
+      "description": "When ADK coaching was generated"
+    }
+  ]
+}

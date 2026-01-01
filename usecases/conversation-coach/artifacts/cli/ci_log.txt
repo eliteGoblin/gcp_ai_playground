@@ -1,0 +1,266 @@
+
+═══ WHAT WAS SENT TO CI (INPUT) ═══
+
+Conversation Resource:
+  Name: projects/38797000650/locations/us-central1/conversations/2b6f5c61-9e3a-4e47-8b8c-3f0c5f6c2d0e
+  Medium: PHONE_CALL
+  Language: en-AU
+  Agent ID: L5512
+  Start Time: 2025-12-28T03:20:02Z
+  Duration: 185s
+
+Labels (from metadata):
+  business_line: LOANS
+  agent_id: L5512
+  direction: INBOUND
+  call_outcome: RESOLVED_WITH_ACTION
+  team: LOAN_TEAM_1
+  site: SYD
+  queue: SUPPORT
+
+Data Source:
+  GCS URI: gs://vertexdemo-481519-cc-dev/ccai-transcripts/2b6f5c61-9e3a-4e47-8b8c-3f0c5f6c2d0e.json
+
+Transcript Sample (first 3 turns):
+
+═══ RAW CI ANALYSIS OUTPUT ═══
+
+Analysis Metadata:
+  Name: projects/38797000650/locations/us-central1/conversations/2b6f5c61-9e3a-4e47-8b8c-3f0c5f6c2d0e/analyses/3948980570596325744
+  Request Time: 2025-12-28T07:00:30.264468Z
+  Create Time: 2025-12-28T07:00:44.613567Z
+
+Sentiments (overall per channel):
+  CUSTOMER: score=0.5, magnitude=1.0
+
+Entities:
+  [OTHER] Loans (salience=0.118)
+
+Intents/Topics:
+  • AUTHENTICATION_INFO
+
+Per-Turn Annotations (sample):
+  Turn 9 [CUSTOMER]: score=-1.0
+  Turn 7 [CUSTOMER]: score=-1.0
+  Turn 1 [CUSTOMER]: score=-1.0
+  Turn 17 [CUSTOMER]: score=1.0
+  Turn 15 [CUSTOMER]: score=-0.5
+
+For full JSON output, use: --format json
+
+Full Raw JSON:
+{
+  "name": "projects/38797000650/locations/us-central1/conversations/2b6f5c61-9e3a-4e47-8b8c-3f0c5f6c2d0e/analyses/3948980570596325744",
+  "requestTime": "2025-12-28T07:00:30.264468Z",
+  "createTime": "2025-12-28T07:00:44.613567Z",
+  "analysisResult": {
+    "callAnalysisMetadata": {
+      "annotations": [
+        {
+          "channelTag": 1,
+          "annotationStartBoundary": {
+            "transcriptIndex": 9,
+            "wordIndex": 0
+          },
+          "annotationEndBoundary": {
+            "transcriptIndex": 9,
+            "wordIndex": 26
+          },
+          "sentimentData": {
+            "magnitude": 1.0,
+            "score": -1.0
+          }
+        },
+        {
+          "channelTag": 1,
+          "annotationStartBoundary": {
+            "transcriptIndex": 7,
+            "wordIndex": 0
+          },
+          "annotationEndBoundary": {
+            "transcriptIndex": 7,
+            "wordIndex": 22
+          },
+          "sentimentData": {
+            "magnitude": 1.0,
+            "score": -1.0
+          }
+        },
+        {
+          "channelTag": 1,
+          "annotationStartBoundary": {
+            "transcriptIndex": 5,
+            "wordIndex": 0
+          },
+          "annotationEndBoundary": {
+            "transcriptIndex": 5,
+            "wordIndex": 6
+          },
+          "sentimentData": {}
+        },
+        {
+          "channelTag": 1,
+          "annotationStartBoundary": {
+            "transcriptIndex": 3,
+            "wordIndex": 0
+          },
+          "annotationEndBoundary": {
+            "transcriptIndex": 3,
+            "wordIndex": 1
+          },
+          "sentimentData": {}
+        },
+        {
+          "channelTag": 1,
+          "annotationStartBoundary": {
+            "transcriptIndex": 1,
+            "wordIndex": 0
+          },
+          "annotationEndBoundary": {
+            "transcriptIndex": 1,
+            "wordIndex": 21
+          },
+          "sentimentData": {
+            "magnitude": 1.0,
+            "score": -1.0
+          }
+        },
+        {
+          "channelTag": 2,
+          "annotationStartBoundary": {
+            "transcriptIndex": 4,
+            "wordIndex": 2
+          },
+          "annotationEndBoundary": {
+            "transcriptIndex": 4,
+            "wordIndex": 13
+          },
+          "intentMatchData": {
+            "intentUniqueId": "d7d55546-53b8-41f8-af02-f3afb53084c3"
+          }
+        },
+        {
+          "channelTag": 2,
+          "annotationStartBoundary": {
+            "transcriptIndex": 2,
+            "wordIndex": 14
+          },
+          "annotationEndBoundary": {
+            "transcriptIndex": 2,
+            "wordIndex": 21
+          },
+          "intentMatchData": {
+            "intentUniqueId": "d7d55546-53b8-41f8-af02-f3afb53084c3"
+          }
+        },
+        {
+          "channelTag": 2,
+          "annotationStartBoundary": {
+            "wordIndex": 3
+          },
+          "annotationEndBoundary": {
+            "wordIndex": 3
+          },
+          "entityMentionData": {
+            "entityUniqueId": "0",
+            "type": "COMMON",
+            "sentiment": {
+              "magnitude": 0.2,
+              "score": 0.2
+            }
+          }
+        },
+        {
+          "channelTag": 1,
+          "annotationStartBoundary": {
+            "transcriptIndex": 17,
+            "wordIndex": 0
+          },
+          "annotationEndBoundary": {
+            "transcriptIndex": 17,
+            "wordIndex": 3
+          },
+          "sentimentData": {
+            "magnitude": 1.0,
+            "score": 1.0
+          }
+        },
+        {
+          "channelTag": 1,
+          "annotationStartBoundary": {
+            "transcriptIndex": 15,
+            "wordIndex": 0
+          },
+          "annotationEndBoundary": {
+            "transcriptIndex": 15,
+            "wordIndex": 16
+          },
+          "sentimentData": {
+            "magnitude": 0.5,
+            "score": -0.5
+          }
+        },
+        {
+          "channelTag": 1,
+          "annotationStartBoundary": {
+            "transcriptIndex": 13,
+            "wordIndex": 0
+          },
+          "annotationEndBoundary": {
+            "transcriptIndex": 13,
+            "wordIndex": 0
+          },
+          "sentimentData": {}
+        },
+        {
+          "channelTag": 1,
+          "annotationStartBoundary": {
+            "transcriptIndex": 11,
+            "wordIndex": 0
+          },
+          "annotationEndBoundary": {
+            "transcriptIndex": 11,
+            "wordIndex": 15
+          },
+          "sentimentData": {}
+        }
+      ],
+      "entities": {
+        "0": {
+          "displayName": "Loans",
+          "type": "OTHER",
+          "salience": 0.11829058,
+          "sentiment": {
+            "magnitude": 0.2,
+            "score": 0.2
+          }
+        }
+      },
+      "sentiments": [
+        {
+          "channelTag": 1,
+          "sentimentData": {
+            "magnitude": 1.0,
+            "score": 0.5
+          }
+        }
+      ],
+      "intents": {
+        "d7d55546-53b8-41f8-af02-f3afb53084c3": {
+          "id": "d7d55546-53b8-41f8-af02-f3afb53084c3",
+          "displayName": "AUTHENTICATION_INFO"
+        }
+      }
+    }
+  },
+  "annotatorSelector": {
+    "runInterruptionAnnotator": true,
+    "runSilenceAnnotator": true,
+    "runPhraseMatcherAnnotator": true,
+    "runSentimentAnnotator": true,
+    "runEntityAnnotator": true,
+    "runIntentAnnotator": true,
+    "runIssueModelAnnotator": true,
+    "runQaAnnotator": true
+  }
+}

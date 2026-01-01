@@ -1,0 +1,118 @@
+{
+  "entries": [
+    {
+      "text": "Good afternoon, Example Loans support, you're speaking with Alex. How can I help you today?",
+      "role": "AGENT",
+      "userId": "2",
+      "startTimestampUsec": "1766892002000000"
+    },
+    {
+      "text": "Yeah, hi. Your app is saying my repayment failed. But I paid it. I definitely paid it. This is wasting my time.",
+      "role": "CUSTOMER",
+      "userId": "1",
+      "startTimestampUsec": "1766892008000000"
+    },
+    {
+      "text": "I'm really sorry for the hassle. Let me check that for you right now. First, I just need to verify your identity. Can I get your full name please?",
+      "role": "AGENT",
+      "userId": "2",
+      "startTimestampUsec": "1766892016000000"
+    },
+    {
+      "text": "Samantha Wu.",
+      "role": "CUSTOMER",
+      "userId": "1",
+      "startTimestampUsec": "1766892024000000"
+    },
+    {
+      "text": "Thanks Samantha. And can you confirm your date of birth and postcode for me?",
+      "role": "AGENT",
+      "userId": "2",
+      "startTimestampUsec": "1766892030000000"
+    },
+    {
+      "text": "11th of November 1996. Postcode is 2000.",
+      "role": "CUSTOMER",
+      "userId": "1",
+      "startTimestampUsec": "1766892040000000"
+    },
+    {
+      "text": "Thank you. Alright, I can see here that a payment attempt was rejected by the bank overnight. It looks like it may have been a temporary hold on the bank's side. Do you see a pending transaction showing in your bank account?",
+      "role": "AGENT",
+      "userId": "2",
+      "startTimestampUsec": "1766892052000000"
+    },
+    {
+      "text": "Yes, it's showing as pending. But your system sent me this really alarming message saying payment failed. That's not okay\u2014it stressed me out.",
+      "role": "CUSTOMER",
+      "userId": "1",
+      "startTimestampUsec": "1766892068000000"
+    },
+    {
+      "text": "You're absolutely right to raise that, and I apologise for the stress it caused. I'll log some feedback about the wording of those messages. For now, what I can do is place a short grace note on your account so you won't be penalised while the payment clears through.",
+      "role": "AGENT",
+      "userId": "2",
+      "startTimestampUsec": "1766892080000000"
+    },
+    {
+      "text": "Good, do that. And also\u2014stop calling me during my work meetings. Someone called at 10am yesterday and it was really embarrassing. I was presenting to my team.",
+      "role": "CUSTOMER",
+      "userId": "1",
+      "startTimestampUsec": "1766892094000000"
+    },
+    {
+      "text": "I completely understand, that's not ideal at all. I can update your contact preferences. What's your preferred contact time, and which number should we use?",
+      "role": "AGENT",
+      "userId": "2",
+      "startTimestampUsec": "1766892106000000"
+    },
+    {
+      "text": "Only after 5:30pm. My mobile is 0491 044 120. And email me any confirmations\u2014don't just call.",
+      "role": "CUSTOMER",
+      "userId": "1",
+      "startTimestampUsec": "1766892118000000"
+    },
+    {
+      "text": "Sure thing. What email address should I send confirmations to?",
+      "role": "AGENT",
+      "userId": "2",
+      "startTimestampUsec": "1766892132000000"
+    },
+    {
+      "text": "sam.wu96@protonmail.com",
+      "role": "CUSTOMER",
+      "userId": "1",
+      "startTimestampUsec": "1766892140000000"
+    },
+    {
+      "text": "Perfect, I've got that down. I've updated your contact preference to after 5:30pm only on your mobile. And I've added a note about the repayment alert wording for our product team.",
+      "role": "AGENT",
+      "userId": "2",
+      "startTimestampUsec": "1766892150000000"
+    },
+    {
+      "text": "Thanks. Look, I was pretty mad when I called. Just... fix the issue and let me know.",
+      "role": "CUSTOMER",
+      "userId": "1",
+      "startTimestampUsec": "1766892162000000"
+    },
+    {
+      "text": "Totally fair, Samantha. I'll email you a case reference number and the grace note details within the hour. Is there anything else I can help with today?",
+      "role": "AGENT",
+      "userId": "2",
+      "startTimestampUsec": "1766892170000000"
+    },
+    {
+      "text": "No, that's it. Thanks.",
+      "role": "CUSTOMER",
+      "userId": "1",
+      "startTimestampUsec": "1766892182000000"
+    },
+    {
+      "text": "No worries. Thanks for calling and I hope the rest of your day goes smoothly. Take care.",
+      "role": "AGENT",
+      "userId": "2",
+      "startTimestampUsec": "1766892187000000"
+    }
+  ]
+}

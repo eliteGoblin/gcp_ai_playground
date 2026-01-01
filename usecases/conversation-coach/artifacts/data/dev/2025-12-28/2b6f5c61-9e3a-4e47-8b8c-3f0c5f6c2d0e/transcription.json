@@ -1,0 +1,30 @@
+{
+  "conversation_id": "2b6f5c61-9e3a-4e47-8b8c-3f0c5f6c2d0e",
+  "channel": "VOICE",
+  "language": "en-AU",
+  "started_at": "2025-12-28T14:20:02+11:00",
+  "ended_at": "2025-12-28T14:28:30+11:00",
+  "duration_sec": 508,
+  "turns": [
+    { "turn_index": 0, "speaker": "AGENT", "text": "Good afternoon, Example Loans support, you're speaking with Alex. How can I help you today?", "ts_offset_sec": 0 },
+    { "turn_index": 1, "speaker": "CUSTOMER", "text": "Yeah, hi. Your app is saying my repayment failed. But I paid it. I definitely paid it. This is wasting my time.", "ts_offset_sec": 6 },
+    { "turn_index": 2, "speaker": "AGENT", "text": "I'm really sorry for the hassle. Let me check that for you right now. First, I just need to verify your identity. Can I get your full name please?", "ts_offset_sec": 14 },
+    { "turn_index": 3, "speaker": "CUSTOMER", "text": "Samantha Wu.", "ts_offset_sec": 22 },
+    { "turn_index": 4, "speaker": "AGENT", "text": "Thanks Samantha. And can you confirm your date of birth and postcode for me?", "ts_offset_sec": 28 },
+    { "turn_index": 5, "speaker": "CUSTOMER", "text": "11th of November 1996. Postcode is 2000.", "ts_offset_sec": 38 },
+    { "turn_index": 6, "speaker": "AGENT", "text": "Thank you. Alright, I can see here that a payment attempt was rejected by the bank overnight. It looks like it may have been a temporary hold on the bank's side. Do you see a pending transaction showing in your bank account?", "ts_offset_sec": 50 },
+    { "turn_index": 7, "speaker": "CUSTOMER", "text": "Yes, it's showing as pending. But your system sent me this really alarming message saying payment failed. That's not okay—it stressed me out.", "ts_offset_sec": 66 },
+    { "turn_index": 8, "speaker": "AGENT", "text": "You're absolutely right to raise that, and I apologise for the stress it caused. I'll log some feedback about the wording of those messages. For now, what I can do is place a short grace note on your account so you won't be penalised while the payment clears through.", "ts_offset_sec": 78 },
+    { "turn_index": 9, "speaker": "CUSTOMER", "text": "Good, do that. And also—stop calling me during my work meetings. Someone called at 10am yesterday and it was really embarrassing. I was presenting to my team.", "ts_offset_sec": 92 },
+    { "turn_index": 10, "speaker": "AGENT", "text": "I completely understand, that's not ideal at all. I can update your contact preferences. What's your preferred contact time, and which number should we use?", "ts_offset_sec": 104 },
+    { "turn_index": 11, "speaker": "CUSTOMER", "text": "Only after 5:30pm. My mobile is 0491 044 120. And email me any confirmations—don't just call.", "ts_offset_sec": 116 },
+    { "turn_index": 12, "speaker": "AGENT", "text": "Sure thing. What email address should I send confirmations to?", "ts_offset_sec": 130 },
+    { "turn_index": 13, "speaker": "CUSTOMER", "text": "sam.wu96@protonmail.com", "ts_offset_sec": 138 },
+    { "turn_index": 14, "speaker": "AGENT", "text": "Perfect, I've got that down. I've updated your contact preference to after 5:30pm only on your mobile. And I've added a note about the repayment alert wording for our product team.", "ts_offset_sec": 148 },
+    { "turn_index": 15, "speaker": "CUSTOMER", "text": "Thanks. Look, I was pretty mad when I called. Just... fix the issue and let me know.", "ts_offset_sec": 160 },
+    { "turn_index": 16, "speaker": "AGENT", "text": "Totally fair, Samantha. I'll email you a case reference number and the grace note details within the hour. Is there anything else I can help with today?", "ts_offset_sec": 168 },
+    { "turn_index": 17, "speaker": "CUSTOMER", "text": "No, that's it. Thanks.", "ts_offset_sec": 180 },
+    { "turn_index": 18, "speaker": "AGENT", "text": "No worries. Thanks for calling and I hope the rest of your day goes smoothly. Take care.", "ts_offset_sec": 185 }
+  ]
+}
+

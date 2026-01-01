@@ -1,0 +1,20 @@
+{
+  "conversation_id": "6a4a8f17-6c6f-4a2a-9b1b-5c0d8e2e42c9",
+  "channel": "VOICE",
+  "language": "en-AU",
+  "started_at": "2025-12-28T13:08:11+11:00",
+  "ended_at": "2025-12-28T13:11:05+11:00",
+  "duration_sec": 174,
+  "turns": [
+    { "turn_index": 0, "speaker": "AGENT", "text": "Hi there, may I please speak with Jordan Lee?", "ts_offset_sec": 0 },
+    { "turn_index": 1, "speaker": "CUSTOMER", "text": "Who's asking?", "ts_offset_sec": 4 },
+    { "turn_index": 2, "speaker": "AGENT", "text": "My name's Sam, I'm calling from Example Finance. I'm not able to discuss any details unless I'm speaking directly with Jordan. Are you Jordan?", "ts_offset_sec": 9 },
+    { "turn_index": 3, "speaker": "CUSTOMER", "text": "No, I'm not. Jordan doesn't live here anymore. Hasn't for ages. Stop calling this number.", "ts_offset_sec": 16 },
+    { "turn_index": 4, "speaker": "AGENT", "text": "I apologise for that. I completely understand. I won't discuss anything further with you. Can I just confirm—are you requesting that this number be removed from our contact records?", "ts_offset_sec": 23 },
+    { "turn_index": 5, "speaker": "CUSTOMER", "text": "Yes! Remove it. This is the third time you've called. It's really annoying.", "ts_offset_sec": 31 },
+    { "turn_index": 6, "speaker": "AGENT", "text": "I hear you and I'm sorry about that. I'll mark this as a 'wrong party' situation and have the number removed. Can I just confirm the number I've reached you on—does it end in 2207?", "ts_offset_sec": 40 },
+    { "turn_index": 7, "speaker": "CUSTOMER", "text": "Yes, 2207. And please don't call again.", "ts_offset_sec": 48 },
+    { "turn_index": 8, "speaker": "AGENT", "text": "I've noted that down. Again, I'm really sorry for the inconvenience. The number ending 2207 has been flagged for removal and you shouldn't receive any further calls from us. Have a good day.", "ts_offset_sec": 55 }
+  ]
+}
+

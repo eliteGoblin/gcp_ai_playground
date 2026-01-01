@@ -1,0 +1,29 @@
+{
+  "conversation_id": "a7c3d1e8-5b2f-4a9d-8c6e-1f4b7a3d9e5c",
+  "channel": "VOICE",
+  "language": "en-AU",
+  "started_at": "2025-12-28T09:15:22+11:00",
+  "ended_at": "2025-12-28T09:24:45+11:00",
+  "duration_sec": 563,
+  "turns": [
+    { "turn_index": 0, "speaker": "AGENT", "text": "Hi, am I speaking with Marcus Chen?", "ts_offset_sec": 0 },
+    { "turn_index": 1, "speaker": "CUSTOMER", "text": "Yeah, that's me. What's this about?", "ts_offset_sec": 5 },
+    { "turn_index": 2, "speaker": "AGENT", "text": "Thanks Marcus. I'm calling from Example Finance. Just need to confirm a couple of details before we continue. Can you confirm your date of birth?", "ts_offset_sec": 10 },
+    { "turn_index": 3, "speaker": "CUSTOMER", "text": "20th of March 1985.", "ts_offset_sec": 20 },
+    { "turn_index": 4, "speaker": "AGENT", "text": "And can you confirm the postcode on your account?", "ts_offset_sec": 26 },
+    { "turn_index": 5, "speaker": "CUSTOMER", "text": "3000. But look, if this is about that account again, I already paid it off. Months ago.", "ts_offset_sec": 32 },
+    { "turn_index": 6, "speaker": "AGENT", "text": "I understand. I'm calling about an outstanding balance of $892.40. You're saying you've already paid this?", "ts_offset_sec": 42 },
+    { "turn_index": 7, "speaker": "CUSTOMER", "text": "Yes! I paid it in September. I have the bank statement right here. Reference number and everything. This is the third time I've had to explain this.", "ts_offset_sec": 52 },
+    { "turn_index": 8, "speaker": "AGENT", "text": "I'm really sorry you've had to go through that. Let me log this as a formal dispute and we'll investigate it properly. Can you give me the payment reference from your bank statement?", "ts_offset_sec": 68 },
+    { "turn_index": 9, "speaker": "CUSTOMER", "text": "It's... hold on... EXF-PAY-2024-09-15-4827. Paid on the 15th of September. $892.40 exactly.", "ts_offset_sec": 82 },
+    { "turn_index": 10, "speaker": "AGENT", "text": "Thank you. I've noted the reference EXF-PAY-2024-09-15-4827, payment date 15 September, amount $892.40. I'm raising a formal dispute on your account now. While this is being investigated, we'll pause all collection activity.", "ts_offset_sec": 100 },
+    { "turn_index": 11, "speaker": "CUSTOMER", "text": "Good. Because I'm not paying twice. And I want something in writing confirming the dispute.", "ts_offset_sec": 120 },
+    { "turn_index": 12, "speaker": "AGENT", "text": "Absolutely. I'll send you an email confirmation with the dispute reference number. What email should I use?", "ts_offset_sec": 130 },
+    { "turn_index": 13, "speaker": "CUSTOMER", "text": "marcus.chen85@gmail.com", "ts_offset_sec": 140 },
+    { "turn_index": 14, "speaker": "AGENT", "text": "Got it. The dispute will be investigated within 10 business days. You'll receive a letter with the outcome. In the meantime, you won't receive any further collection calls about this amount.", "ts_offset_sec": 148 },
+    { "turn_index": 15, "speaker": "CUSTOMER", "text": "Finally. Someone who actually listens. Thank you.", "ts_offset_sec": 165 },
+    { "turn_index": 16, "speaker": "AGENT", "text": "No problem, Marcus. I apologise for the frustration this has caused. Is there anything else I can help with today?", "ts_offset_sec": 172 },
+    { "turn_index": 17, "speaker": "CUSTOMER", "text": "No, that's it. Just get it sorted.", "ts_offset_sec": 182 },
+    { "turn_index": 18, "speaker": "AGENT", "text": "Will do. You'll have that email confirmation within the hour. Take care.", "ts_offset_sec": 188 }
+  ]
+}

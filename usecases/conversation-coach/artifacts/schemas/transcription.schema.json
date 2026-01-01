@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/transcription.schema.json",
+  "title": "Conversation Transcription",
+  "description": "Schema for conversation transcription data ingested into the coaching pipeline",
+  "type": "object",
+  "required": [
+    "conversation_id",
+    "channel",
+    "language",
+    "started_at",
+    "ended_at",
+    "turns"
+  ],
+  "properties": {
+    "conversation_id": {
+      "type": "string",
+      "description": "Unique identifier for the conversation (UUID format recommended)",
+      "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+    },
+    "channel": {
+      "type": "string",
+      "enum": ["VOICE", "CHAT", "EMAIL"],
+      "description": "Communication channel"
+    },
+    "language": {
+      "type": "string",
+      "description": "Language code (BCP-47 format)",
+      "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+      "examples": ["en-AU", "en-US", "en"]
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when conversation started"
+    },
+    "ended_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when conversation ended"
+    },
+    "duration_sec": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Duration in seconds (derived from started_at/ended_at)"
+    },
+    "turns": {
+      "type": "array",
+      "description": "Ordered list of conversation turns",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["turn_index", "speaker", "text", "ts_offset_sec"],
+        "properties": {
+          "turn_index": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Zero-based index of this turn"
+          },
+          "speaker": {
+            "type": "string",
+            "enum": ["AGENT", "CUSTOMER", "SYSTEM", "IVR"],
+            "description": "Who spoke this turn"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Transcribed text of the turn"
+          },
+          "ts_offset_sec": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Timestamp offset from conversation start in seconds"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

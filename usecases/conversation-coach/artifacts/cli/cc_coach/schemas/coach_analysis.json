@@ -1,0 +1,353 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "coach_analysis",
+  "title": "Coach Analysis Schema",
+  "description": "Evidence-based coaching analysis for each conversation. One row per conversation.",
+  "version": "2.1.0",
+  "bigquery": {
+    "table_name": "coach_analysis",
+    "clustering_fields": ["agent_id", "business_line"],
+    "partition_field": "analyzed_at",
+    "partition_type": "DAY"
+  },
+  "fields": [
+    {
+      "name": "conversation_id",
+      "type": "STRING",
+      "mode": "REQUIRED",
+      "description": "Unique identifier for the conversation"
+    },
+    {
+      "name": "agent_id",
+      "type": "STRING",
+      "mode": "REQUIRED",
+      "description": "Agent identifier for aggregation"
+    },
+    {
+      "name": "business_line",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Business line: COLLECTIONS or LOANS"
+    },
+    {
+      "name": "team",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Team identifier"
+    },
+    {
+      "name": "queue",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Queue: STANDARD, HARDSHIP, DISPUTE, etc."
+    },
+    {
+      "name": "analyzed_at",
+      "type": "TIMESTAMP",
+      "mode": "NULLABLE",
+      "description": "When the coaching analysis was performed"
+    },
+    {
+      "name": "empathy_score",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Agent empathy score (1-10)"
+    },
+    {
+      "name": "compliance_score",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Compliance adherence score (1-10)"
+    },
+    {
+      "name": "resolution_score",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Problem resolution score (1-10)"
+    },
+    {
+      "name": "professionalism_score",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Professionalism score (1-10)"
+    },
+    {
+      "name": "de_escalation_score",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "De-escalation effectiveness score (1-10)"
+    },
+    {
+      "name": "efficiency_score",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Call efficiency score (1-10)"
+    },
+    {
+      "name": "overall_score",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Weighted average of all scores"
+    },
+    {
+      "name": "assessments",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "description": "Evidence-based assessments by dimension",
+      "fields": [
+        {
+          "name": "dimension",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Assessment dimension: empathy, compliance, resolution, etc."
+        },
+        {
+          "name": "score",
+          "type": "INTEGER",
+          "mode": "NULLABLE",
+          "description": "Score for this dimension (1-10)"
+        },
+        {
+          "name": "issue_types",
+          "type": "STRING",
+          "mode": "REPEATED",
+          "description": "Issue types found in this dimension"
+        },
+        {
+          "name": "evidence",
+          "type": "RECORD",
+          "mode": "REPEATED",
+          "description": "Evidence supporting the assessment",
+          "fields": [
+            {
+              "name": "turn_index",
+              "type": "INTEGER",
+              "mode": "NULLABLE",
+              "description": "Turn number in the transcript"
+            },
+            {
+              "name": "speaker",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "description": "AGENT or CUSTOMER"
+            },
+            {
+              "name": "quote",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "description": "Actual text from the transcript"
+            },
+            {
+              "name": "issue_type",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "description": "Specific issue type"
+            },
+            {
+              "name": "severity",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "description": "CRITICAL, HIGH, MEDIUM, or LOW"
+            }
+          ]
+        },
+        {
+          "name": "coaching_point",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Specific actionable coaching advice"
+        }
+      ]
+    },
+    {
+      "name": "issue_types",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "All issue types found in this conversation"
+    },
+    {
+      "name": "critical_issues",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Only CRITICAL severity issues"
+    },
+    {
+      "name": "issue_count",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Total number of issues found"
+    },
+    {
+      "name": "compliance_breach_count",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Number of compliance breaches detected in this conversation"
+    },
+    {
+      "name": "resolution_achieved",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE",
+      "description": "True if the call outcome was resolved"
+    },
+    {
+      "name": "escalation_required",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE",
+      "description": "True if escalation was needed"
+    },
+    {
+      "name": "customer_started_negative",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE",
+      "description": "True if customer sentiment started negative"
+    },
+    {
+      "name": "call_type",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Type of call: hardship, complaint, payment, inquiry, etc."
+    },
+    {
+      "name": "call_outcome",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Outcome from metadata"
+    },
+    {
+      "name": "coaching_summary",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "2-3 sentence coaching summary"
+    },
+    {
+      "name": "coaching_points",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Specific coaching recommendations"
+    },
+    {
+      "name": "strengths",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Identified strengths in this call"
+    },
+    {
+      "name": "example_type",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "GOOD_EXAMPLE, NEEDS_WORK, or null"
+    },
+    {
+      "name": "situation_summary",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "What the call was about"
+    },
+    {
+      "name": "behavior_summary",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "How the agent handled it"
+    },
+    {
+      "name": "key_moment",
+      "type": "RECORD",
+      "mode": "NULLABLE",
+      "description": "Most notable moment for reference",
+      "fields": [
+        {
+          "name": "turn_index",
+          "type": "INTEGER",
+          "mode": "NULLABLE",
+          "description": "Turn number"
+        },
+        {
+          "name": "quote",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "The key quote"
+        },
+        {
+          "name": "why_notable",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Why this moment is notable"
+        }
+      ]
+    },
+    {
+      "name": "customer_sentiment",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Overall customer sentiment from CI"
+    },
+    {
+      "name": "customer_sentiment_start",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Customer sentiment at start of call"
+    },
+    {
+      "name": "customer_sentiment_end",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Customer sentiment at end of call"
+    },
+    {
+      "name": "ci_flags",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "CI phrase matcher flags"
+    },
+    {
+      "name": "policy_citations",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "description": "Policy sections cited in analysis",
+      "fields": [
+        {
+          "name": "policy_id",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Policy document ID"
+        },
+        {
+          "name": "section_id",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Section within policy"
+        },
+        {
+          "name": "relevance",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Why this policy section is relevant"
+        }
+      ]
+    },
+    {
+      "name": "model_version",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "LLM model version used"
+    },
+    {
+      "name": "prompt_version",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Prompt version used"
+    },
+    {
+      "name": "duration_sec",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Call duration in seconds"
+    },
+    {
+      "name": "turn_count",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Number of conversation turns"
+    }
+  ]
+}

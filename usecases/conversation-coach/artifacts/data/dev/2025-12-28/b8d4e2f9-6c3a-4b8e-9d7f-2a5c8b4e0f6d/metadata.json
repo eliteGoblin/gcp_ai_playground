@@ -1,0 +1,22 @@
+{
+  "conversation_id": "b8d4e2f9-6c3a-4b8e-9d7f-2a5c8b4e0f6d",
+  "direction": "INBOUND",
+  "business_line": "COLLECTIONS",
+  "queue": "STANDARD",
+  "agent_id": "A1045",
+  "agent_name": "Tom Bradley",
+  "team": "COLL_TEAM_1",
+  "site": "SYD",
+  "portfolio_id": "PORTFOLIO_P2",
+  "campaign_id": null,
+  "call_outcome": "PAYMENT_PLAN_AGREED",
+  "started_at": "2025-12-28T15:42:10+11:00",
+  "ended_at": "2025-12-28T15:49:30+11:00",
+  "duration_sec": 440,
+  "labels": {
+    "priority": "LOW",
+    "test_case": "happy_path_payment_plan_inbound",
+    "expected_risk_flags": [],
+    "expected_next_actions": ["CREATE_PAYMENT_PLAN", "SEND_CONFIRMATION_EMAIL", "CONFIRM_CONTACT_DETAILS"]
+  }
+}

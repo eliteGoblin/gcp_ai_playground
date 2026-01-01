@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ci_enrichment",
+  "title": "CI Enrichment Schema",
+  "description": "CI analysis output and enriched conversation data. This is the primary INPUT for ADK Coach.",
+  "version": "1.0.0",
+  "bigquery": {
+    "table_name": "ci_enrichment",
+    "clustering_fields": null,
+    "partition_field": null
+  },
+  "fields": [
+    {
+      "name": "conversation_id",
+      "type": "STRING",
+      "mode": "REQUIRED",
+      "description": "Unique identifier for the conversation"
+    },
+    {
+      "name": "ci_conversation_name",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Full CI resource name (projects/.../conversations/...)"
+    },
+    {
+      "name": "transcript",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Full transcript text in 'Speaker.AGENT/CUSTOMER: text' format"
+    },
+    {
+      "name": "turn_count",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Number of conversation turns"
+    },
+    {
+      "name": "duration_sec",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Call duration in seconds"
+    },
+    {
+      "name": "customer_sentiment_score",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Overall customer sentiment from CI (-1 to 1). Note: CI only analyzes customer sentiment, not agent."
+    },
+    {
+      "name": "customer_sentiment_magnitude",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Sentiment intensity/magnitude"
+    },
+    {
+      "name": "per_turn_sentiments",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "description": "Per-turn customer sentiment scores",
+      "fields": [
+        {
+          "name": "turn_index",
+          "type": "INTEGER",
+          "mode": "NULLABLE",
+          "description": "Turn number (0-indexed)"
+        },
+        {
+          "name": "score",
+          "type": "FLOAT",
+          "mode": "NULLABLE",
+          "description": "Sentiment score for this turn (-1 to 1)"
+        },
+        {
+          "name": "magnitude",
+          "type": "FLOAT",
+          "mode": "NULLABLE",
+          "description": "Sentiment magnitude for this turn"
+        }
+      ]
+    },
+    {
+      "name": "entities",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "description": "Named entities extracted by CI",
+      "fields": [
+        {
+          "name": "type",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Entity type: PERSON, ORGANIZATION, LOCATION, etc."
+        },
+        {
+          "name": "name",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Entity name/value"
+        },
+        {
+          "name": "salience",
+          "type": "FLOAT",
+          "mode": "NULLABLE",
+          "description": "Relevance score (0 to 1)"
+        },
+        {
+          "name": "speaker_tag",
+          "type": "INTEGER",
+          "mode": "NULLABLE",
+          "description": "Speaker channel (1=customer, 2=agent)"
+        }
+      ]
+    },
+    {
+      "name": "topics",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Topic labels from CI topic model (if enabled)"
+    },
+    {
+      "name": "ci_summary_text",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "CI-generated summary (Situation/Action/Resolution format)"
+    },
+    {
+      "name": "ci_summary_resolution",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Resolution status from CI summary"
+    },
+    {
+      "name": "phrase_matches",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "description": "Phrase matcher results from CI",
+      "fields": [
+        {
+          "name": "matcher_id",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Phrase matcher resource ID"
+        },
+        {
+          "name": "display_name",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Matcher display name: Compliance Violations, Empathy Indicators, etc."
+        },
+        {
+          "name": "match_count",
+          "type": "INTEGER",
+          "mode": "NULLABLE",
+          "description": "Number of matches found"
+        },
+        {
+          "name": "matches",
+          "type": "RECORD",
+          "mode": "REPEATED",
+          "description": "Individual phrase matches",
+          "fields": [
+            {
+              "name": "phrase",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "description": "The matched phrase or matcher name"
+            },
+            {
+              "name": "turn_index",
+              "type": "INTEGER",
+              "mode": "NULLABLE",
+              "description": "Turn where match occurred"
+            },
+            {
+              "name": "speaker",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "description": "AGENT or CUSTOMER"
+            },
+            {
+              "name": "text_snippet",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "description": "Context text around the match"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ci_flags",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Derived flags from phrase matches: AGENT_COMPLIANCE_VIOLATION, CUSTOMER_ESCALATION, VULNERABILITY_DETECTED"
+    },
+    {
+      "name": "ci_flag_count",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Number of CI flags"
+    },
+    {
+      "name": "labels",
+      "type": "JSON",
+      "mode": "NULLABLE",
+      "description": "Original metadata labels: agent_id, business_line, queue, team, call_outcome, etc."
+    },
+    {
+      "name": "analysis_completed_at",
+      "type": "TIMESTAMP",
+      "mode": "NULLABLE",
+      "description": "When CI analysis completed"
+    },
+    {
+      "name": "exported_at",
+      "type": "TIMESTAMP",
+      "mode": "NULLABLE",
+      "description": "When data was exported to BQ"
+    }
+  ]
+}

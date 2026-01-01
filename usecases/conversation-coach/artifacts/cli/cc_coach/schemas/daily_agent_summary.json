@@ -1,0 +1,281 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "daily_agent_summary",
+  "title": "Daily Agent Summary Schema",
+  "description": "Pre-computed daily metrics and coaching summary for each agent. One row per agent per day.",
+  "version": "2.0.0",
+  "bigquery": {
+    "table_name": "daily_agent_summary",
+    "clustering_fields": ["agent_id", "business_line"],
+    "partition_field": "date",
+    "partition_type": "DAY"
+  },
+  "fields": [
+    {
+      "name": "agent_id",
+      "type": "STRING",
+      "mode": "REQUIRED",
+      "description": "Agent identifier"
+    },
+    {
+      "name": "business_line",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Business line: COLLECTIONS or LOANS"
+    },
+    {
+      "name": "team",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Team identifier"
+    },
+    {
+      "name": "date",
+      "type": "DATE",
+      "mode": "REQUIRED",
+      "description": "Date of the summary"
+    },
+    {
+      "name": "generated_at",
+      "type": "TIMESTAMP",
+      "mode": "NULLABLE",
+      "description": "When this summary was generated"
+    },
+    {
+      "name": "call_count",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Number of calls this day"
+    },
+    {
+      "name": "avg_empathy",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Average empathy score"
+    },
+    {
+      "name": "avg_compliance",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Average compliance score"
+    },
+    {
+      "name": "avg_resolution",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Average resolution score"
+    },
+    {
+      "name": "avg_professionalism",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Average professionalism score"
+    },
+    {
+      "name": "avg_efficiency",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Average efficiency score"
+    },
+    {
+      "name": "avg_de_escalation",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Average de-escalation score"
+    },
+    {
+      "name": "resolution_rate",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Percentage of calls resolved"
+    },
+    {
+      "name": "compliance_breach_count",
+      "type": "INTEGER",
+      "mode": "NULLABLE",
+      "description": "Number of compliance breaches"
+    },
+    {
+      "name": "issue_distribution",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "description": "Distribution of issue types for pattern detection",
+      "fields": [
+        {
+          "name": "issue_type",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Issue type name"
+        },
+        {
+          "name": "count",
+          "type": "INTEGER",
+          "mode": "NULLABLE",
+          "description": "Number of occurrences"
+        },
+        {
+          "name": "severity_breakdown",
+          "type": "JSON",
+          "mode": "NULLABLE",
+          "description": "Breakdown by severity: {CRITICAL: n, HIGH: m, ...}"
+        }
+      ]
+    },
+    {
+      "name": "top_evidence",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "description": "Top 5 worst evidence quotes for context",
+      "fields": [
+        {
+          "name": "conversation_id",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Source conversation"
+        },
+        {
+          "name": "issue_type",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Issue type"
+        },
+        {
+          "name": "turn_index",
+          "type": "INTEGER",
+          "mode": "NULLABLE",
+          "description": "Turn number"
+        },
+        {
+          "name": "quote",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "The problematic quote"
+        },
+        {
+          "name": "severity",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Severity level"
+        }
+      ]
+    },
+    {
+      "name": "top_issues",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Most frequent issue types today"
+    },
+    {
+      "name": "top_strengths",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Most frequent strengths today"
+    },
+    {
+      "name": "daily_narrative",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "LLM-generated 2-3 sentence daily summary"
+    },
+    {
+      "name": "focus_area",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Primary coaching focus for tomorrow"
+    },
+    {
+      "name": "quick_wins",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Easy improvements to implement"
+    },
+    {
+      "name": "example_conversations",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "description": "Rich example references (not just IDs)",
+      "fields": [
+        {
+          "name": "conversation_id",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Conversation identifier"
+        },
+        {
+          "name": "example_type",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "GOOD_EXAMPLE or NEEDS_WORK"
+        },
+        {
+          "name": "headline",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Short description of the call"
+        },
+        {
+          "name": "key_moment",
+          "type": "RECORD",
+          "mode": "NULLABLE",
+          "description": "Most notable moment",
+          "fields": [
+            {
+              "name": "turn_index",
+              "type": "INTEGER",
+              "mode": "NULLABLE",
+              "description": "Turn number"
+            },
+            {
+              "name": "quote",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "description": "The key quote"
+            },
+            {
+              "name": "why_notable",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "description": "Why this is notable"
+            }
+          ]
+        },
+        {
+          "name": "outcome",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Call outcome description"
+        },
+        {
+          "name": "sentiment_journey",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Sentiment change: -1.0 -> +1.0"
+        },
+        {
+          "name": "scores",
+          "type": "JSON",
+          "mode": "NULLABLE",
+          "description": "Scores: {empathy: 9, compliance: 10, ...}"
+        },
+        {
+          "name": "call_type",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "description": "Type of call"
+        }
+      ]
+    },
+    {
+      "name": "empathy_delta",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Change vs previous day"
+    },
+    {
+      "name": "compliance_delta",
+      "type": "FLOAT",
+      "mode": "NULLABLE",
+      "description": "Change vs previous day"
+    }
+  ]
+}

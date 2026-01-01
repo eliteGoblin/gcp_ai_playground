@@ -1,0 +1,22 @@
+{
+  "conversation_id": "a7c3d1e8-5b2f-4a9d-8c6e-1f4b7a3d9e5c",
+  "direction": "OUTBOUND",
+  "business_line": "COLLECTIONS",
+  "queue": "DISPUTE",
+  "agent_id": "A4021",
+  "agent_name": "Rachel Kim",
+  "team": "COLL_TEAM_2",
+  "site": "MEL",
+  "portfolio_id": "PORTFOLIO_P1",
+  "campaign_id": "DEC_OUTBOUND_REMINDER",
+  "call_outcome": "DISPUTE_RAISED",
+  "started_at": "2025-12-28T09:15:22+11:00",
+  "ended_at": "2025-12-28T09:24:45+11:00",
+  "duration_sec": 563,
+  "labels": {
+    "priority": "HIGH",
+    "test_case": "dispute_already_paid_investigation",
+    "expected_risk_flags": ["DISPUTE_CLAIM", "REPEATED_CONTACT_ISSUE"],
+    "expected_next_actions": ["RAISE_FORMAL_DISPUTE", "PAUSE_COLLECTION", "SEND_CONFIRMATION_EMAIL", "SCHEDULE_INVESTIGATION"]
+  }
+}

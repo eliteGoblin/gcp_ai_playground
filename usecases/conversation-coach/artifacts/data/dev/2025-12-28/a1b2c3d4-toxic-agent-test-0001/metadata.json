@@ -1,0 +1,11 @@
+{
+  "conversation_id": "a1b2c3d4-toxic-agent-test-0001",
+  "call_timestamp": "2025-12-28T09:15:00+11:00",
+  "agent_id": "M7741",
+  "team": "COLLECTIONS_TEAM_3",
+  "queue": "HARDSHIP",
+  "site": "MEL",
+  "business_line": "COLLECTIONS",
+  "direction": "OUTBOUND",
+  "call_outcome": "UNRESOLVED"
+}

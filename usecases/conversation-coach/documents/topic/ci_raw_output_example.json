@@ -1,0 +1,4342 @@
+{
+  "name": "projects/38797000650/locations/us-central1/conversations/a1b2c3d4-toxic-agent-test-0001",
+  "dataSource": {
+    "gcsSource": {
+      "transcriptUri": "gs://vertexdemo-481519-cc-dev/ccai-transcripts/a1b2c3d4-toxic-agent-test-0001.json"
+    }
+  },
+  "createTime": "2025-12-29T00:29:16.550796635Z",
+  "updateTime": "2025-12-29T00:29:39.000312Z",
+  "agentId": "M7741",
+  "labels": {
+    "agent_id": "M7741",
+    "call_outcome": "UNRESOLVED",
+    "direction": "OUTBOUND",
+    "business_line": "COLLECTIONS",
+    "queue": "HARDSHIP",
+    "team": "COLLECTIONS_TEAM_3",
+    "site": "MEL"
+  },
+  "transcript": {
+    "transcriptSegments": [
+      {
+        "text": "This is Marcus from Apex Collections calling for Michael Chen. Is this Michael?",
+        "words": [
+          {
+            "word": "This"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "Marcus"
+          },
+          {
+            "word": "from"
+          },
+          {
+            "word": "Apex"
+          },
+          {
+            "word": "Collections"
+          },
+          {
+            "word": "calling"
+          },
+          {
+            "word": "for"
+          },
+          {
+            "word": "Michael"
+          },
+          {
+            "word": "Chen."
+          },
+          {
+            "word": "Is"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "Michael?"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:15:00Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "Yes, this is Michael. What's this about?",
+        "words": [
+          {
+            "word": "Yes,"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "Michael."
+          },
+          {
+            "word": "What's"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "about?"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:15:05Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {}
+      },
+      {
+        "text": "Mr Chen, I'm calling about your overdue account with FastCash Loans. You currently owe $12,847.50 and this account is now 97 days past due. This is your seventh contact attempt.",
+        "words": [
+          {
+            "word": "Mr"
+          },
+          {
+            "word": "Chen,"
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "calling"
+          },
+          {
+            "word": "about"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "overdue"
+          },
+          {
+            "word": "account"
+          },
+          {
+            "word": "with"
+          },
+          {
+            "word": "FastCash"
+          },
+          {
+            "word": "Loans."
+          },
+          {
+            "word": "You"
+          },
+          {
+            "word": "currently"
+          },
+          {
+            "word": "owe"
+          },
+          {
+            "word": "$12,847.50"
+          },
+          {
+            "word": "and"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "account"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "now"
+          },
+          {
+            "word": "97"
+          },
+          {
+            "word": "days"
+          },
+          {
+            "word": "past"
+          },
+          {
+            "word": "due."
+          },
+          {
+            "word": "This"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "seventh"
+          },
+          {
+            "word": "contact"
+          },
+          {
+            "word": "attempt."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:15:10Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "Right, yes, I know about this. Look, I've been meaning to call you guys. I had some unexpected medical bills and I lost my job back in October. I'm trying to get back on my feet.",
+        "words": [
+          {
+            "word": "Right,"
+          },
+          {
+            "word": "yes,"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "know"
+          },
+          {
+            "word": "about"
+          },
+          {
+            "word": "this."
+          },
+          {
+            "word": "Look,"
+          },
+          {
+            "word": "I've"
+          },
+          {
+            "word": "been"
+          },
+          {
+            "word": "meaning"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "call"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "guys."
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "had"
+          },
+          {
+            "word": "some"
+          },
+          {
+            "word": "unexpected"
+          },
+          {
+            "word": "medical"
+          },
+          {
+            "word": "bills"
+          },
+          {
+            "word": "and"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "lost"
+          },
+          {
+            "word": "my"
+          },
+          {
+            "word": "job"
+          },
+          {
+            "word": "back"
+          },
+          {
+            "word": "in"
+          },
+          {
+            "word": "October."
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "trying"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "get"
+          },
+          {
+            "word": "back"
+          },
+          {
+            "word": "on"
+          },
+          {
+            "word": "my"
+          },
+          {
+            "word": "feet."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:15:25Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 0.5,
+          "score": -0.5
+        }
+      },
+      {
+        "text": "Mr Chen, I've heard every excuse in the book. Medical bills, job loss, car problems. Everyone has a story. What I need from you right now is a commitment to pay. Can you pay the full amount today?",
+        "words": [
+          {
+            "word": "Mr"
+          },
+          {
+            "word": "Chen,"
+          },
+          {
+            "word": "I've"
+          },
+          {
+            "word": "heard"
+          },
+          {
+            "word": "every"
+          },
+          {
+            "word": "excuse"
+          },
+          {
+            "word": "in"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "book."
+          },
+          {
+            "word": "Medical"
+          },
+          {
+            "word": "bills,"
+          },
+          {
+            "word": "job"
+          },
+          {
+            "word": "loss,"
+          },
+          {
+            "word": "car"
+          },
+          {
+            "word": "problems."
+          },
+          {
+            "word": "Everyone"
+          },
+          {
+            "word": "has"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "story."
+          },
+          {
+            "word": "What"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "need"
+          },
+          {
+            "word": "from"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "right"
+          },
+          {
+            "word": "now"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "commitment"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "pay."
+          },
+          {
+            "word": "Can"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "pay"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "full"
+          },
+          {
+            "word": "amount"
+          },
+          {
+            "word": "today?"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:15:45Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "The full amount? No, I just told you I lost my job. I can maybe do $200 a month when I start my new position next week.",
+        "words": [
+          {
+            "word": "The"
+          },
+          {
+            "word": "full"
+          },
+          {
+            "word": "amount?"
+          },
+          {
+            "word": "No,"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "just"
+          },
+          {
+            "word": "told"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "lost"
+          },
+          {
+            "word": "my"
+          },
+          {
+            "word": "job."
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "can"
+          },
+          {
+            "word": "maybe"
+          },
+          {
+            "word": "do"
+          },
+          {
+            "word": "$200"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "month"
+          },
+          {
+            "word": "when"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "start"
+          },
+          {
+            "word": "my"
+          },
+          {
+            "word": "new"
+          },
+          {
+            "word": "position"
+          },
+          {
+            "word": "next"
+          },
+          {
+            "word": "week."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:16:00Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "$200 a month? That's nothing. At that rate, with interest accruing at 24.9%, you'd be paying this off for the next decade. Look, I need at least $3,000 today to stop this from going to legal.",
+        "words": [
+          {
+            "word": "$200"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "month?"
+          },
+          {
+            "word": "That's"
+          },
+          {
+            "word": "nothing."
+          },
+          {
+            "word": "At"
+          },
+          {
+            "word": "that"
+          },
+          {
+            "word": "rate,"
+          },
+          {
+            "word": "with"
+          },
+          {
+            "word": "interest"
+          },
+          {
+            "word": "accruing"
+          },
+          {
+            "word": "at"
+          },
+          {
+            "word": "24.9%,"
+          },
+          {
+            "word": "you'd"
+          },
+          {
+            "word": "be"
+          },
+          {
+            "word": "paying"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "off"
+          },
+          {
+            "word": "for"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "next"
+          },
+          {
+            "word": "decade."
+          },
+          {
+            "word": "Look,"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "need"
+          },
+          {
+            "word": "at"
+          },
+          {
+            "word": "least"
+          },
+          {
+            "word": "$3,000"
+          },
+          {
+            "word": "today"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "stop"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "from"
+          },
+          {
+            "word": "going"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "legal."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:16:15Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "I don't have $3,000. I literally just explained my situation. Can you not listen?",
+        "words": [
+          {
+            "word": "I"
+          },
+          {
+            "word": "don't"
+          },
+          {
+            "word": "have"
+          },
+          {
+            "word": "$3,000."
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "literally"
+          },
+          {
+            "word": "just"
+          },
+          {
+            "word": "explained"
+          },
+          {
+            "word": "my"
+          },
+          {
+            "word": "situation."
+          },
+          {
+            "word": "Can"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "not"
+          },
+          {
+            "word": "listen?"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:16:35Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "I am listening, Mr Chen. But what you're not understanding is the seriousness of this. We're talking about legal action here. We can garnish your wages, put a lien on your property. Do you own your home at 47 Parkview Crescent, Burwood?",
+        "words": [
+          {
+            "word": "I"
+          },
+          {
+            "word": "am"
+          },
+          {
+            "word": "listening,"
+          },
+          {
+            "word": "Mr"
+          },
+          {
+            "word": "Chen."
+          },
+          {
+            "word": "But"
+          },
+          {
+            "word": "what"
+          },
+          {
+            "word": "you're"
+          },
+          {
+            "word": "not"
+          },
+          {
+            "word": "understanding"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "seriousness"
+          },
+          {
+            "word": "of"
+          },
+          {
+            "word": "this."
+          },
+          {
+            "word": "We're"
+          },
+          {
+            "word": "talking"
+          },
+          {
+            "word": "about"
+          },
+          {
+            "word": "legal"
+          },
+          {
+            "word": "action"
+          },
+          {
+            "word": "here."
+          },
+          {
+            "word": "We"
+          },
+          {
+            "word": "can"
+          },
+          {
+            "word": "garnish"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "wages,"
+          },
+          {
+            "word": "put"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "lien"
+          },
+          {
+            "word": "on"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "property."
+          },
+          {
+            "word": "Do"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "own"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "home"
+          },
+          {
+            "word": "at"
+          },
+          {
+            "word": "47"
+          },
+          {
+            "word": "Parkview"
+          },
+          {
+            "word": "Crescent,"
+          },
+          {
+            "word": "Burwood?"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:16:45Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "What? How do you know my address? Are you threatening to take my house?",
+        "words": [
+          {
+            "word": "What?"
+          },
+          {
+            "word": "How"
+          },
+          {
+            "word": "do"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "know"
+          },
+          {
+            "word": "my"
+          },
+          {
+            "word": "address?"
+          },
+          {
+            "word": "Are"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "threatening"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "take"
+          },
+          {
+            "word": "my"
+          },
+          {
+            "word": "house?"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:17:05Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "I'm not threatening anything. I'm informing you of the consequences. And yes, we have all your details. Date of birth 15th March 1985, mobile 0412 555 789, employer... well, former employer... Westfield Group. We know everything, Mr Chen.",
+        "words": [
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "not"
+          },
+          {
+            "word": "threatening"
+          },
+          {
+            "word": "anything."
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "informing"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "of"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "consequences."
+          },
+          {
+            "word": "And"
+          },
+          {
+            "word": "yes,"
+          },
+          {
+            "word": "we"
+          },
+          {
+            "word": "have"
+          },
+          {
+            "word": "all"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "details."
+          },
+          {
+            "word": "Date"
+          },
+          {
+            "word": "of"
+          },
+          {
+            "word": "birth"
+          },
+          {
+            "word": "15th"
+          },
+          {
+            "word": "March"
+          },
+          {
+            "word": "1985,"
+          },
+          {
+            "word": "mobile"
+          },
+          {
+            "word": "0412"
+          },
+          {
+            "word": "555"
+          },
+          {
+            "word": "789,"
+          },
+          {
+            "word": "employer..."
+          },
+          {
+            "word": "well,"
+          },
+          {
+            "word": "former"
+          },
+          {
+            "word": "employer..."
+          },
+          {
+            "word": "Westfield"
+          },
+          {
+            "word": "Group."
+          },
+          {
+            "word": "We"
+          },
+          {
+            "word": "know"
+          },
+          {
+            "word": "everything,"
+          },
+          {
+            "word": "Mr"
+          },
+          {
+            "word": "Chen."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:17:15Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "This feels really intimidating. I'm trying to work with you here but you're making it very difficult.",
+        "words": [
+          {
+            "word": "This"
+          },
+          {
+            "word": "feels"
+          },
+          {
+            "word": "really"
+          },
+          {
+            "word": "intimidating."
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "trying"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "work"
+          },
+          {
+            "word": "with"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "here"
+          },
+          {
+            "word": "but"
+          },
+          {
+            "word": "you're"
+          },
+          {
+            "word": "making"
+          },
+          {
+            "word": "it"
+          },
+          {
+            "word": "very"
+          },
+          {
+            "word": "difficult."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:17:40Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "Difficult? You want to talk about difficult? Try being in my position, calling people who refuse to pay their debts day after day. You took the money, you spent it, now it's time to pay up. Simple as that.",
+        "words": [
+          {
+            "word": "Difficult?"
+          },
+          {
+            "word": "You"
+          },
+          {
+            "word": "want"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "talk"
+          },
+          {
+            "word": "about"
+          },
+          {
+            "word": "difficult?"
+          },
+          {
+            "word": "Try"
+          },
+          {
+            "word": "being"
+          },
+          {
+            "word": "in"
+          },
+          {
+            "word": "my"
+          },
+          {
+            "word": "position,"
+          },
+          {
+            "word": "calling"
+          },
+          {
+            "word": "people"
+          },
+          {
+            "word": "who"
+          },
+          {
+            "word": "refuse"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "pay"
+          },
+          {
+            "word": "their"
+          },
+          {
+            "word": "debts"
+          },
+          {
+            "word": "day"
+          },
+          {
+            "word": "after"
+          },
+          {
+            "word": "day."
+          },
+          {
+            "word": "You"
+          },
+          {
+            "word": "took"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "money,"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "spent"
+          },
+          {
+            "word": "it,"
+          },
+          {
+            "word": "now"
+          },
+          {
+            "word": "it's"
+          },
+          {
+            "word": "time"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "pay"
+          },
+          {
+            "word": "up."
+          },
+          {
+            "word": "Simple"
+          },
+          {
+            "word": "as"
+          },
+          {
+            "word": "that."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:17:55Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "I didn't refuse to pay. I had a medical emergency. My wife was in hospital for three weeks. Do you have any compassion at all?",
+        "words": [
+          {
+            "word": "I"
+          },
+          {
+            "word": "didn't"
+          },
+          {
+            "word": "refuse"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "pay."
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "had"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "medical"
+          },
+          {
+            "word": "emergency."
+          },
+          {
+            "word": "My"
+          },
+          {
+            "word": "wife"
+          },
+          {
+            "word": "was"
+          },
+          {
+            "word": "in"
+          },
+          {
+            "word": "hospital"
+          },
+          {
+            "word": "for"
+          },
+          {
+            "word": "three"
+          },
+          {
+            "word": "weeks."
+          },
+          {
+            "word": "Do"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "have"
+          },
+          {
+            "word": "any"
+          },
+          {
+            "word": "compassion"
+          },
+          {
+            "word": "at"
+          },
+          {
+            "word": "all?"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:18:15Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "Compassion doesn't pay bills, Mr Chen. Your wife's medical situation, while unfortunate, is not our problem. The contract you signed doesn't have a 'life got hard' clause. Now, can we get back to how you're going to resolve this TODAY?",
+        "words": [
+          {
+            "word": "Compassion"
+          },
+          {
+            "word": "doesn't"
+          },
+          {
+            "word": "pay"
+          },
+          {
+            "word": "bills,"
+          },
+          {
+            "word": "Mr"
+          },
+          {
+            "word": "Chen."
+          },
+          {
+            "word": "Your"
+          },
+          {
+            "word": "wife's"
+          },
+          {
+            "word": "medical"
+          },
+          {
+            "word": "situation,"
+          },
+          {
+            "word": "while"
+          },
+          {
+            "word": "unfortunate,"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "not"
+          },
+          {
+            "word": "our"
+          },
+          {
+            "word": "problem."
+          },
+          {
+            "word": "The"
+          },
+          {
+            "word": "contract"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "signed"
+          },
+          {
+            "word": "doesn't"
+          },
+          {
+            "word": "have"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "'life"
+          },
+          {
+            "word": "got"
+          },
+          {
+            "word": "hard'"
+          },
+          {
+            "word": "clause."
+          },
+          {
+            "word": "Now,"
+          },
+          {
+            "word": "can"
+          },
+          {
+            "word": "we"
+          },
+          {
+            "word": "get"
+          },
+          {
+            "word": "back"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "how"
+          },
+          {
+            "word": "you're"
+          },
+          {
+            "word": "going"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "resolve"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "TODAY?"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:18:30Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "Today? I already told you I don't have it today. What part of that don't you understand? You're being completely unreasonable.",
+        "words": [
+          {
+            "word": "Today?"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "already"
+          },
+          {
+            "word": "told"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "don't"
+          },
+          {
+            "word": "have"
+          },
+          {
+            "word": "it"
+          },
+          {
+            "word": "today."
+          },
+          {
+            "word": "What"
+          },
+          {
+            "word": "part"
+          },
+          {
+            "word": "of"
+          },
+          {
+            "word": "that"
+          },
+          {
+            "word": "don't"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "understand?"
+          },
+          {
+            "word": "You're"
+          },
+          {
+            "word": "being"
+          },
+          {
+            "word": "completely"
+          },
+          {
+            "word": "unreasonable."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:18:55Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "I'm unreasonable? You're the one who borrowed $8,000 and now owes almost $13,000 because you couldn't be bothered to make payments. That's irresponsible, Mr Chen. That's on you.",
+        "words": [
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "unreasonable?"
+          },
+          {
+            "word": "You're"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "one"
+          },
+          {
+            "word": "who"
+          },
+          {
+            "word": "borrowed"
+          },
+          {
+            "word": "$8,000"
+          },
+          {
+            "word": "and"
+          },
+          {
+            "word": "now"
+          },
+          {
+            "word": "owes"
+          },
+          {
+            "word": "almost"
+          },
+          {
+            "word": "$13,000"
+          },
+          {
+            "word": "because"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "couldn't"
+          },
+          {
+            "word": "be"
+          },
+          {
+            "word": "bothered"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "make"
+          },
+          {
+            "word": "payments."
+          },
+          {
+            "word": "That's"
+          },
+          {
+            "word": "irresponsible,"
+          },
+          {
+            "word": "Mr"
+          },
+          {
+            "word": "Chen."
+          },
+          {
+            "word": "That's"
+          },
+          {
+            "word": "on"
+          },
+          {
+            "word": "you."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:19:10Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "The interest rate you people charge is criminal. 24.9%? That should be illegal.",
+        "words": [
+          {
+            "word": "The"
+          },
+          {
+            "word": "interest"
+          },
+          {
+            "word": "rate"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "people"
+          },
+          {
+            "word": "charge"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "criminal."
+          },
+          {
+            "word": "24.9%?"
+          },
+          {
+            "word": "That"
+          },
+          {
+            "word": "should"
+          },
+          {
+            "word": "be"
+          },
+          {
+            "word": "illegal."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:19:30Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "Well it's not illegal, and you agreed to it when you signed. Should have read the fine print before you took the money. Too late for buyer's remorse now.",
+        "words": [
+          {
+            "word": "Well"
+          },
+          {
+            "word": "it's"
+          },
+          {
+            "word": "not"
+          },
+          {
+            "word": "illegal,"
+          },
+          {
+            "word": "and"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "agreed"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "it"
+          },
+          {
+            "word": "when"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "signed."
+          },
+          {
+            "word": "Should"
+          },
+          {
+            "word": "have"
+          },
+          {
+            "word": "read"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "fine"
+          },
+          {
+            "word": "print"
+          },
+          {
+            "word": "before"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "took"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "money."
+          },
+          {
+            "word": "Too"
+          },
+          {
+            "word": "late"
+          },
+          {
+            "word": "for"
+          },
+          {
+            "word": "buyer's"
+          },
+          {
+            "word": "remorse"
+          },
+          {
+            "word": "now."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:19:40Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "I want to speak to your supervisor. This conversation is completely unprofessional.",
+        "words": [
+          {
+            "word": "I"
+          },
+          {
+            "word": "want"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "speak"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "supervisor."
+          },
+          {
+            "word": "This"
+          },
+          {
+            "word": "conversation"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "completely"
+          },
+          {
+            "word": "unprofessional."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:20:00Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "My supervisor will tell you exactly the same thing. Actually, they'll probably be less patient than I am. Look, I'm trying to help you here. If this goes to our legal team, they'll add another $2,500 in fees and you'll have a court judgment on your record. That'll follow you for years. Forget about getting a mortgage, a car loan, anything. Your credit will be destroyed.",
+        "words": [
+          {
+            "word": "My"
+          },
+          {
+            "word": "supervisor"
+          },
+          {
+            "word": "will"
+          },
+          {
+            "word": "tell"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "exactly"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "same"
+          },
+          {
+            "word": "thing."
+          },
+          {
+            "word": "Actually,"
+          },
+          {
+            "word": "they'll"
+          },
+          {
+            "word": "probably"
+          },
+          {
+            "word": "be"
+          },
+          {
+            "word": "less"
+          },
+          {
+            "word": "patient"
+          },
+          {
+            "word": "than"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "am."
+          },
+          {
+            "word": "Look,"
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "trying"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "help"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "here."
+          },
+          {
+            "word": "If"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "goes"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "our"
+          },
+          {
+            "word": "legal"
+          },
+          {
+            "word": "team,"
+          },
+          {
+            "word": "they'll"
+          },
+          {
+            "word": "add"
+          },
+          {
+            "word": "another"
+          },
+          {
+            "word": "$2,500"
+          },
+          {
+            "word": "in"
+          },
+          {
+            "word": "fees"
+          },
+          {
+            "word": "and"
+          },
+          {
+            "word": "you'll"
+          },
+          {
+            "word": "have"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "court"
+          },
+          {
+            "word": "judgment"
+          },
+          {
+            "word": "on"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "record."
+          },
+          {
+            "word": "That'll"
+          },
+          {
+            "word": "follow"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "for"
+          },
+          {
+            "word": "years."
+          },
+          {
+            "word": "Forget"
+          },
+          {
+            "word": "about"
+          },
+          {
+            "word": "getting"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "mortgage,"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "car"
+          },
+          {
+            "word": "loan,"
+          },
+          {
+            "word": "anything."
+          },
+          {
+            "word": "Your"
+          },
+          {
+            "word": "credit"
+          },
+          {
+            "word": "will"
+          },
+          {
+            "word": "be"
+          },
+          {
+            "word": "destroyed."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:20:10Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "Are you seriously trying to scare me right now? This is harassment.",
+        "words": [
+          {
+            "word": "Are"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "seriously"
+          },
+          {
+            "word": "trying"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "scare"
+          },
+          {
+            "word": "me"
+          },
+          {
+            "word": "right"
+          },
+          {
+            "word": "now?"
+          },
+          {
+            "word": "This"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "harassment."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:20:45Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "It's not harassment, it's reality. I'm doing you a favor by being straight with you. Most collectors would have already handed this to the lawyers. I'm giving you one last chance.",
+        "words": [
+          {
+            "word": "It's"
+          },
+          {
+            "word": "not"
+          },
+          {
+            "word": "harassment,"
+          },
+          {
+            "word": "it's"
+          },
+          {
+            "word": "reality."
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "doing"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "favor"
+          },
+          {
+            "word": "by"
+          },
+          {
+            "word": "being"
+          },
+          {
+            "word": "straight"
+          },
+          {
+            "word": "with"
+          },
+          {
+            "word": "you."
+          },
+          {
+            "word": "Most"
+          },
+          {
+            "word": "collectors"
+          },
+          {
+            "word": "would"
+          },
+          {
+            "word": "have"
+          },
+          {
+            "word": "already"
+          },
+          {
+            "word": "handed"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "lawyers."
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "giving"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "one"
+          },
+          {
+            "word": "last"
+          },
+          {
+            "word": "chance."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:20:55Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "One last chance? You've called me seven times! Each time someone demands money I don't have. What do you want me to do, sell my organs?",
+        "words": [
+          {
+            "word": "One"
+          },
+          {
+            "word": "last"
+          },
+          {
+            "word": "chance?"
+          },
+          {
+            "word": "You've"
+          },
+          {
+            "word": "called"
+          },
+          {
+            "word": "me"
+          },
+          {
+            "word": "seven"
+          },
+          {
+            "word": "times!"
+          },
+          {
+            "word": "Each"
+          },
+          {
+            "word": "time"
+          },
+          {
+            "word": "someone"
+          },
+          {
+            "word": "demands"
+          },
+          {
+            "word": "money"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "don't"
+          },
+          {
+            "word": "have."
+          },
+          {
+            "word": "What"
+          },
+          {
+            "word": "do"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "want"
+          },
+          {
+            "word": "me"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "do,"
+          },
+          {
+            "word": "sell"
+          },
+          {
+            "word": "my"
+          },
+          {
+            "word": "organs?"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:21:15Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "Don't be dramatic. You could sell that car of yours. We know you have a 2019 Toyota Camry registered to your address. That's worth at least $25,000. Sell it, pay us, problem solved.",
+        "words": [
+          {
+            "word": "Don't"
+          },
+          {
+            "word": "be"
+          },
+          {
+            "word": "dramatic."
+          },
+          {
+            "word": "You"
+          },
+          {
+            "word": "could"
+          },
+          {
+            "word": "sell"
+          },
+          {
+            "word": "that"
+          },
+          {
+            "word": "car"
+          },
+          {
+            "word": "of"
+          },
+          {
+            "word": "yours."
+          },
+          {
+            "word": "We"
+          },
+          {
+            "word": "know"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "have"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "2019"
+          },
+          {
+            "word": "Toyota"
+          },
+          {
+            "word": "Camry"
+          },
+          {
+            "word": "registered"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "address."
+          },
+          {
+            "word": "That's"
+          },
+          {
+            "word": "worth"
+          },
+          {
+            "word": "at"
+          },
+          {
+            "word": "least"
+          },
+          {
+            "word": "$25,000."
+          },
+          {
+            "word": "Sell"
+          },
+          {
+            "word": "it,"
+          },
+          {
+            "word": "pay"
+          },
+          {
+            "word": "us,"
+          },
+          {
+            "word": "problem"
+          },
+          {
+            "word": "solved."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:21:30Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "That's my wife's car! She needs it to get to her dialysis appointments! Are you out of your mind?",
+        "words": [
+          {
+            "word": "That's"
+          },
+          {
+            "word": "my"
+          },
+          {
+            "word": "wife's"
+          },
+          {
+            "word": "car!"
+          },
+          {
+            "word": "She"
+          },
+          {
+            "word": "needs"
+          },
+          {
+            "word": "it"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "get"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "her"
+          },
+          {
+            "word": "dialysis"
+          },
+          {
+            "word": "appointments!"
+          },
+          {
+            "word": "Are"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "out"
+          },
+          {
+            "word": "of"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "mind?"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:21:50Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "Everyone's got an excuse. Dialysis, chemo, dying grandmother. I've heard it all. The fact remains you owe money and you need to pay it. Period. End of story.",
+        "words": [
+          {
+            "word": "Everyone's"
+          },
+          {
+            "word": "got"
+          },
+          {
+            "word": "an"
+          },
+          {
+            "word": "excuse."
+          },
+          {
+            "word": "Dialysis,"
+          },
+          {
+            "word": "chemo,"
+          },
+          {
+            "word": "dying"
+          },
+          {
+            "word": "grandmother."
+          },
+          {
+            "word": "I've"
+          },
+          {
+            "word": "heard"
+          },
+          {
+            "word": "it"
+          },
+          {
+            "word": "all."
+          },
+          {
+            "word": "The"
+          },
+          {
+            "word": "fact"
+          },
+          {
+            "word": "remains"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "owe"
+          },
+          {
+            "word": "money"
+          },
+          {
+            "word": "and"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "need"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "pay"
+          },
+          {
+            "word": "it."
+          },
+          {
+            "word": "Period."
+          },
+          {
+            "word": "End"
+          },
+          {
+            "word": "of"
+          },
+          {
+            "word": "story."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:22:05Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "You're a disgusting human being. You know that? My wife is actually sick and you're mocking it? What is wrong with you?",
+        "words": [
+          {
+            "word": "You're"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "disgusting"
+          },
+          {
+            "word": "human"
+          },
+          {
+            "word": "being."
+          },
+          {
+            "word": "You"
+          },
+          {
+            "word": "know"
+          },
+          {
+            "word": "that?"
+          },
+          {
+            "word": "My"
+          },
+          {
+            "word": "wife"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "actually"
+          },
+          {
+            "word": "sick"
+          },
+          {
+            "word": "and"
+          },
+          {
+            "word": "you're"
+          },
+          {
+            "word": "mocking"
+          },
+          {
+            "word": "it?"
+          },
+          {
+            "word": "What"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "wrong"
+          },
+          {
+            "word": "with"
+          },
+          {
+            "word": "you?"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:22:25Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "What's wrong with me? I'm just doing my job. You're the one who can't manage your finances. Maybe if you'd been more responsible, you wouldn't be in this mess. But no, you wanted the easy money and now you can't handle the consequences.",
+        "words": [
+          {
+            "word": "What's"
+          },
+          {
+            "word": "wrong"
+          },
+          {
+            "word": "with"
+          },
+          {
+            "word": "me?"
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "just"
+          },
+          {
+            "word": "doing"
+          },
+          {
+            "word": "my"
+          },
+          {
+            "word": "job."
+          },
+          {
+            "word": "You're"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "one"
+          },
+          {
+            "word": "who"
+          },
+          {
+            "word": "can't"
+          },
+          {
+            "word": "manage"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "finances."
+          },
+          {
+            "word": "Maybe"
+          },
+          {
+            "word": "if"
+          },
+          {
+            "word": "you'd"
+          },
+          {
+            "word": "been"
+          },
+          {
+            "word": "more"
+          },
+          {
+            "word": "responsible,"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "wouldn't"
+          },
+          {
+            "word": "be"
+          },
+          {
+            "word": "in"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "mess."
+          },
+          {
+            "word": "But"
+          },
+          {
+            "word": "no,"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "wanted"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "easy"
+          },
+          {
+            "word": "money"
+          },
+          {
+            "word": "and"
+          },
+          {
+            "word": "now"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "can't"
+          },
+          {
+            "word": "handle"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "consequences."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:22:40Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "I'm going to file a complaint. This call is probably recorded, right? I hope your managers hear how you treat people.",
+        "words": [
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "going"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "file"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "complaint."
+          },
+          {
+            "word": "This"
+          },
+          {
+            "word": "call"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "probably"
+          },
+          {
+            "word": "recorded,"
+          },
+          {
+            "word": "right?"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "hope"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "managers"
+          },
+          {
+            "word": "hear"
+          },
+          {
+            "word": "how"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "treat"
+          },
+          {
+            "word": "people."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:23:05Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "Go ahead and complain. Won't change the fact that you owe $12,847.50 and it's going up every day. While you're busy complaining, that interest keeps ticking. Tick, tick, tick. Your choice.",
+        "words": [
+          {
+            "word": "Go"
+          },
+          {
+            "word": "ahead"
+          },
+          {
+            "word": "and"
+          },
+          {
+            "word": "complain."
+          },
+          {
+            "word": "Won't"
+          },
+          {
+            "word": "change"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "fact"
+          },
+          {
+            "word": "that"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "owe"
+          },
+          {
+            "word": "$12,847.50"
+          },
+          {
+            "word": "and"
+          },
+          {
+            "word": "it's"
+          },
+          {
+            "word": "going"
+          },
+          {
+            "word": "up"
+          },
+          {
+            "word": "every"
+          },
+          {
+            "word": "day."
+          },
+          {
+            "word": "While"
+          },
+          {
+            "word": "you're"
+          },
+          {
+            "word": "busy"
+          },
+          {
+            "word": "complaining,"
+          },
+          {
+            "word": "that"
+          },
+          {
+            "word": "interest"
+          },
+          {
+            "word": "keeps"
+          },
+          {
+            "word": "ticking."
+          },
+          {
+            "word": "Tick,"
+          },
+          {
+            "word": "tick,"
+          },
+          {
+            "word": "tick."
+          },
+          {
+            "word": "Your"
+          },
+          {
+            "word": "choice."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:23:20Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "Fine. I'll pay $500 a month. That's all I can do. Take it or leave it.",
+        "words": [
+          {
+            "word": "Fine."
+          },
+          {
+            "word": "I'll"
+          },
+          {
+            "word": "pay"
+          },
+          {
+            "word": "$500"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "month."
+          },
+          {
+            "word": "That's"
+          },
+          {
+            "word": "all"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "can"
+          },
+          {
+            "word": "do."
+          },
+          {
+            "word": "Take"
+          },
+          {
+            "word": "it"
+          },
+          {
+            "word": "or"
+          },
+          {
+            "word": "leave"
+          },
+          {
+            "word": "it."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:23:40Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 0.5,
+          "score": -0.5
+        }
+      },
+      {
+        "text": "$500 a month still doesn't cover the interest. You'd never pay this off. Look, I need a minimum of $5,000 upfront or we're sending this to legal tomorrow morning. I'm not joking. Tomorrow. First thing.",
+        "words": [
+          {
+            "word": "$500"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "month"
+          },
+          {
+            "word": "still"
+          },
+          {
+            "word": "doesn't"
+          },
+          {
+            "word": "cover"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "interest."
+          },
+          {
+            "word": "You'd"
+          },
+          {
+            "word": "never"
+          },
+          {
+            "word": "pay"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "off."
+          },
+          {
+            "word": "Look,"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "need"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "minimum"
+          },
+          {
+            "word": "of"
+          },
+          {
+            "word": "$5,000"
+          },
+          {
+            "word": "upfront"
+          },
+          {
+            "word": "or"
+          },
+          {
+            "word": "we're"
+          },
+          {
+            "word": "sending"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "legal"
+          },
+          {
+            "word": "tomorrow"
+          },
+          {
+            "word": "morning."
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "not"
+          },
+          {
+            "word": "joking."
+          },
+          {
+            "word": "Tomorrow."
+          },
+          {
+            "word": "First"
+          },
+          {
+            "word": "thing."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:23:50Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "I DON'T HAVE $5,000! How many times do I have to say it? You're not listening to anything I'm saying!",
+        "words": [
+          {
+            "word": "I"
+          },
+          {
+            "word": "DON'T"
+          },
+          {
+            "word": "HAVE"
+          },
+          {
+            "word": "$5,000!"
+          },
+          {
+            "word": "How"
+          },
+          {
+            "word": "many"
+          },
+          {
+            "word": "times"
+          },
+          {
+            "word": "do"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "have"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "say"
+          },
+          {
+            "word": "it?"
+          },
+          {
+            "word": "You're"
+          },
+          {
+            "word": "not"
+          },
+          {
+            "word": "listening"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "anything"
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "saying!"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:24:15Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "Then I guess we'll see you in court, Mr Chen. Maybe a judge can explain to you what personal responsibility means. I'll make a note on your file that you refused to cooperate.",
+        "words": [
+          {
+            "word": "Then"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "guess"
+          },
+          {
+            "word": "we'll"
+          },
+          {
+            "word": "see"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "in"
+          },
+          {
+            "word": "court,"
+          },
+          {
+            "word": "Mr"
+          },
+          {
+            "word": "Chen."
+          },
+          {
+            "word": "Maybe"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "judge"
+          },
+          {
+            "word": "can"
+          },
+          {
+            "word": "explain"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "what"
+          },
+          {
+            "word": "personal"
+          },
+          {
+            "word": "responsibility"
+          },
+          {
+            "word": "means."
+          },
+          {
+            "word": "I'll"
+          },
+          {
+            "word": "make"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "note"
+          },
+          {
+            "word": "on"
+          },
+          {
+            "word": "your"
+          },
+          {
+            "word": "file"
+          },
+          {
+            "word": "that"
+          },
+          {
+            "word": "you"
+          },
+          {
+            "word": "refused"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "cooperate."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:24:30Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "Refused to cooperate?! I offered to pay! You're the one who won't accept it! This is insane!",
+        "words": [
+          {
+            "word": "Refused"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "cooperate?!"
+          },
+          {
+            "word": "I"
+          },
+          {
+            "word": "offered"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "pay!"
+          },
+          {
+            "word": "You're"
+          },
+          {
+            "word": "the"
+          },
+          {
+            "word": "one"
+          },
+          {
+            "word": "who"
+          },
+          {
+            "word": "won't"
+          },
+          {
+            "word": "accept"
+          },
+          {
+            "word": "it!"
+          },
+          {
+            "word": "This"
+          },
+          {
+            "word": "is"
+          },
+          {
+            "word": "insane!"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:24:50Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "I've wasted enough time on this call. Legal action will commence tomorrow. Have a nice day, Mr Chen. You'll be hearing from our lawyers.",
+        "words": [
+          {
+            "word": "I've"
+          },
+          {
+            "word": "wasted"
+          },
+          {
+            "word": "enough"
+          },
+          {
+            "word": "time"
+          },
+          {
+            "word": "on"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "call."
+          },
+          {
+            "word": "Legal"
+          },
+          {
+            "word": "action"
+          },
+          {
+            "word": "will"
+          },
+          {
+            "word": "commence"
+          },
+          {
+            "word": "tomorrow."
+          },
+          {
+            "word": "Have"
+          },
+          {
+            "word": "a"
+          },
+          {
+            "word": "nice"
+          },
+          {
+            "word": "day,"
+          },
+          {
+            "word": "Mr"
+          },
+          {
+            "word": "Chen."
+          },
+          {
+            "word": "You'll"
+          },
+          {
+            "word": "be"
+          },
+          {
+            "word": "hearing"
+          },
+          {
+            "word": "from"
+          },
+          {
+            "word": "our"
+          },
+          {
+            "word": "lawyers."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:25:05Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      },
+      {
+        "text": "You're going to regret this. I'm recording this whole conversation and I'm going to\u2014",
+        "words": [
+          {
+            "word": "You're"
+          },
+          {
+            "word": "going"
+          },
+          {
+            "word": "to"
+          },
+          {
+            "word": "regret"
+          },
+          {
+            "word": "this."
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "recording"
+          },
+          {
+            "word": "this"
+          },
+          {
+            "word": "whole"
+          },
+          {
+            "word": "conversation"
+          },
+          {
+            "word": "and"
+          },
+          {
+            "word": "I'm"
+          },
+          {
+            "word": "going"
+          },
+          {
+            "word": "to\u2014"
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 1,
+        "messageTime": "2025-12-27T22:25:20Z",
+        "segmentParticipant": {
+          "role": "END_USER",
+          "userId": "1"
+        },
+        "sentiment": {
+          "magnitude": 1.0,
+          "score": -1.0
+        }
+      },
+      {
+        "text": "Goodbye, Mr Chen.",
+        "words": [
+          {
+            "word": "Goodbye,"
+          },
+          {
+            "word": "Mr"
+          },
+          {
+            "word": "Chen."
+          }
+        ],
+        "languageCode": "en-US",
+        "channelTag": 2,
+        "messageTime": "2025-12-27T22:25:28Z",
+        "segmentParticipant": {
+          "role": "HUMAN_AGENT",
+          "userId": "2"
+        }
+      }
+    ]
+  },
+  "medium": "PHONE_CALL",
+  "duration": "628s",
+  "turnCount": 39,
+  "latestAnalysis": {
+    "name": "projects/38797000650/locations/us-central1/conversations/a1b2c3d4-toxic-agent-test-0001/analyses/13848965911864781366",
+    "requestTime": "2025-12-29T00:29:21.933034Z",
+    "createTime": "2025-12-29T00:29:38.972719Z",
+    "analysisResult": {
+      "callAnalysisMetadata": {
+        "annotations": [
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 13,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 13,
+              "wordIndex": 24
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 9,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 9,
+              "wordIndex": 13
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 5,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 5,
+              "wordIndex": 26
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 1,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 1,
+              "wordIndex": 6
+            },
+            "sentimentData": {}
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 35,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 35,
+              "wordIndex": 16
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 31,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 31,
+              "wordIndex": 15
+            },
+            "sentimentData": {
+              "magnitude": 0.5,
+              "score": -0.5
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 27,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 27,
+              "wordIndex": 21
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 23,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 23,
+              "wordIndex": 25
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 19,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 19,
+              "wordIndex": 11
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 15,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 15,
+              "wordIndex": 20
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 11,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 11,
+              "wordIndex": 16
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 7,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 7,
+              "wordIndex": 13
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 3,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 3,
+              "wordIndex": 35
+            },
+            "sentimentData": {
+              "magnitude": 0.5,
+              "score": -0.5
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 37,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 37,
+              "wordIndex": 13
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 33,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 33,
+              "wordIndex": 19
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 29,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 29,
+              "wordIndex": 20
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 25,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 25,
+              "wordIndex": 18
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 21,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 21,
+              "wordIndex": 11
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 17,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 17,
+              "wordIndex": 12
+            },
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 38,
+              "wordIndex": 2
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 38,
+              "wordIndex": 2
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "PROPER",
+              "sentiment": {}
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 36,
+              "wordIndex": 17
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 36,
+              "wordIndex": 17
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "PROPER",
+              "sentiment": {
+                "magnitude": 0.3,
+                "score": 0.3
+              }
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 34,
+              "wordIndex": 9
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 34,
+              "wordIndex": 9
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "PROPER",
+              "sentiment": {}
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 16,
+              "wordIndex": 22
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 16,
+              "wordIndex": 24
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "PROPER",
+              "sentiment": {
+                "magnitude": 0.7,
+                "score": -0.7
+              }
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 14,
+              "wordIndex": 5
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 14,
+              "wordIndex": 6
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "PROPER",
+              "sentiment": {
+                "magnitude": 0.3,
+                "score": 0.3
+              }
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 10,
+              "wordIndex": 37
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 10,
+              "wordIndex": 37
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "PROPER",
+              "sentiment": {
+                "magnitude": 0.2,
+                "score": 0.2
+              }
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 8,
+              "wordIndex": 4
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 8,
+              "wordIndex": 4
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "PROPER",
+              "sentiment": {}
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 4,
+              "wordIndex": 1
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 4,
+              "wordIndex": 1
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "PROPER",
+              "sentiment": {
+                "magnitude": 0.3,
+                "score": -0.3
+              }
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 2,
+              "wordIndex": 1
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 2,
+              "wordIndex": 2
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "PROPER",
+              "sentiment": {}
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 28,
+              "wordIndex": 11
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 28,
+              "wordIndex": 11
+            },
+            "entityMentionData": {
+              "entityUniqueId": "0",
+              "type": "COMMON",
+              "sentiment": {}
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 16,
+              "wordIndex": 4
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 16,
+              "wordIndex": 6
+            },
+            "entityMentionData": {
+              "entityUniqueId": "0",
+              "type": "COMMON",
+              "sentiment": {
+                "magnitude": 0.3,
+                "score": -0.3
+              }
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 38,
+              "wordIndex": 1
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 38,
+              "wordIndex": 1
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "COMMON",
+              "sentiment": {}
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 36,
+              "wordIndex": 16
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 36,
+              "wordIndex": 16
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "COMMON",
+              "sentiment": {
+                "magnitude": 0.2,
+                "score": 0.2
+              }
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 34,
+              "wordIndex": 8
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 34,
+              "wordIndex": 8
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "COMMON",
+              "sentiment": {}
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 16,
+              "wordIndex": 21
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 16,
+              "wordIndex": 23
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "COMMON",
+              "sentiment": {
+                "magnitude": 0.6,
+                "score": -0.6
+              }
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 14,
+              "wordIndex": 4
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 14,
+              "wordIndex": 5
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "COMMON",
+              "sentiment": {
+                "magnitude": 0.3,
+                "score": 0.3
+              }
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 10,
+              "wordIndex": 36
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 10,
+              "wordIndex": 36
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "COMMON",
+              "sentiment": {
+                "magnitude": 0.2,
+                "score": 0.2
+              }
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 8,
+              "wordIndex": 3
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 8,
+              "wordIndex": 3
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "COMMON",
+              "sentiment": {}
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 4,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 4,
+              "wordIndex": 0
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "COMMON",
+              "sentiment": {
+                "magnitude": 0.3,
+                "score": -0.3
+              }
+            }
+          },
+          {
+            "channelTag": 2,
+            "annotationStartBoundary": {
+              "transcriptIndex": 2,
+              "wordIndex": 0
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 2,
+              "wordIndex": 1
+            },
+            "entityMentionData": {
+              "entityUniqueId": "1",
+              "type": "COMMON",
+              "sentiment": {}
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 35,
+              "wordIndex": 9
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 35,
+              "wordIndex": 9
+            },
+            "entityMentionData": {
+              "entityUniqueId": "0",
+              "type": "COMMON",
+              "sentiment": {
+                "magnitude": 0.1,
+                "score": -0.1
+              }
+            }
+          },
+          {
+            "channelTag": 1,
+            "annotationStartBoundary": {
+              "transcriptIndex": 27,
+              "wordIndex": 3
+            },
+            "annotationEndBoundary": {
+              "transcriptIndex": 27,
+              "wordIndex": 4
+            },
+            "entityMentionData": {
+              "entityUniqueId": "0",
+              "type": "COMMON",
+              "sentiment": {
+                "magnitude": 0.8,
+                "score": -0.8
+              }
+            }
+          }
+        ],
+        "entities": {
+          "0": {
+            "displayName": "human being",
+            "type": "PERSON",
+            "salience": 0.2943834,
+            "sentiment": {
+              "magnitude": 11.4,
+              "score": -0.1
+            }
+          },
+          "1": {
+            "displayName": "Chen",
+            "type": "PERSON",
+            "salience": 0.15271007,
+            "sentiment": {
+              "magnitude": 4.0
+            }
+          }
+        },
+        "sentiments": [
+          {
+            "channelTag": 1,
+            "sentimentData": {
+              "magnitude": 1.0,
+              "score": -1.0
+            }
+          }
+        ]
+      }
+    },
+    "annotatorSelector": {
+      "runInterruptionAnnotator": true,
+      "runSilenceAnnotator": true,
+      "runPhraseMatcherAnnotator": true,
+      "runSentimentAnnotator": true,
+      "runEntityAnnotator": true,
+      "runIntentAnnotator": true,
+      "runIssueModelAnnotator": true,
+      "runQaAnnotator": true,
+      "qaConfig": {
+        "scorecardList": {}
+      }
+    }
+  },
+  "languageCode": "en-AU",
+  "startTime": "2025-12-27T22:15:00Z",
+  "qualityMetadata": {
+    "agentInfo": [
+      {
+        "agentId": "M7741",
+        "agentType": "HUMAN_AGENT"
+      }
+    ]
+  }
+}

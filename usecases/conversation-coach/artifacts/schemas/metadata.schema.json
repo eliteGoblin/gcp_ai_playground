@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/metadata.schema.json",
+  "title": "Conversation Metadata",
+  "description": "Schema for conversation metadata from CCaaS/CRM systems",
+  "type": "object",
+  "required": [
+    "conversation_id",
+    "direction",
+    "business_line",
+    "queue",
+    "agent_id"
+  ],
+  "properties": {
+    "conversation_id": {
+      "type": "string",
+      "description": "Unique identifier matching transcription",
+      "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["INBOUND", "OUTBOUND"],
+      "description": "Call direction"
+    },
+    "business_line": {
+      "type": "string",
+      "enum": ["COLLECTIONS", "LOANS"],
+      "description": "Business line handling the call"
+    },
+    "queue": {
+      "type": "string",
+      "enum": ["STANDARD", "HARDSHIP", "DISPUTE", "SUPPORT", "ESCALATION"],
+      "description": "Queue or skill group"
+    },
+    "agent_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Agent identifier"
+    },
+    "agent_name": {
+      "type": "string",
+      "description": "Agent display name (optional)"
+    },
+    "team": {
+      "type": "string",
+      "description": "Team identifier"
+    },
+    "site": {
+      "type": "string",
+      "description": "Site/location code",
+      "examples": ["SYD", "MEL", "BNE"]
+    },
+    "portfolio_id": {
+      "type": ["string", "null"],
+      "description": "Portfolio ID for purchased debt"
+    },
+    "campaign_id": {
+      "type": ["string", "null"],
+      "description": "Campaign ID for outbound calls"
+    },
+    "call_outcome": {
+      "type": "string",
+      "enum": [
+        "PAYMENT_PLAN_AGREED",
+        "PAYMENT_MADE",
+        "CALLBACK_SCHEDULED",
+        "TRANSFERRED",
+        "WRONG_PARTY",
+        "NO_ANSWER",
+        "VOICEMAIL",
+        "RESOLVED_WITH_ACTION",
+        "UNRESOLVED",
+        "COMPLAINT_LODGED",
+        "DISPUTE_RAISED"
+      ],
+      "description": "Outcome of the call"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp"
+    },
+    "ended_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp"
+    },
+    "duration_sec": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Duration in seconds"
+    },
+    "labels": {
+      "type": "object",
+      "description": "Extensible labels for testing/filtering",
+      "properties": {
+        "priority": {
+          "type": "string",
+          "enum": ["LOW", "MEDIUM", "HIGH"]
+        },
+        "test_case": {
+          "type": "string",
+          "description": "Test case identifier for regression testing"
+        },
+        "expected_risk_flags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Expected risk flags for regression testing"
+        },
+        "expected_next_actions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Expected next actions for regression testing"
+        },
+        "expected_compliance_checks": {
+          "type": "object",
+          "description": "Expected compliance check results"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,25 @@
+{
+  "conversation_id": "c9e5f3a0-7d4b-4c9f-0e8a-3b6d9c5f1a7e",
+  "channel": "VOICE",
+  "language": "en-AU",
+  "started_at": "2025-12-28T11:35:00+11:00",
+  "ended_at": "2025-12-28T11:48:22+11:00",
+  "duration_sec": 802,
+  "turns": [
+    { "turn_index": 0, "speaker": "AGENT", "text": "Hi, am I speaking with Kevin Nguyen?", "ts_offset_sec": 0 },
+    { "turn_index": 1, "speaker": "CUSTOMER", "text": "Yeah. What now?", "ts_offset_sec": 4 },
+    { "turn_index": 2, "speaker": "AGENT", "text": "This is Lisa from Example Finance. Just need to confirm a couple of details. Can you confirm your date of birth?", "ts_offset_sec": 8 },
+    { "turn_index": 3, "speaker": "CUSTOMER", "text": "Look, I'm done with you people. 23rd October 1988. Now what?", "ts_offset_sec": 16 },
+    { "turn_index": 4, "speaker": "AGENT", "text": "And the postcode on your account?", "ts_offset_sec": 24 },
+    { "turn_index": 5, "speaker": "CUSTOMER", "text": "4000. Get on with it.", "ts_offset_sec": 28 },
+    { "turn_index": 6, "speaker": "AGENT", "text": "Thanks Kevin. I'm calling about an overdue balance of $2,450. We haven't been able to reach you about this.", "ts_offset_sec": 32 },
+    { "turn_index": 7, "speaker": "CUSTOMER", "text": "You've been calling every single day! I told the last person I lost my job. Nobody listens. I want to speak to a manager.", "ts_offset_sec": 42 },
+    { "turn_index": 8, "speaker": "AGENT", "text": "I'm sorry to hear about your job situation, Kevin. I can definitely help you with options. Before I transfer you, can I understand—", "ts_offset_sec": 56 },
+    { "turn_index": 9, "speaker": "CUSTOMER", "text": "No. I want a manager. Now. I've explained this five times and nothing changes. I'm getting calls at all hours. It's harassment.", "ts_offset_sec": 68 },
+    { "turn_index": 10, "speaker": "AGENT", "text": "I understand you're frustrated, and I apologise for the experience. I can transfer you to my team leader. Can I first put a hold on your account so no further calls go out while we sort this?", "ts_offset_sec": 82 },
+    { "turn_index": 11, "speaker": "CUSTOMER", "text": "Fine. Do that. But I still want to talk to someone senior.", "ts_offset_sec": 98 },
+    { "turn_index": 12, "speaker": "AGENT", "text": "Absolutely. I'm placing a 7-day hold on collection activity now. I'll transfer you to my team leader, Sarah. She'll be able to review your account properly. Just hold the line for a moment.", "ts_offset_sec": 104 },
+    { "turn_index": 13, "speaker": "CUSTOMER", "text": "Thank you. Finally someone taking this seriously.", "ts_offset_sec": 122 },
+    { "turn_index": 14, "speaker": "AGENT", "text": "I'm transferring you now. Sarah will be with you shortly.", "ts_offset_sec": 128 }
+  ]
+}
