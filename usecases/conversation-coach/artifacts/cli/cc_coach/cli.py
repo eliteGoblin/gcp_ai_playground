@@ -979,5 +979,617 @@ def pipeline_reanalyze_all(
     rprint(f"\n[bold]Complete![/bold] Success: {success_count} | Failed: {fail_count}")
 
 
+# =============================================================================
+# Coach Commands - ADK-based coaching
+# =============================================================================
+
+coach_app = typer.Typer(help="Generate coaching feedback using ADK/Gemini")
+app.add_typer(coach_app, name="coach")
+
+
+@coach_app.command("generate")
+def coach_generate(
+    conversation_id: str = typer.Argument(..., help="Conversation ID to coach"),
+    model: Optional[str] = typer.Option(None, "--model", "-m", help="Model override (e.g., gemini-2.5-pro)"),
+    output_json: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+):
+    """Generate coaching for a single conversation."""
+    from cc_coach.services.coaching import CoachingOrchestrator
+
+    rprint(f"[bold blue]Generating coaching for {conversation_id}...[/bold blue]")
+
+    try:
+        orchestrator = CoachingOrchestrator(model=model)
+        result = orchestrator.generate_coaching(conversation_id)
+
+        if output_json:
+            rprint(result.model_dump_json(indent=2))
+        else:
+            _display_coaching_result(result)
+
+        rprint(f"\n[bold green]Coaching saved to BigQuery[/bold green]")
+
+    except Exception as e:
+        logger.exception(f"Failed to generate coaching for {conversation_id}")
+        rprint(f"[bold red]Error: {e}[/bold red]")
+        raise typer.Exit(1)
+
+
+@coach_app.command("generate-pending")
+def coach_generate_pending(
+    limit: int = typer.Option(10, "--limit", "-l", help="Max conversations to process"),
+    model: Optional[str] = typer.Option(None, "--model", "-m", help="Model override"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Show what would be processed"),
+):
+    """Generate coaching for all pending (ENRICHED) conversations."""
+    from cc_coach.services.coaching import CoachingOrchestrator
+
+    orchestrator = CoachingOrchestrator(model=model)
+
+    # Get pending conversations
+    pending = orchestrator.get_pending_conversations(limit=limit)
+
+    if not pending:
+        rprint("[yellow]No pending conversations found[/yellow]")
+        return
+
+    rprint(f"[bold]Found {len(pending)} pending conversations[/bold]")
+
+    if dry_run:
+        for conv_id in pending:
+            rprint(f"  Would process: {conv_id}")
+        return
+
+    # Process each
+    success = 0
+    failed = 0
+
+    for conv_id in pending:
+        try:
+            rprint(f"Processing {conv_id[:12]}...", end=" ")
+            orchestrator.generate_coaching(conv_id)
+            rprint("[green]OK[/green]")
+            success += 1
+        except Exception as e:
+            rprint(f"[red]FAILED: {e}[/red]")
+            failed += 1
+
+    rprint(f"\n[bold]Complete: {success} success, {failed} failed[/bold]")
+
+
+@coach_app.command("get")
+def coach_get(
+    conversation_id: str = typer.Argument(..., help="Conversation ID"),
+    output_json: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+):
+    """Get existing coaching for a conversation."""
+    from cc_coach.services.coaching import CoachingOrchestrator
+
+    orchestrator = CoachingOrchestrator()
+    result = orchestrator.get_coaching_result(conversation_id)
+
+    if not result:
+        rprint(f"[yellow]No coaching found for {conversation_id}[/yellow]")
+        raise typer.Exit(1)
+
+    if output_json:
+        rprint(json.dumps(result, default=str, indent=2))
+    else:
+        _display_coaching_from_bq(result)
+
+
+@coach_app.command("preview")
+def coach_preview(
+    conversation_id: str = typer.Argument(..., help="Conversation ID"),
+):
+    """Preview what would be sent to the coach (dry run)."""
+    from cc_coach.services.coaching import CoachingOrchestrator
+
+    orchestrator = CoachingOrchestrator()
+
+    # Fetch data
+    ci_data = orchestrator._fetch_ci_enrichment(conversation_id)
+    registry_data = orchestrator._fetch_registry(conversation_id)
+
+    if not ci_data:
+        rprint(f"[red]No CI enrichment found for {conversation_id}[/red]")
+        raise typer.Exit(1)
+
+    # Build input
+    input_data = orchestrator._build_coaching_input(conversation_id, ci_data, registry_data)
+
+    rprint(f"\n[bold]Coaching Input Preview[/bold]")
+    rprint("-" * 60)
+    rprint(input_data.to_prompt_text())
+
+
+@coach_app.command("raw")
+def coach_raw(
+    conversation_id: str = typer.Argument(..., help="Conversation ID"),
+    format: str = typer.Option("expanded", "--format", "-f", help="Output format: expanded (psql \\x), json, or table"),
+):
+    """
+    Show raw BQ data for a coaching result.
+
+    Like psql's \\x expanded display - shows each field on its own line.
+    Useful for inspecting the full data stored in BigQuery.
+    """
+    from cc_coach.services.coaching import CoachingOrchestrator
+
+    orchestrator = CoachingOrchestrator()
+    result = orchestrator.get_coaching_result(conversation_id)
+
+    if not result:
+        rprint(f"[yellow]No coaching found for {conversation_id}[/yellow]")
+        raise typer.Exit(1)
+
+    if format == "json":
+        rprint(json.dumps(result, default=str, indent=2))
+    elif format == "table":
+        # Simple key-value table for scalar fields
+        table = Table(title=f"coach_analysis: {conversation_id[:20]}...")
+        table.add_column("Field", style="cyan")
+        table.add_column("Value")
+        for key, value in result.items():
+            if isinstance(value, (list, dict)):
+                table.add_row(key, f"[dim]<{type(value).__name__} len={len(value) if isinstance(value, list) else 'obj'}>[/dim]")
+            else:
+                table.add_row(key, str(value)[:80])
+        console.print(table)
+    else:  # expanded (default) - psql \x style
+        _display_expanded(result, conversation_id)
+
+
+def _display_expanded(result: dict, conversation_id: str):
+    """Display BQ row in psql \\x expanded format."""
+    rprint(f"[bold cyan]-[ RECORD: coach_analysis ]-[/bold cyan]")
+    rprint(f"[bold cyan]conversation_id:[/bold cyan] {conversation_id}")
+    rprint("-" * 80)
+
+    # Group fields by category for readability
+    scalar_fields = []
+    array_fields = []
+    nested_fields = []
+
+    for key, value in result.items():
+        if key == "conversation_id":
+            continue
+        if isinstance(value, dict):
+            nested_fields.append((key, value))
+        elif isinstance(value, list):
+            array_fields.append((key, value))
+        else:
+            scalar_fields.append((key, value))
+
+    # Scalar fields first
+    for key, value in scalar_fields:
+        display_val = str(value) if value is not None else "[dim]NULL[/dim]"
+        rprint(f"[cyan]{key:30}[/cyan] | {display_val}")
+
+    # Array fields
+    if array_fields:
+        rprint(f"\n[bold yellow]-[ ARRAY FIELDS ]-[/bold yellow]")
+        for key, value in array_fields:
+            rprint(f"\n[cyan]{key}[/cyan] ({len(value)} items):")
+            if not value:
+                rprint("  [dim](empty)[/dim]")
+            elif isinstance(value[0], dict):
+                # Array of records
+                for i, item in enumerate(value):
+                    rprint(f"  [dim]─[{i}]─[/dim]")
+                    for k, v in item.items():
+                        if isinstance(v, list):
+                            rprint(f"    {k}: {json.dumps(v, default=str)[:100]}...")
+                        else:
+                            v_str = str(v)[:100] if v else "[dim]NULL[/dim]"
+                            rprint(f"    {k}: {v_str}")
+            else:
+                # Array of scalars
+                for i, item in enumerate(value):
+                    rprint(f"  [{i}] {item}")
+
+    # Nested record fields
+    if nested_fields:
+        rprint(f"\n[bold yellow]-[ NESTED RECORDS ]-[/bold yellow]")
+        for key, value in nested_fields:
+            rprint(f"\n[cyan]{key}[/cyan]:")
+            if value:
+                for k, v in value.items():
+                    v_str = str(v)[:100] if v else "[dim]NULL[/dim]"
+                    rprint(f"  {k}: {v_str}")
+
+
+def _display_coaching_result(result):
+    """Display coaching result in rich format."""
+    # Scores table
+    scores_table = Table(title="Scores")
+    scores_table.add_column("Dimension")
+    scores_table.add_column("Score", justify="right")
+
+    # Color code scores
+    def score_style(score: int) -> str:
+        if score >= 8:
+            return "green"
+        elif score >= 6:
+            return "yellow"
+        else:
+            return "red"
+
+    scores_table.add_row("Empathy", f"[{score_style(result.empathy_score)}]{result.empathy_score}/10[/]")
+    scores_table.add_row("Compliance", f"[{score_style(result.compliance_score)}]{result.compliance_score}/10[/]")
+    scores_table.add_row("Resolution", f"[{score_style(result.resolution_score)}]{result.resolution_score}/10[/]")
+    scores_table.add_row("Professionalism", f"[{score_style(result.professionalism_score)}]{result.professionalism_score}/10[/]")
+    scores_table.add_row("De-escalation", f"[{score_style(result.de_escalation_score)}]{result.de_escalation_score}/10[/]")
+    scores_table.add_row("Efficiency", f"[{score_style(result.efficiency_score)}]{result.efficiency_score}/10[/]")
+    scores_table.add_row("[bold]Overall[/bold]", f"[bold]{result.overall_score:.1f}/10[/bold]")
+
+    console.print(scores_table)
+
+    # Summary
+    rprint(f"\n[bold]Call Type:[/bold] {result.call_type}")
+    rprint(f"[bold]Situation:[/bold] {result.situation_summary}")
+    rprint(f"[bold]Summary:[/bold] {result.coaching_summary}")
+
+    # Key Moment
+    rprint(f"\n[bold]Key Moment[/bold] (Turn {result.key_moment.turn_index}):")
+    emoji = "[green]" if result.key_moment.is_positive else "[red]"
+    rprint(f"  {emoji}\"{result.key_moment.quote}\"[/]")
+    rprint(f"  [dim]{result.key_moment.why_notable}[/dim]")
+
+    # Critical Issues
+    if result.critical_issues:
+        rprint(f"\n[bold red]Critical Issues:[/bold red]")
+        for issue in result.critical_issues:
+            rprint(f"  [red]- {issue}[/red]")
+
+    # Coaching points
+    rprint(f"\n[bold]Coaching Points:[/bold]")
+    for cp in result.coaching_points:
+        rprint(f"  {cp.priority}. [bold]{cp.title}[/bold]")
+        rprint(f"     {cp.description}")
+        if cp.suggested_alternative:
+            rprint(f"     [green]Try: {cp.suggested_alternative}[/green]")
+
+    # Strengths
+    rprint(f"\n[bold green]Strengths:[/bold green]")
+    for s in result.strengths:
+        rprint(f"  + {s}")
+
+
+def _display_coaching_from_bq(result: dict):
+    """Display coaching result from BQ row."""
+    # Scores table
+    scores_table = Table(title="Scores")
+    scores_table.add_column("Dimension")
+    scores_table.add_column("Score", justify="right")
+
+    def score_style(score) -> str:
+        if score is None:
+            return "dim"
+        if score >= 8:
+            return "green"
+        elif score >= 6:
+            return "yellow"
+        else:
+            return "red"
+
+    for dim in ["empathy", "compliance", "resolution", "professionalism", "de_escalation", "efficiency"]:
+        score = result.get(f"{dim}_score")
+        if score is not None:
+            scores_table.add_row(dim.replace("_", " ").title(), f"[{score_style(score)}]{score}/10[/]")
+
+    overall = result.get("overall_score")
+    if overall:
+        scores_table.add_row("[bold]Overall[/bold]", f"[bold]{overall:.1f}/10[/bold]")
+
+    console.print(scores_table)
+
+    # Summary
+    rprint(f"\n[bold]Call Type:[/bold] {result.get('call_type', 'N/A')}")
+    rprint(f"[bold]Situation:[/bold] {result.get('situation_summary', 'N/A')}")
+    rprint(f"[bold]Summary:[/bold] {result.get('coaching_summary', 'N/A')}")
+
+    # Key Moment
+    key_moment = result.get("key_moment", {})
+    if key_moment:
+        rprint(f"\n[bold]Key Moment[/bold] (Turn {key_moment.get('turn_index', '?')}):")
+        rprint(f"  \"{key_moment.get('quote', '')}\"")
+        rprint(f"  [dim]{key_moment.get('why_notable', '')}[/dim]")
+
+    # Critical Issues
+    critical = result.get("critical_issues", [])
+    if critical:
+        rprint(f"\n[bold red]Critical Issues:[/bold red]")
+        for issue in critical:
+            rprint(f"  [red]- {issue}[/red]")
+
+    # Coaching points
+    points = result.get("coaching_points", [])
+    if points:
+        rprint(f"\n[bold]Coaching Points:[/bold]")
+        for cp in points:
+            if isinstance(cp, dict):
+                rprint(f"  {cp.get('priority', '?')}. [bold]{cp.get('title', '')}[/bold]")
+                rprint(f"     {cp.get('description', '')}")
+                if cp.get("suggested_alternative"):
+                    rprint(f"     [green]Try: {cp.get('suggested_alternative')}[/green]")
+
+    # Strengths
+    strengths = result.get("strengths", [])
+    if strengths:
+        rprint(f"\n[bold green]Strengths:[/bold green]")
+        for s in strengths:
+            rprint(f"  + {s}")
+
+    # Metadata
+    rprint(f"\n[dim]Model: {result.get('model_version')} | Prompt: {result.get('prompt_version')} | Analyzed: {result.get('analyzed_at')}[/dim]")
+
+
+# =============================================================================
+# RAG Commands - Knowledge Base management
+# =============================================================================
+
+rag_app = typer.Typer(help="RAG knowledge base management")
+app.add_typer(rag_app, name="rag")
+
+
+@rag_app.command("ingest")
+def rag_ingest(
+    documents_path: Optional[Path] = typer.Option(None, "--path", "-p", help="Documents directory path"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Validate only, don't make changes"),
+    full_refresh: bool = typer.Option(False, "--full-refresh", help="Re-upload all documents"),
+):
+    """
+    Ingest documents from local files to BQ + GCS.
+
+    Scans markdown files in the documents directory, validates YAML frontmatter,
+    syncs metadata to BigQuery, and uploads active documents to GCS for Vertex AI
+    Search indexing.
+    """
+    from cc_coach.rag import RAGConfig, DocumentIngester
+
+    config = RAGConfig.from_env()
+
+    # Validate config
+    errors = config.validate()
+    if errors:
+        for err in errors:
+            rprint(f"[red]Config error: {err}[/red]")
+        raise typer.Exit(1)
+
+    if documents_path:
+        config.documents_path = documents_path
+
+    ingester = DocumentIngester(config)
+
+    result = ingester.ingest_documents(
+        dry_run=dry_run,
+        full_refresh=full_refresh,
+    )
+
+    if result.errors:
+        raise typer.Exit(1)
+
+
+@rag_app.command("ingest-file")
+def rag_ingest_file(
+    file_path: Path = typer.Argument(..., help="Path to markdown file"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Validate only"),
+):
+    """Ingest a single document file."""
+    from cc_coach.rag import RAGConfig, DocumentIngester
+
+    config = RAGConfig.from_env()
+    errors = config.validate()
+    if errors:
+        for err in errors:
+            rprint(f"[red]Config error: {err}[/red]")
+        raise typer.Exit(1)
+
+    ingester = DocumentIngester(config)
+    success = ingester.ingest_single(file_path, dry_run=dry_run)
+
+    if not success:
+        raise typer.Exit(1)
+
+
+@rag_app.command("search")
+def rag_search(
+    query: str = typer.Argument(..., help="Search query"),
+    top_k: int = typer.Option(5, "--top-k", "-k", help="Number of results"),
+    output_json: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+):
+    """
+    Search the knowledge base.
+
+    Queries Vertex AI Search and enriches results with BQ metadata.
+    Useful for testing retrieval before using in coaching.
+    """
+    from cc_coach.rag import RAGConfig, RAGRetriever
+
+    config = RAGConfig.from_env()
+    errors = config.validate()
+    if errors:
+        for err in errors:
+            rprint(f"[red]Config error: {err}[/red]")
+        raise typer.Exit(1)
+
+    retriever = RAGRetriever(config)
+
+    rprint(f"[blue]Searching for:[/blue] {query}")
+
+    result = retriever.search(query, top_k=top_k)
+
+    if not result.documents:
+        rprint("[yellow]No results found[/yellow]")
+        return
+
+    if output_json:
+        docs_json = [d.to_dict() for d in result.documents]
+        rprint(json.dumps(docs_json, indent=2))
+    else:
+        rprint(f"\n[bold]Found {len(result.documents)} results:[/bold]\n")
+
+        for i, doc in enumerate(result.documents, 1):
+            # Header with citation
+            citation = doc.to_citation()
+            score = f"{doc.relevance_score:.2f}" if doc.relevance_score else "N/A"
+            rprint(f"[bold cyan]{i}. {citation}[/bold cyan] [dim](score: {score})[/dim]")
+
+            # Snippet
+            snippet = doc.snippet[:300] + "..." if len(doc.snippet) > 300 else doc.snippet
+            rprint(f"   {snippet}")
+            rprint()
+
+
+@rag_app.command("status")
+def rag_status():
+    """Show knowledge base status and statistics."""
+    from cc_coach.rag import RAGConfig, MetadataStore
+
+    config = RAGConfig.from_env()
+    errors = config.validate()
+    if errors:
+        for err in errors:
+            rprint(f"[red]Config error: {err}[/red]")
+        raise typer.Exit(1)
+
+    store = MetadataStore(config)
+
+    rprint(f"\n[bold]RAG Knowledge Base Status[/bold]")
+    rprint("-" * 50)
+    rprint(f"Project: {config.project_id}")
+    rprint(f"GCS Bucket: {config.gcs_bucket}")
+    rprint(f"Data Store: {config.data_store_id}")
+    rprint(f"BQ Table: {config.bq_documents_full_table}")
+
+    try:
+        stats = store.get_kb_stats()
+
+        rprint(f"\n[bold]Document Counts:[/bold]")
+        stats_table = Table(show_header=False)
+        stats_table.add_column("Status", style="cyan")
+        stats_table.add_column("Count", justify="right")
+
+        stats_table.add_row("Active", str(stats.get("active_docs", 0)))
+        stats_table.add_row("Draft", str(stats.get("draft_docs", 0)))
+        stats_table.add_row("Superseded", str(stats.get("superseded_docs", 0)))
+        stats_table.add_row("Retired", str(stats.get("retired_docs", 0)))
+        stats_table.add_row("Deleted", str(stats.get("deleted_docs", 0)))
+        stats_table.add_row("─" * 15, "─" * 5)
+        stats_table.add_row("[bold]Total[/bold]", f"[bold]{stats.get('total_docs', 0)}[/bold]")
+
+        console.print(stats_table)
+
+        # By type
+        by_type = store.get_docs_by_type()
+        if by_type:
+            rprint(f"\n[bold]Active Documents by Type:[/bold]")
+            type_table = Table(show_header=False)
+            type_table.add_column("Type", style="cyan")
+            type_table.add_column("Count", justify="right")
+
+            for doc_type, count in by_type.items():
+                type_table.add_row(doc_type, str(count))
+
+            console.print(type_table)
+
+    except Exception as e:
+        rprint(f"[yellow]Could not fetch stats: {e}[/yellow]")
+        rprint("Have you created the BQ tables? Run the SQL in sql/create_kb_tables.sql")
+
+
+@rag_app.command("validate")
+def rag_validate(
+    documents_path: Optional[Path] = typer.Option(None, "--path", "-p", help="Documents directory path"),
+):
+    """
+    Validate all documents without making changes.
+
+    Checks YAML frontmatter, required fields, and metadata validity.
+    """
+    from cc_coach.rag import RAGConfig, DocumentIngester
+
+    config = RAGConfig.from_env()
+    if documents_path:
+        config.documents_path = documents_path
+
+    ingester = DocumentIngester(config)
+
+    rprint(f"[blue]Validating documents in {config.documents_path}...[/blue]\n")
+
+    result = ingester.ingest_documents(dry_run=True)
+
+    if result.errors:
+        rprint(f"\n[red]Validation failed with {len(result.errors)} errors[/red]")
+        raise typer.Exit(1)
+    else:
+        rprint(f"\n[green]All {result.total_files} documents are valid![/green]")
+
+
+@rag_app.command("list")
+def rag_list(
+    status_filter: Optional[str] = typer.Option(None, "--status", "-s", help="Filter by status"),
+    doc_type: Optional[str] = typer.Option(None, "--type", "-t", help="Filter by doc_type"),
+    limit: int = typer.Option(50, "--limit", "-n", help="Number of results"),
+):
+    """List documents in the knowledge base."""
+    from cc_coach.rag import RAGConfig, MetadataStore
+
+    config = RAGConfig.from_env()
+    errors = config.validate()
+    if errors:
+        for err in errors:
+            rprint(f"[red]Config error: {err}[/red]")
+        raise typer.Exit(1)
+
+    store = MetadataStore(config)
+
+    # Build query
+    where_clauses = []
+    if status_filter:
+        where_clauses.append(f"status = '{status_filter}'")
+    if doc_type:
+        where_clauses.append(f"doc_type = '{doc_type}'")
+
+    where_sql = " AND ".join(where_clauses) if where_clauses else "1=1"
+
+    query = f"""
+        SELECT doc_id, version, title, doc_type, status, updated_at
+        FROM `{config.bq_documents_full_table}`
+        WHERE {where_sql}
+        ORDER BY doc_type, doc_id, version DESC
+        LIMIT {limit}
+    """
+
+    result = store.client.query(query).result()
+    rows = list(result)
+
+    if not rows:
+        rprint("[yellow]No documents found[/yellow]")
+        return
+
+    table = Table(title="Knowledge Base Documents")
+    table.add_column("Doc ID", style="cyan")
+    table.add_column("Version")
+    table.add_column("Title", max_width=40)
+    table.add_column("Type")
+    table.add_column("Status")
+    table.add_column("Updated", style="dim")
+
+    for row in rows:
+        table.add_row(
+            row["doc_id"],
+            row["version"],
+            (row["title"] or "")[:40],
+            row["doc_type"],
+            row["status"],
+            row["updated_at"].strftime("%Y-%m-%d") if row["updated_at"] else "",
+        )
+
+    console.print(table)
+    rprint(f"\n[dim]Showing {len(rows)} documents[/dim]")
+
+
 if __name__ == "__main__":
     app()
