@@ -137,13 +137,26 @@ class TopicExtractor:
     def _extract_from_entities(
         self, ci_enrichment: dict[str, Any], result: ExtractionResult
     ) -> None:
-        """Extract topics from CI entities."""
-        entities = ci_enrichment.get("entities", {})
+        """Extract topics from CI entities.
 
-        for entity_id, entity in entities.items():
+        Handles both dict format (from raw CI API) and list format (from BQ).
+        """
+        entities = ci_enrichment.get("entities", [])
+
+        # Handle both dict and list formats
+        entity_list: list[dict[str, Any]] = []
+        if isinstance(entities, dict):
+            entity_list = list(entities.values())
+        elif isinstance(entities, list):
+            entity_list = entities
+        else:
+            return
+
+        for entity in entity_list:
             salience = entity.get("salience", 0)
             if salience >= self.min_entity_salience:
-                display_name = entity.get("displayName", "")
+                # Handle different field names
+                display_name = entity.get("displayName", entity.get("name", ""))
                 entity_type = entity.get("type", "")
 
                 if display_name:

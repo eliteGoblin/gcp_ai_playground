@@ -3,7 +3,7 @@
   "$id": "coach_analysis",
   "title": "Coach Analysis Schema",
   "description": "Evidence-based coaching analysis for each conversation. One row per conversation.",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "bigquery": {
     "table_name": "coach_analysis",
     "clustering_fields": ["agent_id", "business_line"],
@@ -303,7 +303,7 @@
       "name": "policy_citations",
       "type": "RECORD",
       "mode": "REPEATED",
-      "description": "Policy sections cited in analysis",
+      "description": "Policy sections cited in analysis (legacy)",
       "fields": [
         {
           "name": "policy_id",
@@ -324,6 +324,18 @@
           "description": "Why this policy section is relevant"
         }
       ]
+    },
+    {
+      "name": "rag_context_used",
+      "type": "BOOLEAN",
+      "mode": "NULLABLE",
+      "description": "Whether RAG context was included in generation"
+    },
+    {
+      "name": "citations",
+      "type": "STRING",
+      "mode": "REPEATED",
+      "description": "Document citations used for coaching feedback (e.g., 'POL-002 v1.1 (Prohibited Language)')"
     },
     {
       "name": "model_version",

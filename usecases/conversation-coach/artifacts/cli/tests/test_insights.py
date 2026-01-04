@@ -11,10 +11,24 @@ class TestInsightsService:
     """Tests for InsightsService."""
 
     @pytest.fixture
-    def insights_service(self, mock_settings, mock_insights_client):
-        """Create Insights service with mocked client."""
+    def mock_storage_for_insights(self):
+        """Mock storage client for insights service."""
+        with patch("cc_coach.services.insights.storage.Client") as mock:
+            client = MagicMock()
+            mock.return_value = client
+            # Setup bucket and blob mocks
+            mock_bucket = MagicMock()
+            mock_blob = MagicMock()
+            client.bucket.return_value = mock_bucket
+            mock_bucket.blob.return_value = mock_blob
+            yield client
+
+    @pytest.fixture
+    def insights_service(self, mock_settings, mock_insights_client, mock_storage_for_insights):
+        """Create Insights service with mocked clients."""
         service = InsightsService(mock_settings)
         service._client = mock_insights_client
+        service._storage = mock_storage_for_insights
         return service
 
     def test_init(self, mock_settings):

@@ -37,6 +37,7 @@ class CoachingOrchestrator:
         settings: Optional[Settings] = None,
         model: Optional[str] = None,
         enable_rag: bool = True,
+        allow_fallback: bool = False,
     ):
         """Initialize the orchestrator.
 
@@ -44,26 +45,35 @@ class CoachingOrchestrator:
             settings: Application settings
             model: Optional model override
             enable_rag: Whether to enable RAG retrieval (default: True)
+            allow_fallback: If True, use embedded policy when RAG fails.
+                          If False (default), raise error when RAG context is missing.
         """
         self.settings = settings or get_settings()
         self.bq = BigQueryService(self.settings)
         self.coach = CoachingService(model=model)
+        self.allow_fallback = allow_fallback
 
         # Initialize RAG components if enabled and configured
         self.rag_enabled = False
         self.rag_retriever: Optional[RAGRetriever] = None
         self.topic_extractor: Optional[TopicExtractor] = None
+        self.rag_config_errors: list[str] = []
 
         if enable_rag:
             rag_config = RAGConfig.from_env()
-            errors = rag_config.validate()
-            if not errors:
+            self.rag_config_errors = rag_config.validate()
+            if not self.rag_config_errors:
                 self.rag_retriever = RAGRetriever(rag_config)
                 self.topic_extractor = TopicExtractor()
                 self.rag_enabled = True
                 logger.info("RAG integration enabled")
             else:
-                logger.debug(f"RAG not enabled: {errors}")
+                logger.warning(f"RAG not enabled: {self.rag_config_errors}")
+                if not allow_fallback:
+                    raise ValueError(
+                        f"RAG is required but not configured: {self.rag_config_errors}. "
+                        f"Set allow_fallback=True to use embedded policy."
+                    )
 
     def generate_coaching(self, conversation_id: str) -> CoachingOutput:
         """
@@ -90,17 +100,32 @@ class CoachingOrchestrator:
         retrieved_docs: list[RetrievedDocument] = []
 
         if self.rag_enabled and self.topic_extractor and self.rag_retriever:
+            # Merge metadata from registry and ci_data labels
+            merged_metadata = {}
+            if registry_data:
+                merged_metadata.update(registry_data)
+            # CI data labels contain business_line, queue, etc. - important for topic extraction
+            labels = ci_data.get("labels", {})
+            if isinstance(labels, str):
+                labels = json.loads(labels) if labels else {}
+            if isinstance(labels, dict):
+                merged_metadata.update(labels)
+
             rag_context, retrieved_docs = self._get_rag_context(
                 conversation_id=conversation_id,
                 ci_data=ci_data,
                 transcript=input_data.turns,
-                metadata=registry_data,
+                metadata=merged_metadata,
             )
             if rag_context:
                 logger.info(f"Retrieved {len(retrieved_docs)} RAG documents for {conversation_id}")
 
         # 4. Run coach with RAG context
-        output = self.coach.analyze_conversation(input_data, rag_context=rag_context)
+        output = self.coach.analyze_conversation(
+            input_data,
+            rag_context=rag_context,
+            allow_fallback=self.allow_fallback,
+        )
 
         # 5. Add citations from retrieved docs
         if retrieved_docs:

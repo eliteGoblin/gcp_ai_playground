@@ -86,6 +86,7 @@ class DocumentIngester:
         base_path: Optional[Path] = None,
         dry_run: bool = False,
         full_refresh: bool = False,
+        skip_gcs: bool = False,
     ) -> IngestResult:
         """Ingest documents from local files to BQ + GCS.
 
@@ -93,6 +94,7 @@ class DocumentIngester:
             base_path: Base directory containing documents (default: config.documents_path)
             dry_run: If True, only validate without making changes
             full_refresh: If True, re-upload all documents regardless of checksum
+            skip_gcs: If True, skip GCS sync (useful when bucket is not available)
 
         Returns:
             IngestResult with counts and errors
@@ -161,9 +163,17 @@ class DocumentIngester:
                     f"[red]Error upserting {doc.metadata.doc_id}: {e}[/red]"
                 )
 
-        # Sync active documents to GCS
-        console.print(f"\n[blue]Syncing active documents to GCS...[/blue]")
-        self._sync_to_gcs(parsed_docs)
+        # Sync active documents to GCS (unless skipped)
+        if skip_gcs:
+            console.print(f"\n[yellow]Skipping GCS sync (--skip-gcs flag set)[/yellow]")
+        else:
+            console.print(f"\n[blue]Syncing active documents to GCS...[/blue]")
+            try:
+                self._sync_to_gcs(parsed_docs)
+            except Exception as e:
+                console.print(f"[red]GCS sync failed: {e}[/red]")
+                console.print("[yellow]BQ ingestion completed but GCS sync skipped[/yellow]")
+                result.errors.append(("gcs_sync", str(e)))
 
         self._print_summary(parsed_docs, result)
         return result
@@ -184,14 +194,16 @@ class DocumentIngester:
         active_uuids = {d.metadata.uuid for d in active_docs}
 
         # Upload active documents
+        # Note: Using .txt extension with text/plain MIME type because
+        # Vertex AI Search doesn't support text/markdown
         for doc in active_docs:
-            blob_name = f"{self.config.gcs_prefix}/{doc.metadata.uuid}.md"
+            blob_name = f"{self.config.gcs_prefix}/{doc.metadata.uuid}.txt"
             blob = bucket.blob(blob_name)
 
-            # Upload raw content
+            # Upload raw content as plain text
             blob.upload_from_string(
                 doc.raw_content,
-                content_type="text/markdown",
+                content_type="text/plain",
             )
             console.print(
                 f"  [green]Uploaded[/green] {doc.metadata.doc_id} v{doc.metadata.version} "
@@ -203,10 +215,11 @@ class DocumentIngester:
         existing_blobs = list(bucket.list_blobs(prefix=prefix))
 
         for blob in existing_blobs:
-            # Extract UUID from blob name (format: kb/{uuid}.md)
+            # Extract UUID from blob name (format: kb/{uuid}.txt or kb/{uuid}.md for legacy)
             blob_name = blob.name
-            if blob_name.endswith(".md"):
-                uuid = blob_name.replace(prefix, "").replace(".md", "")
+            if blob_name.endswith(".txt") or blob_name.endswith(".md"):
+                # Handle both .txt and .md extensions
+                uuid = blob_name.replace(prefix, "").replace(".txt", "").replace(".md", "")
                 if uuid not in active_uuids:
                     blob.delete()
                     console.print(f"  [yellow]Removed[/yellow] {blob_name} (no longer active)")

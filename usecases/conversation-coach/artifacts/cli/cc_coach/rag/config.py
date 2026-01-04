@@ -58,6 +58,10 @@ class RAGConfig:
     gcs_prefix: str = "kb"  # Prefix for KB documents in bucket
 
     # Vertex AI Search settings
+    # Note: Vertex AI Search uses "global" location, not regional locations
+    search_location: str = field(
+        default_factory=lambda: os.environ.get("RAG_SEARCH_LOCATION", "global")
+    )
     data_store_id: str = field(
         default_factory=lambda: os.environ.get("RAG_DATA_STORE_ID", "")
     )
@@ -103,10 +107,14 @@ class RAGConfig:
 
     @property
     def vertex_search_serving_config(self) -> str:
-        """Vertex AI Search serving config path."""
+        """Vertex AI Search serving config path.
+
+        Note: Uses search_location (default: global) not location (regional).
+        """
         return (
-            f"projects/{self.project_id}/locations/{self.location}"
-            f"/dataStores/{self.data_store_id}/servingConfigs/default_search"
+            f"projects/{self.project_id}/locations/{self.search_location}"
+            f"/collections/default_collection/dataStores/{self.data_store_id}"
+            f"/servingConfigs/default_search"
         )
 
     def validate(self) -> list[str]:

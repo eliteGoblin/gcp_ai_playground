@@ -16,9 +16,26 @@ from rich.console import Console
 
 from cc_coach.rag.config import RAGConfig
 from cc_coach.rag.metadata import MetadataStore
-from cc_coach.rag.parser import extract_section_from_snippet
+from cc_coach.rag.parser import extract_section_from_snippet, parse_frontmatter
 
 console = Console()
+
+
+def _strip_frontmatter(content: str) -> str:
+    """Strip YAML frontmatter from content, returning just the body.
+
+    Args:
+        content: Raw content that may include YAML frontmatter
+
+    Returns:
+        Content body without frontmatter, or original content if no frontmatter
+    """
+    try:
+        _, body = parse_frontmatter(content)
+        return body.strip()
+    except ValueError:
+        # No frontmatter or invalid format - return as-is
+        return content
 
 
 @dataclass
@@ -123,7 +140,7 @@ class RAGRetriever:
     def _extract_uuid_from_uri(self, gcs_uri: str) -> Optional[str]:
         """Extract UUID from GCS URI.
 
-        Expected format: gs://bucket/kb/{uuid}.md
+        Expected format: gs://bucket/kb/{uuid}.txt or gs://bucket/kb/{uuid}.md
 
         Args:
             gcs_uri: Full GCS URI
@@ -131,13 +148,13 @@ class RAGRetriever:
         Returns:
             UUID string or None if not extractable
         """
-        # Match UUID pattern in filename
-        match = re.search(r"/([a-f0-9-]{36})\.md$", gcs_uri, re.IGNORECASE)
+        # Match UUID pattern in filename (supports both .txt and .md)
+        match = re.search(r"/([a-f0-9-]{36})\.(?:txt|md)$", gcs_uri, re.IGNORECASE)
         if match:
             return match.group(1)
 
         # Fallback: extract filename without extension
-        match = re.search(r"/([^/]+)\.md$", gcs_uri)
+        match = re.search(r"/([^/]+)\.(?:txt|md)$", gcs_uri)
         if match:
             return match.group(1)
 
@@ -186,21 +203,32 @@ class RAGRetriever:
         for search_result in response.results:
             doc = search_result.document
 
-            # Extract GCS URI
-            gcs_uri = doc.name if hasattr(doc, "name") else ""
-
-            # Extract snippet
+            # Extract GCS URI from derived_struct_data.link (preferred) or doc.name
+            gcs_uri = ""
             snippet = ""
+
             if hasattr(doc, "derived_struct_data"):
-                struct_data = doc.derived_struct_data
+                struct_data = dict(doc.derived_struct_data)
+
+                # Get GCS URI from link field
+                if "link" in struct_data:
+                    gcs_uri = struct_data["link"]
+
+                # Get snippet
                 if "snippets" in struct_data:
                     snippets = struct_data["snippets"]
                     if snippets:
-                        snippet = snippets[0].get("snippet", "")
+                        first_snippet = dict(snippets[0]) if snippets else {}
+                        snippet = first_snippet.get("snippet", "")
                 elif "extractive_answers" in struct_data:
                     answers = struct_data["extractive_answers"]
                     if answers:
-                        snippet = answers[0].get("content", "")
+                        first_answer = dict(answers[0]) if answers else {}
+                        snippet = first_answer.get("content", "")
+
+            # Fallback to doc.name if no link found
+            if not gcs_uri and hasattr(doc, "name"):
+                gcs_uri = doc.name
 
             # If no snippet found, try to get from content
             if not snippet and hasattr(doc, "content"):
@@ -208,10 +236,12 @@ class RAGRetriever:
                 if hasattr(content, "raw_bytes"):
                     snippet = content.raw_bytes.decode("utf-8")[:500]
 
-            # Get relevance score
+            # Get relevance score (may be 0.0 if not provided by API)
             relevance_score = 0.0
-            if hasattr(search_result, "relevance_score"):
+            has_relevance_score = False
+            if hasattr(search_result, "relevance_score") and search_result.relevance_score:
                 relevance_score = search_result.relevance_score
+                has_relevance_score = True
 
             # Extract UUID from GCS URI
             uuid = self._extract_uuid_from_uri(gcs_uri) or ""
@@ -233,9 +263,25 @@ class RAGRetriever:
                     retrieved_doc.version = bq_metadata.get("version", "")
                     retrieved_doc.title = bq_metadata.get("title", "")
                     retrieved_doc.doc_type = bq_metadata.get("doc_type", "")
+                    # Use BQ content as snippet if no snippet from search
+                    if not snippet:
+                        raw_content = bq_metadata.get("raw_content", "")
+                        if raw_content:
+                            # Strip frontmatter and take first 500 chars as snippet
+                            body_content = _strip_frontmatter(raw_content)
+                            retrieved_doc.snippet = body_content[:500]
+                            retrieved_doc.section = extract_section_from_snippet(
+                                retrieved_doc.snippet
+                            )
 
-            # Filter by minimum relevance score
-            if relevance_score >= self.config.min_relevance_score:
+            # Filter by minimum relevance score only if score was provided
+            # If no relevance score from API, include result (Vertex AI Search
+            # already ranked by relevance)
+            if has_relevance_score:
+                if relevance_score >= self.config.min_relevance_score:
+                    result.documents.append(retrieved_doc)
+            else:
+                # No relevance score - trust Vertex AI Search ranking
                 result.documents.append(retrieved_doc)
 
         # Log retrieval for audit

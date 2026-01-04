@@ -1338,6 +1338,7 @@ def rag_ingest(
     documents_path: Optional[Path] = typer.Option(None, "--path", "-p", help="Documents directory path"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Validate only, don't make changes"),
     full_refresh: bool = typer.Option(False, "--full-refresh", help="Re-upload all documents"),
+    skip_gcs: bool = typer.Option(False, "--skip-gcs", help="Skip GCS sync (BQ only)"),
 ):
     """
     Ingest documents from local files to BQ + GCS.
@@ -1350,11 +1351,20 @@ def rag_ingest(
 
     config = RAGConfig.from_env()
 
-    # Validate config
+    # Validate config (GCS/DataStore only required if not skipping GCS)
     errors = config.validate()
-    if errors:
-        for err in errors:
+    required_errors = [e for e in errors if "GCP_PROJECT_ID" in e]
+    gcs_errors = [e for e in errors if "GCS" in e or "DATA_STORE" in e]
+
+    if required_errors:
+        for err in required_errors:
             rprint(f"[red]Config error: {err}[/red]")
+        raise typer.Exit(1)
+
+    if gcs_errors and not skip_gcs:
+        for err in gcs_errors:
+            rprint(f"[yellow]Warning: {err}[/yellow]")
+        rprint("[yellow]Use --skip-gcs to skip GCS sync and proceed with BQ-only ingestion[/yellow]")
         raise typer.Exit(1)
 
     if documents_path:
@@ -1365,9 +1375,12 @@ def rag_ingest(
     result = ingester.ingest_documents(
         dry_run=dry_run,
         full_refresh=full_refresh,
+        skip_gcs=skip_gcs,
     )
 
-    if result.errors:
+    # Only exit with error if there are non-GCS errors
+    non_gcs_errors = [e for e in result.errors if e[0] != "gcs_sync"]
+    if non_gcs_errors:
         raise typer.Exit(1)
 
 

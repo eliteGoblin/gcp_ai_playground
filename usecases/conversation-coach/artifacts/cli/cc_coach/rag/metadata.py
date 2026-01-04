@@ -145,6 +145,17 @@ class MetadataStore:
         Returns:
             True if document was inserted/updated, False if skipped
         """
+        # Helper to convert date to string
+        def date_to_str(val):
+            """Convert date/datetime to string, handling if already string."""
+            if val is None:
+                return None
+            if isinstance(val, str):
+                return val
+            if hasattr(val, 'isoformat'):
+                return val.isoformat()
+            return str(val)
+
         # Convert metadata to dict for BQ
         doc_dict = {
             "uuid": metadata.uuid,
@@ -164,9 +175,9 @@ class MetadataStore:
             "checksum": metadata.checksum,
             "author": metadata.author,
             "approved_by": metadata.approved_by,
-            "effective_date": metadata.effective_date.isoformat() if metadata.effective_date else None,
-            "expiry_date": metadata.expiry_date.isoformat() if metadata.expiry_date else None,
-            "last_reviewed": metadata.last_reviewed.isoformat() if metadata.last_reviewed else None,
+            "effective_date": date_to_str(metadata.effective_date),
+            "expiry_date": date_to_str(metadata.expiry_date),
+            "last_reviewed": date_to_str(metadata.last_reviewed),
             "updated_at": datetime.utcnow().isoformat(),
         }
 
@@ -281,48 +292,30 @@ class MetadataStore:
                 "doc_id": doc.get("doc_id", ""),
                 "version": doc.get("version", ""),
                 "section": doc.get("section", ""),
-                "snippet": doc.get("snippet", ""),
+                "snippet": (doc.get("snippet", "") or "")[:1000],  # Truncate snippet
                 "relevance_score": float(doc.get("relevance_score", 0.0)),
             }
             for doc in retrieved_docs
         ]
 
-        query = f"""
-            INSERT INTO `{self.config.bq_retrieval_log_full_table}`
-            (retrieval_id, conversation_id, query_text, retrieved_docs,
-             coach_model_version, prompt_version, business_line, retrieved_at)
-            VALUES
-            (@retrieval_id, @conversation_id, @query_text, @retrieved_docs,
-             @coach_model_version, @prompt_version, @business_line, CURRENT_TIMESTAMP())
-        """
+        # Use insert_rows_json for complex nested structures (more reliable)
+        row = {
+            "retrieval_id": retrieval_id,
+            "conversation_id": conversation_id,
+            "query_text": query_text,
+            "retrieved_docs": docs_struct,
+            "coach_model_version": coach_model_version,
+            "prompt_version": prompt_version,
+            "business_line": business_line,
+            "retrieved_at": datetime.utcnow().isoformat(),
+        }
 
-        job_config = bigquery.QueryJobConfig(
-            query_parameters=[
-                bigquery.ScalarQueryParameter("retrieval_id", "STRING", retrieval_id),
-                bigquery.ScalarQueryParameter("conversation_id", "STRING", conversation_id),
-                bigquery.ScalarQueryParameter("query_text", "STRING", query_text),
-                bigquery.StructQueryParameter(
-                    "retrieved_docs",
-                    *[
-                        bigquery.StructQueryParameter(
-                            None,
-                            bigquery.ScalarQueryParameter("uuid", "STRING", d["uuid"]),
-                            bigquery.ScalarQueryParameter("doc_id", "STRING", d["doc_id"]),
-                            bigquery.ScalarQueryParameter("version", "STRING", d["version"]),
-                            bigquery.ScalarQueryParameter("section", "STRING", d["section"]),
-                            bigquery.ScalarQueryParameter("snippet", "STRING", d["snippet"]),
-                            bigquery.ScalarQueryParameter("relevance_score", "FLOAT64", d["relevance_score"]),
-                        )
-                        for d in docs_struct
-                    ]
-                ) if docs_struct else bigquery.ArrayQueryParameter("retrieved_docs", "STRUCT", []),
-                bigquery.ScalarQueryParameter("coach_model_version", "STRING", coach_model_version),
-                bigquery.ScalarQueryParameter("prompt_version", "STRING", prompt_version),
-                bigquery.ScalarQueryParameter("business_line", "STRING", business_line),
-            ]
+        errors = self.client.insert_rows_json(
+            self.config.bq_retrieval_log_full_table, [row]
         )
+        if errors:
+            raise RuntimeError(f"Failed to log retrieval: {errors}")
 
-        self.client.query(query, job_config=job_config).result()
         return retrieval_id
 
     def get_kb_stats(self) -> dict[str, Any]:
