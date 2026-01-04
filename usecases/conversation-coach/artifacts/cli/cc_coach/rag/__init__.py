@@ -3,6 +3,7 @@
 This module provides:
 - Document ingestion from local markdown files to BQ + GCS
 - Retrieval from Vertex AI Search with BQ metadata enrichment
+- Topic extraction from conversations for RAG queries
 - Audit logging for all retrievals
 
 Architecture:
@@ -16,6 +17,7 @@ from cc_coach.rag.parser import parse_document, validate_metadata
 from cc_coach.rag.metadata import MetadataStore
 from cc_coach.rag.ingest import DocumentIngester
 from cc_coach.rag.retriever import RAGRetriever
+from cc_coach.rag.topic_extractor import TopicExtractor
 
 __all__ = [
     "RAGConfig",
@@ -24,4 +26,5 @@ __all__ = [
     "MetadataStore",
     "DocumentIngester",
     "RAGRetriever",
+    "TopicExtractor",
 ]

@@ -546,3 +546,193 @@ class TestRAGRetriever:
         assert "POL-002" in context
         assert "Content from doc 1" in context
         assert "Content from doc 2" in context
+
+
+# =============================================================================
+# Topic Extractor Tests
+# =============================================================================
+
+class TestTopicExtractor:
+    """Tests for TopicExtractor."""
+
+    def test_extract_from_phrase_matches(self):
+        """Should extract topics from CI phrase matches."""
+        from cc_coach.rag.topic_extractor import TopicExtractor
+
+        extractor = TopicExtractor()
+        ci_enrichment = {
+            "phrase_matches": [
+                {"phrase_matcher_id": "threat_language", "display_name": "Threat Language"},
+                {"phrase_matcher_id": "hardship_indicators", "display_name": "Hardship Indicators"},
+            ]
+        }
+
+        topics = extractor.extract_topics(ci_enrichment=ci_enrichment)
+
+        # Should have topics from both phrase matchers
+        assert len(topics) > 0
+        assert any("threat" in t.lower() or "prohibited" in t.lower() for t in topics)
+        assert any("hardship" in t.lower() for t in topics)
+
+    def test_extract_from_transcript_keywords(self):
+        """Should extract topics from transcript keywords."""
+        from cc_coach.rag.topic_extractor import TopicExtractor
+
+        extractor = TopicExtractor(include_transcript_keywords=True)
+        # Use exact keyword phrase "lost job" from TRANSCRIPT_KEYWORDS
+        transcript = [
+            {"text": "I lost job last month due to layoffs", "speaker": "CUSTOMER"},
+            {"text": "I understand that's difficult", "speaker": "AGENT"},
+        ]
+
+        topics = extractor.extract_topics(transcript=transcript)
+
+        # "lost job" should trigger hardship-related topics
+        assert len(topics) > 0
+        assert any("hardship" in t.lower() for t in topics)
+
+    def test_extract_from_metadata(self):
+        """Should extract topics from metadata."""
+        from cc_coach.rag.topic_extractor import TopicExtractor
+
+        extractor = TopicExtractor()
+        metadata = {
+            "business_line": "COLLECTIONS",
+            "queue": "hardship_queue",
+        }
+
+        topics = extractor.extract_topics(metadata=metadata)
+
+        # Should have collections and hardship topics
+        assert len(topics) > 0
+        assert any("collection" in t.lower() for t in topics)
+
+    def test_extract_with_details(self):
+        """Should return extraction result with sources."""
+        from cc_coach.rag.topic_extractor import TopicExtractor
+
+        extractor = TopicExtractor()
+        transcript = [{"text": "I need to speak to a supervisor", "speaker": "CUSTOMER"}]
+
+        result = extractor.extract_with_details(transcript=transcript)
+
+        assert hasattr(result, "topics")
+        assert hasattr(result, "sources")
+        assert len(result.topics) > 0
+
+    def test_max_topics_limit(self):
+        """Should limit topics to max_topics."""
+        from cc_coach.rag.topic_extractor import TopicExtractor
+
+        extractor = TopicExtractor(max_topics=3)
+        ci_enrichment = {
+            "phrase_matches": [
+                {"phrase_matcher_id": "threat_language", "display_name": "Threat"},
+                {"phrase_matcher_id": "hardship_indicators", "display_name": "Hardship"},
+                {"phrase_matcher_id": "escalation_request", "display_name": "Escalation"},
+            ]
+        }
+        transcript = [
+            {"text": "I'll sue you", "speaker": "CUSTOMER"},
+            {"text": "I lost my job", "speaker": "CUSTOMER"},
+        ]
+
+        topics = extractor.extract_topics(
+            ci_enrichment=ci_enrichment,
+            transcript=transcript,
+        )
+
+        assert len(topics) <= 3
+
+    def test_empty_input_returns_empty(self):
+        """Should return empty list for empty input."""
+        from cc_coach.rag.topic_extractor import TopicExtractor
+
+        extractor = TopicExtractor()
+        topics = extractor.extract_topics()
+
+        assert topics == []
+
+    def test_deduplication(self):
+        """Should return unique topics."""
+        from cc_coach.rag.topic_extractor import TopicExtractor
+
+        extractor = TopicExtractor()
+        # Both should add "hardship provisions" topic
+        ci_enrichment = {
+            "phrase_matches": [
+                {"phrase_matcher_id": "hardship_indicators", "display_name": "Hardship"},
+                {"phrase_matcher_id": "financial_difficulty", "display_name": "Financial"},
+            ]
+        }
+
+        topics = extractor.extract_topics(ci_enrichment=ci_enrichment)
+
+        # Should have no duplicates
+        assert len(topics) == len(set(topics))
+
+
+# =============================================================================
+# RAG Integration Tests
+# =============================================================================
+
+class TestCoachingServiceRAGIntegration:
+    """Tests for RAG integration in coaching service."""
+
+    def test_coaching_service_accepts_rag_context(self):
+        """CoachingService should accept optional rag_context parameter."""
+        from cc_coach.agents.conversation_coach import CoachingService
+
+        # Just verify the method signature accepts rag_context
+        import inspect
+        sig = inspect.signature(CoachingService.analyze_conversation)
+        params = list(sig.parameters.keys())
+        assert "rag_context" in params
+
+    def test_prompt_templates_exist(self):
+        """Should have RAG prompt templates."""
+        from cc_coach.prompts.coach_system_prompt import (
+            RAG_CONTEXT_TEMPLATE,
+            CITATIONS_INSTRUCTION,
+        )
+
+        assert "{context}" in RAG_CONTEXT_TEMPLATE
+        assert "citations" in CITATIONS_INSTRUCTION.lower()
+
+    def test_coaching_output_has_citation_fields(self):
+        """CoachingOutput should have citation fields."""
+        from cc_coach.schemas.coaching_output import CoachingOutput
+        import pydantic
+
+        fields = CoachingOutput.model_fields
+        assert "citations" in fields
+        assert "rag_context_used" in fields
+
+    def test_orchestrator_rag_initialization(self):
+        """CoachingOrchestrator should initialize RAG components when configured."""
+        from cc_coach.services.coaching import CoachingOrchestrator
+
+        # With RAG disabled
+        with patch.dict("os.environ", {}, clear=True):
+            with patch("cc_coach.services.coaching.BigQueryService"):
+                with patch("cc_coach.services.coaching.CoachingService"):
+                    orchestrator = CoachingOrchestrator(enable_rag=False)
+                    assert orchestrator.rag_enabled is False
+                    assert orchestrator.rag_retriever is None
+
+    def test_orchestrator_rag_enabled_with_config(self):
+        """CoachingOrchestrator should enable RAG when properly configured."""
+        from cc_coach.services.coaching import CoachingOrchestrator
+
+        env = {
+            "GCP_PROJECT_ID": "test-project",
+            "RAG_GCS_BUCKET": "test-bucket",
+            "RAG_DATA_STORE_ID": "test-store",
+        }
+        with patch.dict("os.environ", env):
+            with patch("cc_coach.services.coaching.BigQueryService"):
+                with patch("cc_coach.services.coaching.CoachingService"):
+                    orchestrator = CoachingOrchestrator(enable_rag=True)
+                    assert orchestrator.rag_enabled is True
+                    assert orchestrator.rag_retriever is not None
+                    assert orchestrator.topic_extractor is not None
