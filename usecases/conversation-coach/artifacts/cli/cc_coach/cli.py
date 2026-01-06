@@ -992,6 +992,7 @@ def coach_generate(
     conversation_id: str = typer.Argument(..., help="Conversation ID to coach"),
     model: Optional[str] = typer.Option(None, "--model", "-m", help="Model override (e.g., gemini-2.5-pro)"),
     output_json: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+    fallback: bool = typer.Option(False, "--fallback", help="Use embedded policy if RAG unavailable"),
 ):
     """Generate coaching for a single conversation."""
     from cc_coach.services.coaching import CoachingOrchestrator
@@ -999,7 +1000,7 @@ def coach_generate(
     rprint(f"[bold blue]Generating coaching for {conversation_id}...[/bold blue]")
 
     try:
-        orchestrator = CoachingOrchestrator(model=model)
+        orchestrator = CoachingOrchestrator(model=model, allow_fallback=fallback)
         result = orchestrator.generate_coaching(conversation_id)
 
         if output_json:
@@ -1013,6 +1014,10 @@ def coach_generate(
         logger.exception(f"Failed to generate coaching for {conversation_id}")
         rprint(f"[bold red]Error: {e}[/bold red]")
         raise typer.Exit(1)
+    finally:
+        # Ensure traces are flushed
+        from cc_coach.monitoring.tracing import shutdown_tracing
+        shutdown_tracing()
 
 
 @coach_app.command("generate-pending")
@@ -1020,11 +1025,12 @@ def coach_generate_pending(
     limit: int = typer.Option(10, "--limit", "-l", help="Max conversations to process"),
     model: Optional[str] = typer.Option(None, "--model", "-m", help="Model override"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show what would be processed"),
+    fallback: bool = typer.Option(False, "--fallback", help="Use embedded policy if RAG unavailable"),
 ):
     """Generate coaching for all pending (ENRICHED) conversations."""
     from cc_coach.services.coaching import CoachingOrchestrator
 
-    orchestrator = CoachingOrchestrator(model=model)
+    orchestrator = CoachingOrchestrator(model=model, allow_fallback=fallback)
 
     # Get pending conversations
     pending = orchestrator.get_pending_conversations(limit=limit)
@@ -1044,17 +1050,22 @@ def coach_generate_pending(
     success = 0
     failed = 0
 
-    for conv_id in pending:
-        try:
-            rprint(f"Processing {conv_id[:12]}...", end=" ")
-            orchestrator.generate_coaching(conv_id)
-            rprint("[green]OK[/green]")
-            success += 1
-        except Exception as e:
-            rprint(f"[red]FAILED: {e}[/red]")
-            failed += 1
+    try:
+        for conv_id in pending:
+            try:
+                rprint(f"Processing {conv_id[:12]}...", end=" ")
+                orchestrator.generate_coaching(conv_id)
+                rprint("[green]OK[/green]")
+                success += 1
+            except Exception as e:
+                rprint(f"[red]FAILED: {e}[/red]")
+                failed += 1
 
-    rprint(f"\n[bold]Complete: {success} success, {failed} failed[/bold]")
+        rprint(f"\n[bold]Complete: {success} success, {failed} failed[/bold]")
+    finally:
+        # Ensure traces are flushed
+        from cc_coach.monitoring.tracing import shutdown_tracing
+        shutdown_tracing()
 
 
 @coach_app.command("get")
@@ -1602,6 +1613,100 @@ def rag_list(
 
     console.print(table)
     rprint(f"\n[dim]Showing {len(rows)} documents[/dim]")
+
+
+# =============================================================================
+# Monitor Commands - System monitoring and metrics
+# =============================================================================
+
+monitor_app = typer.Typer(help="Monitor system metrics, logs, and dashboards")
+app.add_typer(monitor_app, name="monitor")
+
+
+@monitor_app.command("summary")
+def monitor_summary(
+    date: Optional[str] = typer.Option(None, "--date", "-d", help="Date (YYYY-MM-DD), defaults to today"),
+):
+    """Show monitoring metrics summary for a date."""
+    from cc_coach.monitoring.dashboard import Dashboard
+
+    dashboard = Dashboard()
+    dashboard.show_summary(date=date)
+
+
+@monitor_app.command("logs")
+def monitor_logs(
+    date: Optional[str] = typer.Option(None, "--date", "-d", help="Date (YYYY-MM-DD)"),
+    component: Optional[str] = typer.Option(None, "--component", "-c", help="Filter by component"),
+    limit: int = typer.Option(20, "--limit", "-n", help="Number of entries to show"),
+):
+    """Show recent log entries."""
+    from cc_coach.monitoring.dashboard import Dashboard
+
+    dashboard = Dashboard()
+    dashboard.show_logs(date=date, component=component, limit=limit)
+
+
+@monitor_app.command("dashboard")
+def monitor_dashboard(
+    date: Optional[str] = typer.Option(None, "--date", "-d", help="Date (YYYY-MM-DD)"),
+    output: Optional[Path] = typer.Option(None, "--output", "-o", help="Output HTML file path"),
+    open_browser: bool = typer.Option(False, "--open", help="Open in browser after generating"),
+):
+    """Generate HTML dashboard."""
+    from cc_coach.monitoring.dashboard import Dashboard
+    import webbrowser
+
+    dashboard = Dashboard()
+    output_path = dashboard.generate_html(date=date, output_path=output)
+
+    rprint(f"[green]Dashboard generated:[/green] {output_path}")
+
+    if open_browser:
+        webbrowser.open(f"file://{output_path}")
+
+
+@monitor_app.command("metrics")
+def monitor_metrics(
+    date: Optional[str] = typer.Option(None, "--date", "-d", help="Date (YYYY-MM-DD)"),
+    output_json: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+    save: bool = typer.Option(False, "--save", help="Save metrics to file"),
+):
+    """Collect and show metrics for a date."""
+    from cc_coach.monitoring.metrics import MetricsCollector
+
+    collector = MetricsCollector()
+    metrics = collector.collect_metrics(date=date)
+
+    if save:
+        saved_path = collector.save_metrics(metrics, date=date)
+        rprint(f"[green]Metrics saved to:[/green] {saved_path}")
+
+    if output_json:
+        rprint(json.dumps(metrics, indent=2, default=str))
+    else:
+        # Summary view
+        e2e = metrics["e2e"]
+        cost = metrics["cost"]
+
+        rprint(f"\n[bold]Metrics for {metrics['date']}[/bold]")
+        rprint("-" * 50)
+
+        rprint(f"\n[cyan]E2E Metrics:[/cyan]")
+        rprint(f"  Total Requests: {e2e['total_requests']}")
+        rprint(f"  Success Rate: {e2e['success_rate']*100:.1f}%")
+        rprint(f"  Latency (p50): {e2e['latency_p50_ms']}ms")
+        rprint(f"  Latency (p95): {e2e['latency_p95_ms']}ms")
+
+        rprint(f"\n[cyan]Cost:[/cyan]")
+        rprint(f"  Gemini Tokens: {cost['gemini_input_tokens']:,} in / {cost['gemini_output_tokens']:,} out")
+        rprint(f"  Gemini Cost: ${cost['gemini_cost_usd']:.4f}")
+        rprint(f"  Total Estimated: ${cost['total_estimated_usd']:.4f}")
+
+        if metrics["components"]:
+            rprint(f"\n[cyan]Components:[/cyan]")
+            for name, comp in sorted(metrics["components"].items()):
+                rprint(f"  {name}: {comp['success_rate']*100:.0f}% success, {comp['latency_p50_ms']}ms p50")
 
 
 if __name__ == "__main__":

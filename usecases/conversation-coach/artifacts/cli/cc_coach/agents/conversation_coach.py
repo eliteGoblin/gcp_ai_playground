@@ -105,6 +105,12 @@ class CoachingService:
         # System instruction (policy content added dynamically based on RAG)
         self.instruction = SYSTEM_PROMPT
 
+        # Metrics from last call (for monitoring)
+        self.last_input_tokens: int = 0
+        self.last_output_tokens: int = 0
+        self.last_latency_ms: int = 0
+        self.last_cost_usd: float = 0.0
+
     def analyze_conversation(
         self,
         input_data: CoachingInput,
@@ -235,15 +241,36 @@ Key requirements:
             )
             raise
 
-        latency_ms = (time.time() - start_time) * 1000
+        latency_ms = int((time.time() - start_time) * 1000)
         response_length = len(response.text) if response.text else 0
-        estimated_output_tokens = _estimate_tokens(response.text) if response.text else 0
+
+        # Extract actual token counts from response if available
+        input_tokens = estimated_tokens
+        output_tokens = _estimate_tokens(response.text) if response.text else 0
+        if hasattr(response, "usage_metadata") and response.usage_metadata:
+            usage = response.usage_metadata
+            if hasattr(usage, "prompt_token_count"):
+                input_tokens = usage.prompt_token_count
+            if hasattr(usage, "candidates_token_count"):
+                output_tokens = usage.candidates_token_count
+
+        # Calculate cost (Gemini Flash pricing)
+        from cc_coach.monitoring.cost import CostCalculator
+        cost_calc = CostCalculator(self.model)
+        _, _ = cost_calc.calculate_gemini_cost(input_tokens, output_tokens)
+        cost_breakdown = cost_calc.calculate_total_cost(input_tokens, output_tokens)
+
+        # Store metrics for caller to access
+        self.last_input_tokens = input_tokens
+        self.last_output_tokens = output_tokens
+        self.last_latency_ms = latency_ms
+        self.last_cost_usd = cost_breakdown.gemini_total_cost
 
         # Log response metrics
         logger.info(
-            f"[{request_id}] Coaching response: latency_ms={latency_ms:.0f} "
-            f"response_chars={response_length} est_output_tokens={estimated_output_tokens} "
-            f"conversation={input_data.conversation_id}"
+            f"[{request_id}] Coaching response: latency_ms={latency_ms} "
+            f"input_tokens={input_tokens} output_tokens={output_tokens} "
+            f"cost_usd={self.last_cost_usd:.6f} conversation={input_data.conversation_id}"
         )
 
         # Parse response

@@ -1,0 +1,8 @@
+
+# Monitoring logs (keep only .gitkeep)
+log_files/*.jsonl
+log_files/*.json
+!log_files/.gitkeep
+
+# Generated dashboard
+dashboard.html

@@ -6,6 +6,7 @@ Coordinates data fetching, RAG retrieval, analysis, and storage for conversation
 
 import json
 import logging
+import time
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -13,6 +14,8 @@ from google.cloud import bigquery
 
 from cc_coach.agents.conversation_coach import CoachingService
 from cc_coach.config import Settings, get_settings
+from cc_coach.monitoring.logging import ComponentLogger, new_request_context, conversation_id_ctx
+from cc_coach.monitoring.tracing import get_tracer, get_current_trace_id
 from cc_coach.rag.config import RAGConfig
 from cc_coach.rag.retriever import RAGRetriever, RetrievedDocument
 from cc_coach.rag.topic_extractor import TopicExtractor
@@ -53,6 +56,10 @@ class CoachingOrchestrator:
         self.coach = CoachingService(model=model)
         self.allow_fallback = allow_fallback
 
+        # Initialize monitoring
+        self.monitor = ComponentLogger()
+        self.tracer = get_tracer()
+
         # Initialize RAG components if enabled and configured
         self.rag_enabled = False
         self.rag_retriever: Optional[RAGRetriever] = None
@@ -77,7 +84,7 @@ class CoachingOrchestrator:
 
     def generate_coaching(self, conversation_id: str) -> CoachingOutput:
         """
-        Generate coaching for a conversation.
+        Generate coaching for a conversation with component-level monitoring and tracing.
 
         Args:
             conversation_id: ID of the conversation to coach
@@ -85,62 +92,147 @@ class CoachingOrchestrator:
         Returns:
             CoachingOutput with scores and recommendations
         """
-        # 1. Fetch data from BQ
-        ci_data = self._fetch_ci_enrichment(conversation_id)
-        registry_data = self._fetch_registry(conversation_id)
+        # Start request context for monitoring
+        request_id = new_request_context(conversation_id)
+        conversation_id_ctx.set(conversation_id)
+        start_time = time.time()
 
-        if not ci_data:
-            raise ValueError(f"No CI enrichment found for {conversation_id}")
-
-        # 2. Build input
-        input_data = self._build_coaching_input(conversation_id, ci_data, registry_data)
-
-        # 3. Get RAG context if enabled
+        ci_data: Optional[dict] = None
+        registry_data: Optional[dict] = None
+        input_data: Optional[CoachingInput] = None
         rag_context: Optional[str] = None
         retrieved_docs: list[RetrievedDocument] = []
+        output: Optional[CoachingOutput] = None
 
-        if self.rag_enabled and self.topic_extractor and self.rag_retriever:
-            # Merge metadata from registry and ci_data labels
-            merged_metadata = {}
-            if registry_data:
-                merged_metadata.update(registry_data)
-            # CI data labels contain business_line, queue, etc. - important for topic extraction
-            labels = ci_data.get("labels", {})
-            if isinstance(labels, str):
-                labels = json.loads(labels) if labels else {}
-            if isinstance(labels, dict):
-                merged_metadata.update(labels)
+        # Root span for entire coaching operation
+        with self.tracer.start_as_current_span("e2e_coaching") as root_span:
+            root_span.set_attribute("conversation_id", conversation_id)
+            root_span.set_attribute("request_id", request_id)
 
-            rag_context, retrieved_docs = self._get_rag_context(
-                conversation_id=conversation_id,
-                ci_data=ci_data,
-                transcript=input_data.turns,
-                metadata=merged_metadata,
-            )
-            if rag_context:
-                logger.info(f"Retrieved {len(retrieved_docs)} RAG documents for {conversation_id}")
+            try:
+                # 1. Fetch data from BQ
+                with self.tracer.start_as_current_span("data_fetch") as span:
+                    span.set_attribute("conversation_id", conversation_id)
+                    with self.monitor.component("data_fetch", conversation_id=conversation_id) as result:
+                        ci_data = self._fetch_ci_enrichment(conversation_id)
+                        registry_data = self._fetch_registry(conversation_id)
+                        result["ci_found"] = ci_data is not None
+                        result["registry_found"] = registry_data is not None
+                        span.set_attribute("ci_found", ci_data is not None)
+                        span.set_attribute("registry_found", registry_data is not None)
 
-        # 4. Run coach with RAG context
-        output = self.coach.analyze_conversation(
-            input_data,
-            rag_context=rag_context,
-            allow_fallback=self.allow_fallback,
-        )
+                        if not ci_data:
+                            raise ValueError(f"No CI enrichment found for {conversation_id}")
 
-        # 5. Add citations from retrieved docs
-        if retrieved_docs:
-            output.citations = [doc.to_citation() for doc in retrieved_docs]
-            output.rag_context_used = True
+                # 2. Build input
+                with self.tracer.start_as_current_span("input_processing") as span:
+                    with self.monitor.component("input_processing") as result:
+                        input_data = self._build_coaching_input(conversation_id, ci_data, registry_data)
+                        result["turn_count"] = len(input_data.turns)
+                        span.set_attribute("turn_count", len(input_data.turns))
 
-        # 6. Store result
-        self._store_coaching_result(
-            conversation_id, output, registry_data, ci_data, retrieved_docs
-        )
+                # 3. Get RAG context if enabled
+                with self.tracer.start_as_current_span("rag_retrieval") as span:
+                    with self.monitor.component("rag_retrieval") as result:
+                        if self.rag_enabled and self.topic_extractor and self.rag_retriever:
+                            # Merge metadata from registry and ci_data labels
+                            merged_metadata = {}
+                            if registry_data:
+                                merged_metadata.update(registry_data)
+                            labels = ci_data.get("labels", {})
+                            if isinstance(labels, str):
+                                labels = json.loads(labels) if labels else {}
+                            if isinstance(labels, dict):
+                                merged_metadata.update(labels)
 
-        # 7. Update registry status
-        self._update_registry_status(conversation_id, "COACHED")
+                            rag_context, retrieved_docs = self._get_rag_context(
+                                conversation_id=conversation_id,
+                                ci_data=ci_data,
+                                transcript=input_data.turns,
+                                metadata=merged_metadata,
+                            )
+                            result["docs_retrieved"] = len(retrieved_docs)
+                            result["rag_enabled"] = True
+                            span.set_attribute("docs_retrieved", len(retrieved_docs))
+                            span.set_attribute("rag_enabled", True)
+                        else:
+                            result["docs_retrieved"] = 0
+                            result["rag_enabled"] = False
+                            span.set_attribute("docs_retrieved", 0)
+                            span.set_attribute("rag_enabled", False)
+                        result["fallback_used"] = not rag_context and self.allow_fallback
+                        span.set_attribute("fallback_used", not rag_context and self.allow_fallback)
 
-        return output
+                # 4. Run coach with RAG context
+                with self.tracer.start_as_current_span("model_call") as span:
+                    span.set_attribute("model", self.coach.model)
+                    with self.monitor.component("model_call", model=self.coach.model) as result:
+                        output = self.coach.analyze_conversation(
+                            input_data,
+                            rag_context=rag_context,
+                            allow_fallback=self.allow_fallback,
+                        )
+                        # Get token/cost metrics from coach service
+                        result["input_tokens"] = self.coach.last_input_tokens
+                        result["output_tokens"] = self.coach.last_output_tokens
+                        result["cost_usd"] = self.coach.last_cost_usd
+                        span.set_attribute("gen_ai.usage.input_tokens", self.coach.last_input_tokens)
+                        span.set_attribute("gen_ai.usage.output_tokens", self.coach.last_output_tokens)
+                        span.set_attribute("cost_usd", self.coach.last_cost_usd)
+
+                # 5. Process output
+                with self.tracer.start_as_current_span("output_processing") as span:
+                    with self.monitor.component("output_processing") as result:
+                        if retrieved_docs:
+                            output.citations = [doc.to_citation() for doc in retrieved_docs]
+                            output.rag_context_used = True
+                        result["overall_score"] = output.overall_score
+                        result["coaching_points"] = len(output.coaching_points)
+                        result["call_type"] = output.call_type
+                        span.set_attribute("overall_score", output.overall_score)
+                        span.set_attribute("coaching_points_count", len(output.coaching_points))
+
+                # 6. Store result
+                with self.tracer.start_as_current_span("storage") as span:
+                    with self.monitor.component("storage") as result:
+                        self._store_coaching_result(
+                            conversation_id, output, registry_data, ci_data, retrieved_docs
+                        )
+                        self._update_registry_status(conversation_id, "COACHED")
+                        result["stored"] = True
+                        span.set_attribute("stored", True)
+
+                # Log E2E success
+                total_duration_ms = int((time.time() - start_time) * 1000)
+                root_span.set_attribute("success", True)
+                root_span.set_attribute("duration_ms", total_duration_ms)
+
+                # Get trace_id for correlation
+                trace_id = get_current_trace_id()
+                self.monitor.log_e2e_result(
+                    conversation_id=conversation_id,
+                    success=True,
+                    total_duration_ms=total_duration_ms,
+                )
+
+                logger.info(f"Coaching completed for {conversation_id} in {total_duration_ms}ms (trace_id={trace_id})")
+                return output
+
+            except Exception as e:
+                # Log E2E failure
+                total_duration_ms = int((time.time() - start_time) * 1000)
+                root_span.set_attribute("success", False)
+                root_span.set_attribute("error", str(e))
+                root_span.record_exception(e)
+
+                self.monitor.log_e2e_result(
+                    conversation_id=conversation_id,
+                    success=False,
+                    total_duration_ms=total_duration_ms,
+                    error=str(e),
+                )
+                logger.error(f"Coaching failed for {conversation_id}: {e}")
+                raise
 
     def _get_rag_context(
         self,
