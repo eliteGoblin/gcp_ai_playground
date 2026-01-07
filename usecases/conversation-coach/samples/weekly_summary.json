@@ -1,0 +1,34 @@
+{
+  "agent_id": "M7741",
+  "week_start": "2025-12-29",
+  "week_end": "2026-01-04",
+  "total_calls": 7,
+  "resolution_rate": 0.0,
+  "overall_score": 1.1,
+  "empathy_score": 1.0,
+  "compliance_score": 1.0,
+  "resolution_score": 1.0,
+  "professionalism_score": 1.0,
+  "efficiency_score": 1.7,
+  "de_escalation_score": 1.0,
+  "trend_analysis": "Performance remained consistently low across the two days with calls, showing no improvement in any dimension. The 0% resolution rate and uniform 1.0 scores highlight a pervasive and unaddressed performance gap.",
+  "trend_direction": "STABLE_LOW",
+  "daily_scores": [
+    {"date": "2026-01-03", "avg_score": 1.0, "call_count": 1},
+    {"date": "2026-01-04", "avg_score": 1.1, "call_count": 6}
+  ],
+  "persistent_issues": [
+    "THREAT_LEGAL_ACTION",
+    "MISSING_HARDSHIP_OFFER",
+    "DISMISSIVE_LANGUAGE"
+  ],
+  "action_plan": "1. Immediately review and adhere to all compliance guidelines, specifically regarding legal action threats and mandatory hardship offer procedures. 2. Focus on active listening and empathetic communication. 3. Review the Hardship Program Guide.",
+  "recommended_training": [
+    "Compliance Basics",
+    "Empathy Building",
+    "Hardship Program Guide"
+  ],
+  "supervisor_alert": true,
+  "weekly_summary": "Agent M7741's performance this week was critically deficient, with an overall average score of 1.1 out of 10 across 7 calls. All core metrics consistently scored 1.0, indicating a complete failure to meet basic expectations. Immediate intervention required.",
+  "generated_at": "2026-01-07T14:22:00Z"
+}

@@ -1,0 +1,100 @@
+{
+  "conversation_id": "a1b2c3d4-toxic-agent-test-0001",
+  "agent_id": "M7741",
+  "overall_score": 1.0,
+  "empathy_score": 1,
+  "compliance_score": 1,
+  "resolution_score": 1,
+  "professionalism_score": 1,
+  "de_escalation_score": 1,
+  "efficiency_score": 1,
+  "coaching_summary": "The agent demonstrated a complete lack of empathy, professionalism, and compliance throughout the call, actively escalating a distressed customer. Multiple critical compliance violations occurred, including illegal threats and failure to offer a hardship program.",
+  "strengths": [
+    "Accurately identified the customer and the debt amount at the beginning of the call."
+  ],
+  "key_moment": {
+    "turn_index": 27,
+    "quote": "Everyone's got an excuse. Dialysis, chemo, dying grandmother. I've heard it all. The fact remains you owe money and you need to pay it. Period.",
+    "why_notable": "Peak demonstration of complete lack of empathy and professionalism. This statement dismisses legitimate hardship claims and could constitute harassment under regulatory guidelines."
+  },
+  "assessments": [
+    {
+      "dimension": "empathy",
+      "score": 1,
+      "issue_types": ["DISMISSIVE_LANGUAGE", "NO_ACKNOWLEDGMENT", "BLAME_SHIFTING"],
+      "evidence": [
+        {
+          "turn_index": 5,
+          "quote": "Mr Chen, I've heard every excuse in the book. Medical bills, job loss, car problems. Everyone has a story. What I need from you right now is a commitment to pay.",
+          "severity": "CRITICAL",
+          "issue_type": "DISMISSIVE_LANGUAGE"
+        },
+        {
+          "turn_index": 27,
+          "quote": "Everyone's got an excuse. Dialysis, chemo, dying grandmother. I've heard it all. The fact remains you owe money and you need to pay it. Period.",
+          "severity": "CRITICAL",
+          "issue_type": "DISMISSIVE_LANGUAGE"
+        }
+      ]
+    },
+    {
+      "dimension": "compliance",
+      "score": 1,
+      "issue_types": ["THREAT_LEGAL_ACTION", "THREAT_GARNISHMENT", "MISSING_HARDSHIP_OFFER"],
+      "evidence": [
+        {
+          "turn_index": 9,
+          "quote": "We're talking about legal action here. We can garnish your wages, put a lien on your property.",
+          "severity": "CRITICAL",
+          "issue_type": "THREAT_GARNISHMENT"
+        },
+        {
+          "turn_index": 21,
+          "quote": "If this goes to our legal team, they'll add another $2,500 in fees and you'll have a court judgment on your record.",
+          "severity": "CRITICAL",
+          "issue_type": "THREAT_LEGAL_ACTION"
+        }
+      ]
+    },
+    {
+      "dimension": "professionalism",
+      "score": 1,
+      "issue_types": ["BLAME_SHIFTING", "UNPROFESSIONAL_TONE"],
+      "evidence": [
+        {
+          "turn_index": 25,
+          "quote": "Compassion doesn't pay bills.",
+          "severity": "HIGH",
+          "issue_type": "UNPROFESSIONAL_TONE"
+        }
+      ]
+    },
+    {
+      "dimension": "de_escalation",
+      "score": 1,
+      "issue_types": ["ESCALATION", "FAILED_DE_ESCALATION"],
+      "evidence": [
+        {
+          "turn_index": 31,
+          "quote": "Fine. I'll note that you refused to cooperate. Expect to hear from our legal department. Have a nice day.",
+          "severity": "CRITICAL",
+          "issue_type": "ESCALATION"
+        }
+      ]
+    }
+  ],
+  "critical_issues": [
+    "DISMISSIVE_LANGUAGE",
+    "NO_ACKNOWLEDGMENT",
+    "BLAME_SHIFTING",
+    "THREAT_LEGAL_ACTION",
+    "THREAT_GARNISHMENT",
+    "HARASSMENT",
+    "MISSING_HARDSHIP_OFFER"
+  ],
+  "compliance_breach_count": 4,
+  "issue_count": 16,
+  "example_type": "NEEDS_WORK",
+  "analyzed_at": "2026-01-08T05:30:00Z",
+  "model_version": "gemini-2.5-flash"
+}

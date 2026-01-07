@@ -1,0 +1,40 @@
+{
+  "agent_id": "M7741",
+  "date": "2026-01-04",
+  "call_count": 6,
+  "resolution_rate": 0.0,
+  "avg_overall": 1.1,
+  "avg_empathy": 1.0,
+  "avg_compliance": 1.0,
+  "avg_resolution": 1.0,
+  "avg_professionalism": 1.0,
+  "avg_efficiency": 1.8,
+  "avg_de_escalation": 1.0,
+  "focus_area": "professionalism",
+  "top_issues": [
+    "THREAT_LEGAL_ACTION",
+    "MISSING_HARDSHIP_OFFER",
+    "NO_ACKNOWLEDGMENT",
+    "BLAME_SHIFTING",
+    "DISMISSIVE_LANGUAGE"
+  ],
+  "top_strengths": [
+    "Accurately identified the customer and debt amount"
+  ],
+  "quick_wins": [
+    "Review the company's Code of Conduct and policies regarding customer interaction and hardship handling before your next shift.",
+    "Practice active listening and acknowledge the customer's statements, even if you cannot immediately offer a solution.",
+    "Strictly follow the approved collections script, particularly when discussing payment options."
+  ],
+  "daily_narrative": "M7741, your performance today was critically low with an overall score of 1.1/10 and a 0% resolution rate across 6 calls. The language used, such as 'Everyone's got an excuse' and 'Compassion doesn't pay bills,' demonstrates a severe lack of professionalism and empathy. Multiple compliance breaches were detected, including threats of legal action without proper disclosure and failure to offer hardship options despite clear customer distress.",
+  "example_conversations": [
+    {
+      "conversation_id": "a1b2c3d4-toxic-agent-test-0001",
+      "overall_score": 1.0,
+      "call_type": "hardship",
+      "key_issue": "THREAT_LEGAL_ACTION",
+      "key_moment": "Everyone's got an excuse. Dialysis, chemo, dying grandmother..."
+    }
+  ],
+  "generated_at": "2026-01-07T14:22:00Z"
+}

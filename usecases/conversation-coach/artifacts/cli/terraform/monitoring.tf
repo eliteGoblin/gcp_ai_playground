@@ -73,45 +73,38 @@ resource "google_monitoring_dashboard" "conversation_coach" {
           }
         },
 
-        # Row 2: E2E Latency P50
+        # Row 2: E2E Latency P50 (using MQL for proper distribution percentile)
         {
           xPos   = 6
           yPos   = 1
           width  = 3
           height = 4
           widget = {
-            title = "E2E Latency (P50)"
+            title = "E2E Latency P50 (ms)"
             scorecard = {
               timeSeriesQuery = {
-                timeSeriesFilter = {
-                  filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.e2e_latency.name}\" resource.type=\"global\""
-                  aggregation = {
-                    alignmentPeriod    = "86400s"
-                    perSeriesAligner   = "ALIGN_DELTA"
-                    crossSeriesReducer = "REDUCE_PERCENTILE_50"
-                  }
-                }
+                timeSeriesQueryLanguage = "fetch global | metric 'logging.googleapis.com/user/conversation-coach/e2e_latency' | align delta(1d) | group_by [], [value_e2e_latency_percentile: percentile(value.e2e_latency, 50)]"
               }
             }
           }
         },
 
-        # Row 2: Daily Cost (avg per request from distribution)
+        # Row 2: Daily Cost (count of requests - cost tracking)
         {
           xPos   = 9
           yPos   = 1
           width  = 3
           height = 4
           widget = {
-            title = "Avg Cost/Request (USD)"
+            title = "Requests with Cost"
             scorecard = {
               timeSeriesQuery = {
                 timeSeriesFilter = {
                   filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.request_cost.name}\" resource.type=\"global\""
                   aggregation = {
                     alignmentPeriod    = "86400s"
-                    perSeriesAligner   = "ALIGN_MEAN"
-                    crossSeriesReducer = "REDUCE_MEAN"
+                    perSeriesAligner   = "ALIGN_DELTA"
+                    crossSeriesReducer = "REDUCE_SUM"
                   }
                 }
               }
@@ -326,14 +319,14 @@ resource "google_monitoring_dashboard" "conversation_coach" {
           }
         },
 
-        # Row 7: Token Usage (avg per request from distribution)
+        # Row 7: Request Volume Over Time (from token distribution count)
         {
           xPos   = 0
           yPos   = 15
           width  = 6
           height = 4
           widget = {
-            title = "Avg Tokens per Request"
+            title = "Request Volume (from token metrics)"
             xyChart = {
               dataSets = [
                 {
@@ -342,46 +335,32 @@ resource "google_monitoring_dashboard" "conversation_coach" {
                       filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.input_tokens.name}\" resource.type=\"global\""
                       aggregation = {
                         alignmentPeriod    = "300s"
-                        perSeriesAligner   = "ALIGN_MEAN"
-                        crossSeriesReducer = "REDUCE_MEAN"
+                        perSeriesAligner   = "ALIGN_DELTA"
+                        crossSeriesReducer = "REDUCE_SUM"
                       }
                     }
                   }
                   plotType   = "LINE"
-                  legendTemplate = "Avg Input Tokens"
-                },
-                {
-                  timeSeriesQuery = {
-                    timeSeriesFilter = {
-                      filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.output_tokens.name}\" resource.type=\"global\""
-                      aggregation = {
-                        alignmentPeriod    = "300s"
-                        perSeriesAligner   = "ALIGN_MEAN"
-                        crossSeriesReducer = "REDUCE_MEAN"
-                      }
-                    }
-                  }
-                  plotType   = "LINE"
-                  legendTemplate = "Avg Output Tokens"
+                  legendTemplate = "Requests (Input Token Metric)"
                 }
               ]
               timeshiftDuration = "0s"
               yAxis = {
-                label = "Avg Tokens/Request"
+                label = "Request Count"
                 scale = "LINEAR"
               }
             }
           }
         },
 
-        # Row 7: Cost Over Time (avg per request from distribution)
+        # Row 7: Cost Request Volume Over Time
         {
           xPos   = 6
           yPos   = 15
           width  = 6
           height = 4
           widget = {
-            title = "Avg Cost per Request (USD)"
+            title = "Requests with Cost Tracking"
             xyChart = {
               dataSets = [
                 {
@@ -390,18 +369,18 @@ resource "google_monitoring_dashboard" "conversation_coach" {
                       filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.request_cost.name}\" resource.type=\"global\""
                       aggregation = {
                         alignmentPeriod    = "3600s"
-                        perSeriesAligner   = "ALIGN_MEAN"
-                        crossSeriesReducer = "REDUCE_MEAN"
+                        perSeriesAligner   = "ALIGN_DELTA"
+                        crossSeriesReducer = "REDUCE_SUM"
                       }
                     }
                   }
-                  plotType   = "LINE"
-                  legendTemplate = "Avg Cost (USD)"
+                  plotType   = "STACKED_BAR"
+                  legendTemplate = "Requests with Cost"
                 }
               ]
               timeshiftDuration = "0s"
               yAxis = {
-                label = "USD per Request"
+                label = "Request Count"
                 scale = "LINEAR"
               }
             }

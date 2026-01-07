@@ -173,39 +173,17 @@ flowchart TB
 
 > **Key Moment** (Turn 11): *"I completely understand, and thanks for being open about that. It sounds like you're under some real pressure right now. Look, we do have hardship options and flexible payment plans available."*
 
-<details>
-<summary>View Full JSON Output</summary>
-
 ```json
 {
-  "conversation_id": "3f2d9e4b-1a74-4f35-8bb2-9d8f8df0b6a7",
-  "agent_id": "A2044",
   "overall_score": 9.9,
-  "empathy_score": 10,
-  "compliance_score": 10,
-  "resolution_score": 10,
-  "professionalism_score": 10,
-  "de_escalation_score": 10,
-  "efficiency_score": 9,
-  "coaching_summary": "The agent demonstrated exceptional empathy and compliance, effectively de-escalating a stressed customer and securing a sustainable payment arrangement.",
-  "strengths": [
-    "Exceptional empathy and active listening skills",
-    "Proactive and compliant offer of hardship programs",
-    "Highly effective de-escalation of a stressed customer",
-    "Collaborative approach to finding a sustainable resolution"
-  ],
-  "key_moment": {
-    "turn_index": 11,
-    "quote": "I completely understand, and thanks for being open about that. It sounds like you're under some real pressure right now. Look, we do have hardship options and flexible payment plans available.",
-    "why_notable": "This turn perfectly demonstrates empathy, active listening, and immediate compliance with hardship policy."
-  },
-  "issue_types": ["EXCELLENT_EMPATHY", "PERFECT_COMPLIANCE", "EFFECTIVE_RESOLUTION"],
+  "coaching_summary": "Exceptional empathy and compliance, effectively de-escalating a stressed customer.",
+  "strengths": ["Exceptional empathy", "Proactive hardship offer", "Effective de-escalation"],
   "critical_issues": [],
-  "compliance_breach_count": 0,
-  "example_type": "GOOD_EXAMPLE"
+  "compliance_breach_count": 0
 }
 ```
-</details>
+
+[View full JSON output](samples/coach_output_good_agent.json)
 
 ---
 
@@ -222,48 +200,17 @@ flowchart TB
 
 > **Critical Moment** (Turn 27): *"Everyone's got an excuse. Dialysis, chemo, dying grandmother. I've heard it all. The fact remains you owe money and you need to pay it. Period."*
 
-<details>
-<summary>View Full JSON Output</summary>
-
 ```json
 {
-  "conversation_id": "a1b2c3d4-toxic-agent-test-0001",
-  "agent_id": "M7741",
   "overall_score": 1.0,
-  "empathy_score": 1,
-  "compliance_score": 1,
-  "resolution_score": 1,
-  "professionalism_score": 1,
-  "de_escalation_score": 1,
-  "efficiency_score": 1,
-  "coaching_summary": "The agent demonstrated a complete lack of empathy, professionalism, and compliance throughout the call, actively escalating a distressed customer. Multiple critical compliance violations occurred.",
-  "assessments": [
-    {
-      "dimension": "empathy",
-      "score": 1,
-      "issue_types": ["DISMISSIVE_LANGUAGE", "NO_ACKNOWLEDGMENT", "BLAME_SHIFTING"],
-      "evidence": [
-        {"turn_index": 5, "quote": "Mr Chen, I've heard every excuse in the book...", "severity": "CRITICAL"},
-        {"turn_index": 27, "quote": "Everyone's got an excuse. Dialysis, chemo, dying grandmother...", "severity": "CRITICAL"}
-      ]
-    },
-    {
-      "dimension": "compliance",
-      "score": 1,
-      "issue_types": ["THREAT_LEGAL_ACTION", "THREAT_GARNISHMENT", "MISSING_HARDSHIP_OFFER"],
-      "evidence": [
-        {"turn_index": 9, "quote": "We can garnish your wages, put a lien on your property.", "severity": "CRITICAL"},
-        {"turn_index": 21, "quote": "If this goes to our legal team, they'll add another $2,500 in fees...", "severity": "CRITICAL"}
-      ]
-    }
-  ],
-  "critical_issues": ["DISMISSIVE_LANGUAGE", "THREAT_LEGAL_ACTION", "THREAT_GARNISHMENT", "MISSING_HARDSHIP_OFFER"],
+  "coaching_summary": "Complete lack of empathy and compliance. Multiple critical violations detected.",
+  "critical_issues": ["THREAT_LEGAL_ACTION", "THREAT_GARNISHMENT", "MISSING_HARDSHIP_OFFER"],
   "compliance_breach_count": 4,
-  "issue_count": 16,
-  "example_type": "NEEDS_WORK"
+  "key_moment": {"turn_index": 27, "quote": "Everyone's got an excuse...", "severity": "CRITICAL"}
 }
 ```
-</details>
+
+[View full JSON output](samples/coach_output_bad_agent.json)
 
 ### Daily Summary (Real Output)
 
@@ -275,30 +222,16 @@ flowchart TB
 
 > *"M7741, your performance today was critically low with an overall score of 1.1/10 and a 0% resolution rate across 6 calls."*
 
-<details>
-<summary>View Full JSON Output</summary>
-
 ```json
 {
-  "agent_id": "M7741",
-  "date": "2026-01-04",
-  "call_count": 6,
-  "resolution_rate": 0.0,
-  "avg_empathy": 1.0,
-  "avg_compliance": 1.0,
-  "avg_resolution": 1.0,
-  "avg_professionalism": 1.0,
-  "avg_efficiency": 1.8,
+  "avg_overall": 1.1,
   "focus_area": "professionalism",
-  "top_issues": ["THREAT_LEGAL_ACTION", "MISSING_HARDSHIP_OFFER", "DISMISSIVE_LANGUAGE"],
-  "quick_wins": [
-    "Review the company's Code of Conduct before your next shift.",
-    "Practice active listening and acknowledge customer statements.",
-    "Strictly follow the approved collections script."
-  ]
+  "top_issues": ["THREAT_LEGAL_ACTION", "MISSING_HARDSHIP_OFFER"],
+  "quick_wins": ["Review Code of Conduct", "Practice active listening"]
 }
 ```
-</details>
+
+[View full JSON output](samples/daily_summary.json)
 
 ---
 
@@ -312,24 +245,17 @@ flowchart TB
 
 > *"Agent M7741's performance this week was critically deficient, with an overall average score of 1.1 out of 10 across 7 calls."*
 
-<details>
-<summary>View Full JSON Output</summary>
-
 ```json
 {
-  "agent_id": "M7741",
-  "week_start": "2025-12-29",
-  "total_calls": 7,
-  "resolution_rate": 0.0,
-  "empathy_score": 1.0,
-  "compliance_score": 1.0,
-  "resolution_score": 1.0,
-  "trend_analysis": "Performance remained consistently low, showing no improvement in any dimension.",
-  "action_plan": "1. Review compliance guidelines. 2. Focus on active listening. 3. Review Hardship Program Guide.",
-  "recommended_training": ["Compliance Basics", "Empathy Building", "Hardship Program Guide"]
+  "overall_score": 1.1,
+  "trend_direction": "STABLE_LOW",
+  "persistent_issues": ["THREAT_LEGAL_ACTION", "MISSING_HARDSHIP_OFFER"],
+  "recommended_training": ["Compliance Basics", "Empathy Building"],
+  "supervisor_alert": true
 }
 ```
-</details>
+
+[View full JSON output](samples/weekly_summary.json)
 
 ---
 

@@ -1,0 +1,58 @@
+{
+  "conversation_id": "3f2d9e4b-1a74-4f35-8bb2-9d8f8df0b6a7",
+  "agent_id": "A2044",
+  "overall_score": 9.9,
+  "empathy_score": 10,
+  "compliance_score": 10,
+  "resolution_score": 10,
+  "professionalism_score": 10,
+  "de_escalation_score": 10,
+  "efficiency_score": 9,
+  "coaching_summary": "The agent demonstrated exceptional empathy and compliance, effectively de-escalating a stressed customer and securing a sustainable payment arrangement.",
+  "strengths": [
+    "Exceptional empathy and active listening skills",
+    "Proactive and compliant offer of hardship programs",
+    "Highly effective de-escalation of a stressed customer",
+    "Collaborative approach to finding a sustainable resolution"
+  ],
+  "key_moment": {
+    "turn_index": 11,
+    "quote": "I completely understand, and thanks for being open about that. It sounds like you're under some real pressure right now. Look, we do have hardship options and flexible payment plans available.",
+    "why_notable": "This turn perfectly demonstrates empathy, active listening, and immediate compliance with hardship policy, effectively turning a stressful situation into a path towards resolution."
+  },
+  "assessments": [
+    {
+      "dimension": "empathy",
+      "score": 10,
+      "issue_types": ["EXCELLENT_EMPATHY"],
+      "evidence": [
+        {
+          "turn_index": 11,
+          "quote": "I completely understand, and thanks for being open about that...",
+          "severity": "POSITIVE",
+          "issue_type": "EXCELLENT_EMPATHY"
+        }
+      ]
+    },
+    {
+      "dimension": "compliance",
+      "score": 10,
+      "issue_types": ["PERFECT_COMPLIANCE"],
+      "evidence": [
+        {
+          "turn_index": 11,
+          "quote": "Look, we do have hardship options and flexible payment plans available.",
+          "severity": "POSITIVE",
+          "issue_type": "PROACTIVE_HARDSHIP_OFFER"
+        }
+      ]
+    }
+  ],
+  "issue_types": ["EXCELLENT_EMPATHY", "PERFECT_COMPLIANCE", "EFFECTIVE_RESOLUTION"],
+  "critical_issues": [],
+  "compliance_breach_count": 0,
+  "issue_count": 0,
+  "example_type": "GOOD_EXAMPLE",
+  "analyzed_at": "2026-01-07T03:21:00Z",
+  "model_version": "gemini-2.5-flash"
+}
