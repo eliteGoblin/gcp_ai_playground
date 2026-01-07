@@ -133,6 +133,9 @@ flowchart TB
 
 ## Key Data Tables
 
+<img width="333" height="640" alt="image" src="https://github.com/user-attachments/assets/c28671af-7550-4e1c-aae8-b2949f22ae77" />
+
+
 ### Conversation Pipeline Tables
 
 | Table | Purpose | Key Fields |
@@ -334,6 +337,9 @@ flowchart TB
 
 ## Monitoring System
 
+<img width="1826" height="831" alt="image" src="https://github.com/user-attachments/assets/db418d6e-2b0e-4f69-be46-5ec84e37bca5" />
+
+
 ### 4-Layer Metrics Framework
 
 The monitoring system follows industry-standard methodologies:
@@ -396,27 +402,15 @@ JSON-structured logs optimized for GCP Cloud Logging parsing:
   }
 }
 ```
+log sent to GCP Cloud log:
+<img width="1775" height="860" alt="image" src="https://github.com/user-attachments/assets/fa3f5959-1014-4f40-b73e-a0981732161b" />
+
 
 ### Distributed Tracing (OpenTelemetry + ADK)
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│              TRACE STRUCTURE: ACTUAL IMPLEMENTATION                          │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│   e2e_coaching       │████████████████████████████████████████│  35,711ms  │
-│   ├─data_fetch       │███·····································│   3,546ms  │
-│   ├─input_processing │···█····································│      92ms  │
-│   ├─rag_retrieval    │····█···································│      88ms  │
-│   ├─model_call       │····███████████████████████████████·····│  28,438ms  │ ← 80%
-│   ├─output_processing│····································█···│     101ms  │
-│   └─storage          │····································███·│   3,374ms  │
-│                                                                             │
-│   Direct export to Cloud Trace (no collector needed)                        │
-│   ADK auto-instruments: invoke_agent, call_llm, execute_tool                │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+One trace example showing lantency of different compoenent during per-conversation coach tip is generated
+
+<img width="1807" height="810" alt="image" src="https://github.com/user-attachments/assets/9cac32bf-8d60-4721-9541-725d3331c00c" />
 
 ### Cost Tracking
 
