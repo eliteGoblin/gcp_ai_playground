@@ -13,9 +13,9 @@ An **offline (post-call) AI coaching system** for contact centre agents, built o
 - **Per-Conversation Coaching** — Detailed scores (1-10) across 6 dimensions with evidence citations
 - **Multi-Level Summaries** — Daily digests, weekly reports, and trend analysis with compression
 - **RAG-Powered** — Retrieves relevant compliance policies (ASIC RG 96, internal) and coaching playbooks
-- **Evidence-Based** — Every score backed by specific turn quotes and issue taxonomy
-- **Compliance-Aware** — Detects hardship violations, prohibited language, and regulatory issues
-- **Production-Grade** — 4-layer metrics, structured logging, distributed tracing, cost tracking
+- **Evidence-Based** — Every score backed by specific turn quotes and issue taxonomy (via RAG)
+- **Compliance-Aware** — Detects hardship violations, prohibited language, and regulatory issues (RAG, phrase matcher in ConversationInsight) 
+- **Production-Grade** — 4-layer metrics, structured logging, distributed tracing, cost tracking, Using terraform to manage GCP infra, monitoring, dashboard etc
 
 ---
 
@@ -260,6 +260,9 @@ flowchart TB
 ---
 
 ## Monitoring System
+
+<img width="1646" height="480" alt="image" src="https://github.com/user-attachments/assets/003c254b-701c-42b9-ba2e-41a3e275c81b" />
+
 
 <img width="1826" height="831" alt="image" src="https://github.com/user-attachments/assets/db418d6e-2b0e-4f69-be46-5ec84e37bca5" />
 
