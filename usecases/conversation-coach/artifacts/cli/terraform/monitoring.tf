@@ -40,8 +40,9 @@ resource "google_monitoring_dashboard" "conversation_coach" {
                 timeSeriesFilter = {
                   filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.e2e_success.name}\" resource.type=\"global\""
                   aggregation = {
-                    alignmentPeriod  = "300s"
-                    perSeriesAligner = "ALIGN_RATE"
+                    alignmentPeriod    = "86400s"
+                    perSeriesAligner   = "ALIGN_COUNT"
+                    crossSeriesReducer = "REDUCE_SUM"
                   }
                 }
               }
@@ -85,8 +86,9 @@ resource "google_monitoring_dashboard" "conversation_coach" {
                 timeSeriesFilter = {
                   filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.e2e_latency.name}\" resource.type=\"global\""
                   aggregation = {
-                    alignmentPeriod  = "300s"
-                    perSeriesAligner = "ALIGN_PERCENTILE_50"
+                    alignmentPeriod    = "86400s"
+                    perSeriesAligner   = "ALIGN_DELTA"
+                    crossSeriesReducer = "REDUCE_PERCENTILE_50"
                   }
                 }
               }
@@ -94,22 +96,22 @@ resource "google_monitoring_dashboard" "conversation_coach" {
           }
         },
 
-        # Row 2: Daily Cost
+        # Row 2: Daily Cost (avg per request from distribution)
         {
           xPos   = 9
           yPos   = 1
           width  = 3
           height = 4
           widget = {
-            title = "Today's Cost (USD)"
+            title = "Avg Cost/Request (USD)"
             scorecard = {
               timeSeriesQuery = {
                 timeSeriesFilter = {
                   filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.request_cost.name}\" resource.type=\"global\""
                   aggregation = {
                     alignmentPeriod    = "86400s"
-                    perSeriesAligner   = "ALIGN_SUM"
-                    crossSeriesReducer = "REDUCE_SUM"
+                    perSeriesAligner   = "ALIGN_MEAN"
+                    crossSeriesReducer = "REDUCE_MEAN"
                   }
                 }
               }
@@ -324,14 +326,14 @@ resource "google_monitoring_dashboard" "conversation_coach" {
           }
         },
 
-        # Row 7: Token Usage
+        # Row 7: Token Usage (avg per request from distribution)
         {
           xPos   = 0
           yPos   = 15
           width  = 6
           height = 4
           widget = {
-            title = "Token Usage Over Time"
+            title = "Avg Tokens per Request"
             xyChart = {
               dataSets = [
                 {
@@ -339,47 +341,47 @@ resource "google_monitoring_dashboard" "conversation_coach" {
                     timeSeriesFilter = {
                       filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.input_tokens.name}\" resource.type=\"global\""
                       aggregation = {
-                        alignmentPeriod    = "60s"
-                        perSeriesAligner   = "ALIGN_SUM"
-                        crossSeriesReducer = "REDUCE_SUM"
+                        alignmentPeriod    = "300s"
+                        perSeriesAligner   = "ALIGN_MEAN"
+                        crossSeriesReducer = "REDUCE_MEAN"
                       }
                     }
                   }
                   plotType   = "LINE"
-                  legendTemplate = "Input Tokens"
+                  legendTemplate = "Avg Input Tokens"
                 },
                 {
                   timeSeriesQuery = {
                     timeSeriesFilter = {
                       filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.output_tokens.name}\" resource.type=\"global\""
                       aggregation = {
-                        alignmentPeriod    = "60s"
-                        perSeriesAligner   = "ALIGN_SUM"
-                        crossSeriesReducer = "REDUCE_SUM"
+                        alignmentPeriod    = "300s"
+                        perSeriesAligner   = "ALIGN_MEAN"
+                        crossSeriesReducer = "REDUCE_MEAN"
                       }
                     }
                   }
                   plotType   = "LINE"
-                  legendTemplate = "Output Tokens"
+                  legendTemplate = "Avg Output Tokens"
                 }
               ]
               timeshiftDuration = "0s"
               yAxis = {
-                label = "Tokens"
+                label = "Avg Tokens/Request"
                 scale = "LINEAR"
               }
             }
           }
         },
 
-        # Row 7: Cost Over Time
+        # Row 7: Cost Over Time (avg per request from distribution)
         {
           xPos   = 6
           yPos   = 15
           width  = 6
           height = 4
           widget = {
-            title = "Cost Over Time"
+            title = "Avg Cost per Request (USD)"
             xyChart = {
               dataSets = [
                 {
@@ -388,18 +390,18 @@ resource "google_monitoring_dashboard" "conversation_coach" {
                       filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.request_cost.name}\" resource.type=\"global\""
                       aggregation = {
                         alignmentPeriod    = "3600s"
-                        perSeriesAligner   = "ALIGN_SUM"
-                        crossSeriesReducer = "REDUCE_SUM"
+                        perSeriesAligner   = "ALIGN_MEAN"
+                        crossSeriesReducer = "REDUCE_MEAN"
                       }
                     }
                   }
-                  plotType   = "STACKED_BAR"
-                  legendTemplate = "Cost (USD)"
+                  plotType   = "LINE"
+                  legendTemplate = "Avg Cost (USD)"
                 }
               ]
               timeshiftDuration = "0s"
               yAxis = {
-                label = "USD"
+                label = "USD per Request"
                 scale = "LINEAR"
               }
             }

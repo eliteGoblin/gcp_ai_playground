@@ -164,6 +164,18 @@ flowchart TB
 
 **Agent A2044** | Hardship Call | Resolution: Yes
 
+| Dimension | Score | Key Insight |
+|-----------|-------|-------------|
+| Empathy | 10 | Exceptional active listening |
+| Compliance | 10 | Proactive hardship offer |
+| Resolution | 10 | Sustainable payment arrangement |
+| Overall | **9.9** | Model agent performance |
+
+> **Key Moment** (Turn 11): *"I completely understand, and thanks for being open about that. It sounds like you're under some real pressure right now. Look, we do have hardship options and flexible payment plans available."*
+
+<details>
+<summary>View Full JSON Output</summary>
+
 ```json
 {
   "conversation_id": "3f2d9e4b-1a74-4f35-8bb2-9d8f8df0b6a7",
@@ -175,32 +187,43 @@ flowchart TB
   "professionalism_score": 10,
   "de_escalation_score": 10,
   "efficiency_score": 9,
-
   "coaching_summary": "The agent demonstrated exceptional empathy and compliance, effectively de-escalating a stressed customer and securing a sustainable payment arrangement.",
-
   "strengths": [
     "Exceptional empathy and active listening skills",
     "Proactive and compliant offer of hardship programs",
     "Highly effective de-escalation of a stressed customer",
     "Collaborative approach to finding a sustainable resolution"
   ],
-
   "key_moment": {
     "turn_index": 11,
     "quote": "I completely understand, and thanks for being open about that. It sounds like you're under some real pressure right now. Look, we do have hardship options and flexible payment plans available.",
-    "why_notable": "This turn perfectly demonstrates empathy, active listening, and immediate compliance with hardship policy, effectively turning a stressful situation into a path towards resolution."
+    "why_notable": "This turn perfectly demonstrates empathy, active listening, and immediate compliance with hardship policy."
   },
-
   "issue_types": ["EXCELLENT_EMPATHY", "PERFECT_COMPLIANCE", "EFFECTIVE_RESOLUTION"],
   "critical_issues": [],
   "compliance_breach_count": 0,
   "example_type": "GOOD_EXAMPLE"
 }
 ```
+</details>
+
+---
 
 ### Critically Deficient Agent (Score: 1.0/10)
 
 **Agent M7741** | Hardship Call | Resolution: No
+
+| Dimension | Score | Critical Issues |
+|-----------|-------|-----------------|
+| Empathy | 1 | DISMISSIVE_LANGUAGE, NO_ACKNOWLEDGMENT |
+| Compliance | 1 | THREAT_LEGAL_ACTION, MISSING_HARDSHIP_OFFER |
+| Professionalism | 1 | BLAME_SHIFTING, HARASSMENT |
+| Overall | **1.0** | Immediate retraining required |
+
+> **Critical Moment** (Turn 27): *"Everyone's got an excuse. Dialysis, chemo, dying grandmother. I've heard it all. The fact remains you owe money and you need to pay it. Period."*
+
+<details>
+<summary>View Full JSON Output</summary>
 
 ```json
 {
@@ -213,27 +236,15 @@ flowchart TB
   "professionalism_score": 1,
   "de_escalation_score": 1,
   "efficiency_score": 1,
-
-  "coaching_summary": "The agent demonstrated a complete lack of empathy, professionalism, and compliance throughout the call, actively escalating a distressed customer. Multiple critical compliance violations occurred, including illegal threats and failure to offer a hardship program.",
-
+  "coaching_summary": "The agent demonstrated a complete lack of empathy, professionalism, and compliance throughout the call, actively escalating a distressed customer. Multiple critical compliance violations occurred.",
   "assessments": [
     {
       "dimension": "empathy",
       "score": 1,
       "issue_types": ["DISMISSIVE_LANGUAGE", "NO_ACKNOWLEDGMENT", "BLAME_SHIFTING"],
       "evidence": [
-        {
-          "turn_index": 5,
-          "quote": "Mr Chen, I've heard every excuse in the book. Medical bills, job loss, car problems. Everyone has a story. What I need from you right now is a commitment to pay.",
-          "severity": "CRITICAL",
-          "issue_type": "DISMISSIVE_LANGUAGE"
-        },
-        {
-          "turn_index": 27,
-          "quote": "Everyone's got an excuse. Dialysis, chemo, dying grandmother. I've heard it all. The fact remains you owe money and you need to pay it. Period.",
-          "severity": "CRITICAL",
-          "issue_type": "DISMISSIVE_LANGUAGE"
-        }
+        {"turn_index": 5, "quote": "Mr Chen, I've heard every excuse in the book...", "severity": "CRITICAL"},
+        {"turn_index": 27, "quote": "Everyone's got an excuse. Dialysis, chemo, dying grandmother...", "severity": "CRITICAL"}
       ]
     },
     {
@@ -241,33 +252,31 @@ flowchart TB
       "score": 1,
       "issue_types": ["THREAT_LEGAL_ACTION", "THREAT_GARNISHMENT", "MISSING_HARDSHIP_OFFER"],
       "evidence": [
-        {
-          "turn_index": 9,
-          "quote": "We're talking about legal action here. We can garnish your wages, put a lien on your property.",
-          "severity": "CRITICAL",
-          "issue_type": "THREAT_GARNISHMENT"
-        },
-        {
-          "turn_index": 21,
-          "quote": "If this goes to our legal team, they'll add another $2,500 in fees and you'll have a court judgment on your record.",
-          "severity": "CRITICAL",
-          "issue_type": "THREAT_LEGAL_ACTION"
-        }
+        {"turn_index": 9, "quote": "We can garnish your wages, put a lien on your property.", "severity": "CRITICAL"},
+        {"turn_index": 21, "quote": "If this goes to our legal team, they'll add another $2,500 in fees...", "severity": "CRITICAL"}
       ]
     }
   ],
-
-  "critical_issues": [
-    "DISMISSIVE_LANGUAGE", "NO_ACKNOWLEDGMENT", "BLAME_SHIFTING",
-    "THREAT_LEGAL_ACTION", "THREAT_GARNISHMENT", "HARASSMENT", "MISSING_HARDSHIP_OFFER"
-  ],
+  "critical_issues": ["DISMISSIVE_LANGUAGE", "THREAT_LEGAL_ACTION", "THREAT_GARNISHMENT", "MISSING_HARDSHIP_OFFER"],
   "compliance_breach_count": 4,
   "issue_count": 16,
   "example_type": "NEEDS_WORK"
 }
 ```
+</details>
 
 ### Daily Summary (Real Output)
+
+**Agent M7741** | Date: 2026-01-04 | Calls: 6 | Resolution: 0%
+
+| Focus Area | Top Issues | Quick Wins |
+|------------|------------|------------|
+| Professionalism | THREAT_LEGAL_ACTION, MISSING_HARDSHIP_OFFER | Review Code of Conduct, Practice active listening |
+
+> *"M7741, your performance today was critically low with an overall score of 1.1/10 and a 0% resolution rate across 6 calls."*
+
+<details>
+<summary>View Full JSON Output</summary>
 
 ```json
 {
@@ -275,35 +284,36 @@ flowchart TB
   "date": "2026-01-04",
   "call_count": 6,
   "resolution_rate": 0.0,
-
   "avg_empathy": 1.0,
   "avg_compliance": 1.0,
   "avg_resolution": 1.0,
   "avg_professionalism": 1.0,
   "avg_efficiency": 1.8,
-  "avg_de_escalation": 1.0,
-
   "focus_area": "professionalism",
-
-  "top_issues": [
-    "THREAT_LEGAL_ACTION",
-    "MISSING_HARDSHIP_OFFER",
-    "NO_ACKNOWLEDGMENT",
-    "BLAME_SHIFTING",
-    "DISMISSIVE_LANGUAGE"
-  ],
-
+  "top_issues": ["THREAT_LEGAL_ACTION", "MISSING_HARDSHIP_OFFER", "DISMISSIVE_LANGUAGE"],
   "quick_wins": [
-    "Review the company's Code of Conduct and policies regarding customer interaction and hardship handling before your next shift.",
-    "Practice active listening and acknowledge the customer's statements, even if you cannot immediately offer a solution.",
-    "Strictly follow the approved collections script, particularly when discussing payment options."
-  ],
-
-  "daily_narrative": "M7741, your performance today was critically low with an overall score of 1.1/10 and a 0% resolution rate across 6 calls. The language used, such as 'Everyone's got an excuse' and 'Compassion doesn't pay bills,' demonstrates a severe lack of professionalism and empathy."
+    "Review the company's Code of Conduct before your next shift.",
+    "Practice active listening and acknowledge customer statements.",
+    "Strictly follow the approved collections script."
+  ]
 }
 ```
+</details>
+
+---
 
 ### Weekly Summary (Real Output)
+
+**Agent M7741** | Week: 2025-12-29 | Total Calls: 7 | Resolution: 0%
+
+| Trend | Action Plan | Recommended Training |
+|-------|-------------|---------------------|
+| No improvement | Review compliance guidelines | Compliance Basics, Empathy Building |
+
+> *"Agent M7741's performance this week was critically deficient, with an overall average score of 1.1 out of 10 across 7 calls."*
+
+<details>
+<summary>View Full JSON Output</summary>
 
 ```json
 {
@@ -311,27 +321,15 @@ flowchart TB
   "week_start": "2025-12-29",
   "total_calls": 7,
   "resolution_rate": 0.0,
-
   "empathy_score": 1.0,
   "compliance_score": 1.0,
   "resolution_score": 1.0,
-  "professionalism_score": 1.0,
-  "efficiency_score": 1.7,
-  "de_escalation_score": 1.0,
-
-  "trend_analysis": "Performance remained consistently low across the two days with calls, showing no improvement in any dimension. The 0% resolution rate and uniform 1.0 scores highlight a pervasive and unaddressed performance gap.",
-
-  "action_plan": "1. Immediately review and adhere to all compliance guidelines, specifically regarding legal action threats and mandatory hardship offer procedures. 2. Focus on active listening and empathetic communication. 3. Review the Hardship Program Guide.",
-
-  "recommended_training": [
-    "Compliance Basics",
-    "Empathy Building",
-    "Hardship Program Guide"
-  ],
-
-  "weekly_summary": "Agent M7741's performance this week was critically deficient, with an overall average score of 1.1 out of 10 across 7 calls. All core metrics consistently scored 1.0, indicating a complete failure to meet basic expectations."
+  "trend_analysis": "Performance remained consistently low, showing no improvement in any dimension.",
+  "action_plan": "1. Review compliance guidelines. 2. Focus on active listening. 3. Review Hardship Program Guide.",
+  "recommended_training": ["Compliance Basics", "Empathy Building", "Hardship Program Guide"]
 }
 ```
+</details>
 
 ---
 
