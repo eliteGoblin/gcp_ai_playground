@@ -73,6 +73,15 @@ def get_request_id() -> str:
     return request_id_ctx.get()
 
 
+def set_request_id(request_id: str) -> None:
+    """Set current request ID.
+
+    Args:
+        request_id: Request ID to set for correlation
+    """
+    request_id_ctx.set(request_id)
+
+
 @dataclass
 class ComponentResult:
     """Result container for component execution."""

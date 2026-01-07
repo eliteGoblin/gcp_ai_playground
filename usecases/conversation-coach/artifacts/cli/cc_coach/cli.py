@@ -1709,5 +1709,344 @@ def monitor_metrics(
                 rprint(f"  {name}: {comp['success_rate']*100:.0f}% success, {comp['latency_p50_ms']}ms p50")
 
 
+# =============================================================================
+# Summary Commands - Daily and Weekly Agent Summaries
+# =============================================================================
+
+summary_app = typer.Typer(help="Generate and view agent coaching summaries")
+app.add_typer(summary_app, name="summary")
+
+
+@summary_app.command("daily")
+def summary_daily(
+    agent_id: Optional[str] = typer.Option(None, "--agent", "-a", help="Specific agent ID"),
+    target_date: Optional[str] = typer.Option(None, "--date", "-d", help="Date (YYYY-MM-DD), defaults to yesterday"),
+    model: Optional[str] = typer.Option(None, "--model", "-m", help="Model override"),
+    output_json: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+):
+    """Generate daily summary for agent(s)."""
+    from datetime import date as date_type, timedelta
+    from cc_coach.services.summary import SummaryOrchestrator
+
+    # Default to yesterday
+    if target_date:
+        dt = date_type.fromisoformat(target_date)
+    else:
+        dt = date_type.today() - timedelta(days=1)
+
+    orchestrator = SummaryOrchestrator(model=model)
+
+    try:
+        if agent_id:
+            # Single agent
+            rprint(f"[bold blue]Generating daily summary for {agent_id} on {dt}...[/bold blue]")
+            summary = orchestrator.generate_daily_summary(agent_id, dt)
+
+            if not summary:
+                rprint(f"[yellow]No coaching data for {agent_id} on {dt}[/yellow]")
+                return
+
+            if output_json:
+                rprint(summary.model_dump_json(indent=2))
+            else:
+                _display_daily_summary(summary)
+
+            rprint(f"\n[bold green]Daily summary saved to BigQuery[/bold green]")
+        else:
+            # All agents
+            rprint(f"[bold blue]Generating daily summaries for all agents on {dt}...[/bold blue]")
+            results = orchestrator.generate_all_daily_summaries(dt)
+
+            for agent_result in results["agents"]:
+                status_icon = "[green]OK[/green]" if agent_result["status"] == "success" else "[yellow]skip[/yellow]" if agent_result["status"] == "skipped" else "[red]FAIL[/red]"
+                rprint(f"  {agent_result['agent_id']}: {status_icon}")
+                if agent_result.get("error"):
+                    rprint(f"    [dim]{agent_result['error']}[/dim]")
+
+            rprint(f"\n[bold]Complete: {results['success']} success, {results['skipped']} skipped, {results['failed']} failed[/bold]")
+
+    except Exception as e:
+        logger.exception(f"Failed to generate daily summary")
+        rprint(f"[bold red]Error: {e}[/bold red]")
+        raise typer.Exit(1)
+    finally:
+        from cc_coach.monitoring.tracing import shutdown_tracing
+        shutdown_tracing()
+
+
+@summary_app.command("weekly")
+def summary_weekly(
+    agent_id: Optional[str] = typer.Option(None, "--agent", "-a", help="Specific agent ID"),
+    week_start: Optional[str] = typer.Option(None, "--week", "-w", help="Week start date (Monday, YYYY-MM-DD), defaults to last week"),
+    model: Optional[str] = typer.Option(None, "--model", "-m", help="Model override"),
+    output_json: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+):
+    """Generate weekly summary for agent(s)."""
+    from datetime import date as date_type, timedelta
+    from cc_coach.services.summary import SummaryOrchestrator
+
+    # Default to last week's Monday
+    if week_start:
+        dt = date_type.fromisoformat(week_start)
+    else:
+        today = date_type.today()
+        # Go back to last Monday
+        dt = today - timedelta(days=today.weekday() + 7)
+
+    # Ensure it's a Monday
+    if dt.weekday() != 0:
+        dt = dt - timedelta(days=dt.weekday())
+
+    orchestrator = SummaryOrchestrator(model=model)
+
+    try:
+        if agent_id:
+            # Single agent
+            rprint(f"[bold blue]Generating weekly summary for {agent_id} week of {dt}...[/bold blue]")
+            summary = orchestrator.generate_weekly_summary(agent_id, dt)
+
+            if not summary:
+                rprint(f"[yellow]No coaching data for {agent_id} week of {dt}[/yellow]")
+                return
+
+            if output_json:
+                rprint(summary.model_dump_json(indent=2))
+            else:
+                _display_weekly_summary(summary)
+
+            rprint(f"\n[bold green]Weekly summary saved to BigQuery[/bold green]")
+        else:
+            # All agents
+            rprint(f"[bold blue]Generating weekly summaries for all agents week of {dt}...[/bold blue]")
+            results = orchestrator.generate_all_weekly_summaries(dt)
+
+            for agent_result in results["agents"]:
+                status_icon = "[green]OK[/green]" if agent_result["status"] == "success" else "[yellow]skip[/yellow]" if agent_result["status"] == "skipped" else "[red]FAIL[/red]"
+                rprint(f"  {agent_result['agent_id']}: {status_icon}")
+                if agent_result.get("error"):
+                    rprint(f"    [dim]{agent_result['error']}[/dim]")
+
+            rprint(f"\n[bold]Complete: {results['success']} success, {results['skipped']} skipped, {results['failed']} failed[/bold]")
+
+    except Exception as e:
+        logger.exception(f"Failed to generate weekly summary")
+        rprint(f"[bold red]Error: {e}[/bold red]")
+        raise typer.Exit(1)
+    finally:
+        from cc_coach.monitoring.tracing import shutdown_tracing
+        shutdown_tracing()
+
+
+@summary_app.command("get-daily")
+def summary_get_daily(
+    agent_id: str = typer.Argument(..., help="Agent ID"),
+    target_date: Optional[str] = typer.Option(None, "--date", "-d", help="Date (YYYY-MM-DD)"),
+    output_json: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+):
+    """Get existing daily summary for an agent."""
+    from datetime import date as date_type, timedelta
+    from cc_coach.services.summary import SummaryOrchestrator
+
+    if target_date:
+        dt = date_type.fromisoformat(target_date)
+    else:
+        dt = date_type.today() - timedelta(days=1)
+
+    orchestrator = SummaryOrchestrator()
+    result = orchestrator.get_daily_summary(agent_id, dt)
+
+    if not result:
+        rprint(f"[yellow]No daily summary found for {agent_id} on {dt}[/yellow]")
+        raise typer.Exit(1)
+
+    if output_json:
+        rprint(json.dumps(result, default=str, indent=2))
+    else:
+        _display_daily_summary_from_bq(result)
+
+
+@summary_app.command("get-weekly")
+def summary_get_weekly(
+    agent_id: str = typer.Argument(..., help="Agent ID"),
+    week_start: Optional[str] = typer.Option(None, "--week", "-w", help="Week start (Monday, YYYY-MM-DD)"),
+    output_json: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
+):
+    """Get existing weekly summary for an agent."""
+    from datetime import date as date_type, timedelta
+    from cc_coach.services.summary import SummaryOrchestrator
+
+    if week_start:
+        dt = date_type.fromisoformat(week_start)
+    else:
+        today = date_type.today()
+        dt = today - timedelta(days=today.weekday() + 7)
+
+    orchestrator = SummaryOrchestrator()
+    result = orchestrator.get_weekly_summary(agent_id, dt)
+
+    if not result:
+        rprint(f"[yellow]No weekly summary found for {agent_id} week of {dt}[/yellow]")
+        raise typer.Exit(1)
+
+    if output_json:
+        rprint(json.dumps(result, default=str, indent=2))
+    else:
+        _display_weekly_summary_from_bq(result)
+
+
+def _display_daily_summary(summary):
+    """Display daily summary in rich format."""
+    rprint(f"\n[bold]Daily Summary: {summary.agent_id}[/bold]")
+    rprint(f"[dim]Date: {summary.date} | Calls: {summary.call_count}[/dim]")
+    rprint("-" * 60)
+
+    # Scores
+    scores_table = Table(title="Scores", show_header=False)
+    scores_table.add_column("Dimension", style="cyan")
+    scores_table.add_column("Score", justify="right")
+
+    scores_table.add_row("Empathy", f"{summary.avg_empathy}/10")
+    scores_table.add_row("Compliance", f"{summary.avg_compliance}/10")
+    scores_table.add_row("Resolution", f"{summary.avg_resolution}/10")
+    scores_table.add_row("Professionalism", f"{summary.avg_professionalism}/10")
+    scores_table.add_row("Efficiency", f"{summary.avg_efficiency}/10")
+    scores_table.add_row("De-escalation", f"{summary.avg_de_escalation}/10")
+    scores_table.add_row("Resolution Rate", f"{summary.resolution_rate * 100:.0f}%")
+
+    console.print(scores_table)
+
+    # Narrative
+    rprint(f"\n[bold]Summary:[/bold]")
+    rprint(f"  {summary.daily_narrative}")
+
+    rprint(f"\n[bold]Focus Area:[/bold] [cyan]{summary.focus_area}[/cyan]")
+
+    if summary.quick_wins:
+        rprint(f"\n[bold]Quick Wins:[/bold]")
+        for qw in summary.quick_wins:
+            rprint(f"  - {qw}")
+
+    if summary.top_issues:
+        rprint(f"\n[bold red]Top Issues:[/bold red]")
+        for issue in summary.top_issues[:3]:
+            rprint(f"  - {issue}")
+
+    if summary.top_strengths:
+        rprint(f"\n[bold green]Strengths:[/bold green]")
+        for strength in summary.top_strengths[:3]:
+            rprint(f"  + {strength}")
+
+
+def _display_daily_summary_from_bq(result: dict):
+    """Display daily summary from BQ row."""
+    rprint(f"\n[bold]Daily Summary: {result['agent_id']}[/bold]")
+    rprint(f"[dim]Date: {result['date']} | Calls: {result['call_count']}[/dim]")
+    rprint("-" * 60)
+
+    # Scores
+    rprint(f"\n[cyan]Scores:[/cyan]")
+    rprint(f"  Empathy: {result.get('avg_empathy', 'N/A')}/10")
+    rprint(f"  Compliance: {result.get('avg_compliance', 'N/A')}/10")
+    rprint(f"  Resolution: {result.get('avg_resolution', 'N/A')}/10")
+    rprint(f"  Resolution Rate: {result.get('resolution_rate', 0) * 100:.0f}%")
+
+    rprint(f"\n[bold]Summary:[/bold]")
+    rprint(f"  {result.get('daily_narrative', 'N/A')}")
+
+    rprint(f"\n[bold]Focus Area:[/bold] [cyan]{result.get('focus_area', 'N/A')}[/cyan]")
+
+    quick_wins = result.get('quick_wins', [])
+    if quick_wins:
+        rprint(f"\n[bold]Quick Wins:[/bold]")
+        for qw in quick_wins:
+            rprint(f"  - {qw}")
+
+    rprint(f"\n[dim]Generated: {result.get('generated_at', 'N/A')}[/dim]")
+
+
+def _display_weekly_summary(summary):
+    """Display weekly summary in rich format."""
+    rprint(f"\n[bold]Weekly Summary: {summary.agent_id}[/bold]")
+    rprint(f"[dim]Week of: {summary.week_start} | Calls: {summary.total_calls}[/dim]")
+    rprint("-" * 60)
+
+    # Scores with deltas
+    scores_table = Table(title="Week Scores", show_header=True)
+    scores_table.add_column("Dimension", style="cyan")
+    scores_table.add_column("Score", justify="right")
+    scores_table.add_column("Change", justify="right")
+
+    def format_delta(delta):
+        if delta is None:
+            return "[dim]N/A[/dim]"
+        color = "green" if delta > 0 else "red" if delta < 0 else "dim"
+        sign = "+" if delta > 0 else ""
+        return f"[{color}]{sign}{delta:.1f}[/{color}]"
+
+    scores_table.add_row("Empathy", f"{summary.empathy_score}/10", format_delta(summary.empathy_delta))
+    scores_table.add_row("Compliance", f"{summary.compliance_score}/10", format_delta(summary.compliance_delta))
+    scores_table.add_row("Resolution", f"{summary.resolution_score}/10", format_delta(summary.resolution_delta))
+    scores_table.add_row("Professionalism", f"{summary.professionalism_score}/10", "[dim]N/A[/dim]")
+    scores_table.add_row("Efficiency", f"{summary.efficiency_score}/10", "[dim]N/A[/dim]")
+    scores_table.add_row("De-escalation", f"{summary.de_escalation_score}/10", "[dim]N/A[/dim]")
+
+    console.print(scores_table)
+
+    # Summary
+    rprint(f"\n[bold]Summary:[/bold]")
+    rprint(f"  {summary.weekly_summary}")
+
+    rprint(f"\n[bold]Trend Analysis:[/bold]")
+    rprint(f"  {summary.trend_analysis}")
+
+    rprint(f"\n[bold]Action Plan:[/bold]")
+    rprint(f"  {summary.action_plan}")
+
+    if summary.recommended_training:
+        rprint(f"\n[bold yellow]Recommended Training:[/bold yellow]")
+        for training in summary.recommended_training:
+            rprint(f"  - {training}")
+
+    if summary.top_issues:
+        rprint(f"\n[bold red]Top Issues:[/bold red]")
+        for issue in summary.top_issues[:3]:
+            rprint(f"  - {issue}")
+
+    if summary.top_strengths:
+        rprint(f"\n[bold green]Strengths:[/bold green]")
+        for strength in summary.top_strengths[:3]:
+            rprint(f"  + {strength}")
+
+
+def _display_weekly_summary_from_bq(result: dict):
+    """Display weekly summary from BQ row."""
+    rprint(f"\n[bold]Weekly Summary: {result['agent_id']}[/bold]")
+    rprint(f"[dim]Week of: {result['week_start']} | Calls: {result['total_calls']}[/dim]")
+    rprint("-" * 60)
+
+    # Scores
+    rprint(f"\n[cyan]Scores:[/cyan]")
+    rprint(f"  Empathy: {result.get('empathy_score', 'N/A')}/10")
+    rprint(f"  Compliance: {result.get('compliance_score', 'N/A')}/10")
+    rprint(f"  Resolution: {result.get('resolution_score', 'N/A')}/10")
+
+    rprint(f"\n[bold]Summary:[/bold]")
+    rprint(f"  {result.get('weekly_summary', 'N/A')}")
+
+    rprint(f"\n[bold]Trend Analysis:[/bold]")
+    rprint(f"  {result.get('trend_analysis', 'N/A')}")
+
+    rprint(f"\n[bold]Action Plan:[/bold]")
+    rprint(f"  {result.get('action_plan', 'N/A')}")
+
+    training = result.get('recommended_training', [])
+    if training:
+        rprint(f"\n[bold yellow]Recommended Training:[/bold yellow]")
+        for t in training:
+            rprint(f"  - {t}")
+
+    rprint(f"\n[dim]Generated: {result.get('generated_at', 'N/A')}[/dim]")
+
+
 if __name__ == "__main__":
     app()
