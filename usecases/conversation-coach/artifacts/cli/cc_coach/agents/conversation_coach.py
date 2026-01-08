@@ -37,6 +37,21 @@ logger = logging.getLogger(__name__)
 # Production logging configuration
 LOG_FULL_PROMPT = os.getenv("CC_LOG_FULL_PROMPT", "false").lower() == "true"
 LOG_LEVEL_PROMPT = os.getenv("CC_LOG_LEVEL_PROMPT", "DEBUG")
+LOG_RAG_CONTEXT = os.getenv("CC_LOG_RAG_CONTEXT", "true").lower() == "true"
+
+# Global storage for last RAG context (for debugging/verification)
+_last_rag_context: Optional[str] = None
+_last_full_instruction: Optional[str] = None
+
+
+def get_last_rag_context() -> Optional[str]:
+    """Get the last RAG context used for coaching."""
+    return _last_rag_context
+
+
+def get_last_full_instruction() -> Optional[str]:
+    """Get the last full instruction sent to the model."""
+    return _last_full_instruction
 
 
 def _get_prompt_hash(prompt: str) -> str:
@@ -98,15 +113,21 @@ def create_conversation_coach_agent(
     """
     model = model or MODEL_VERSION
 
+    global _last_rag_context, _last_full_instruction
+
     # Build the full instruction with policy section
     if rag_context:
         policy_section = RAG_CONTEXT_TEMPLATE.format(context=rag_context)
         citations_section = CITATIONS_INSTRUCTION
         logger.info(f"Creating agent with RAG context ({len(rag_context)} chars)")
+        _last_rag_context = rag_context
+        if LOG_RAG_CONTEXT:
+            logger.debug(f"RAG Context:\n{rag_context[:2000]}{'...' if len(rag_context) > 2000 else ''}")
     elif allow_fallback:
         logger.warning("RAG context not available, using embedded policy fallback")
         policy_section = EMBEDDED_POLICY
         citations_section = ""
+        _last_rag_context = "[FALLBACK: Embedded policy used - no RAG context available]"
     else:
         raise ValueError(
             "RAG context is required for coaching. "
@@ -137,6 +158,11 @@ Key requirements:
 6. Classify the call type (hardship, complaint, payment, dispute, inquiry, etc.)
 {"7. Include citations for any policy documents referenced" if rag_context else ""}
 """
+
+    # Store for debugging/verification
+    _last_full_instruction = full_instruction
+    if LOG_FULL_PROMPT:
+        logger.info(f"Full instruction:\n{full_instruction[:3000]}...")
 
     # Create the ADK Agent with output schema
     agent = Agent(

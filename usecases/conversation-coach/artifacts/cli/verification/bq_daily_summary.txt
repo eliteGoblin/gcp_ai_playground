@@ -1,0 +1,40 @@
+=== BIGQUERY DATA: DAILY SUMMARY ===
+Table: vertexdemo-481519.conversation_coach.daily_agent_summary
+Query timestamp: 2026-01-07T03:22:10Z
+
+[
+  {
+    "agent_id": "M7741", 
+    "avg_compliance": "1.0", 
+    "avg_de_escalation": "1.0", 
+    "avg_efficiency": "1.8", 
+    "avg_empathy": "1.0", 
+    "avg_professionalism": "1.0", 
+    "avg_resolution": "1.0", 
+    "call_count": "6", 
+    "daily_narrative": "M7741, your performance today was critically low with an overall score of 1.1/10 and a 0% resolution rate across 6 calls. The language used, such as 'Everyone's got an excuse' and 'Compassion doesn't pay bills,' demonstrates a severe lack of professionalism and empathy, directly contributing to issues like dismissive language and blame-shifting.", 
+    "date": "2026-01-04", 
+    "focus_area": "professionalism", 
+    "generated_at": "2026-01-07 03:21:15", 
+    "quick_wins": [
+      "Review the company's Code of Conduct and policies regarding customer interaction and hardship handling before your next shift.", 
+      "Practice active listening and acknowledge the customer's statements, even if you cannot immediately offer a solution, to show respect.", 
+      "Strictly follow the approved collections script, particularly when discussing payment options or responding to hardship disclosures, to ensure compliance and professionalism."
+    ], 
+    "resolution_rate": "0.0", 
+    "top_issues": [
+      "THREAT_LEGAL_ACTION", 
+      "MISSING_HARDSHIP_OFFER", 
+      "NO_ACKNOWLEDGMENT", 
+      "BLAME_SHIFTING", 
+      "DISMISSIVE_LANGUAGE"
+    ], 
+    "top_strengths": [
+      "The agent correctly identified themselves and the company at the beginning of the call (Turn 1, Turn 3).", 
+      "The agent correctly identified the customer at the beginning of the call.", 
+      "None identified. The agent's performance was critically deficient across all aspects of the call.", 
+      "The agent clearly stated the purpose of the call and the outstanding debt amount.", 
+      "The agent correctly identified themselves and the company at the beginning of the call."
+    ]
+  }
+]

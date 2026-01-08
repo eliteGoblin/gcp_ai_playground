@@ -1,0 +1,71 @@
+BATCH ANALYSIS SUMMARY
+================================================================================
+Timestamp: 2026-01-08T20:56:00.494770+00:00
+Total Conversations: 9
+Successful: 9
+Failed: 0
+
+
+SUCCESSFUL ANALYSES
+--------------------------------------------------------------------------------
+
+2b6f5c61-9e3a-4e47-8b8c-3f0c5f6c2d0e
+  Score: 9.2 | Type: payment
+  Coaching Points: 2
+  RAG: Fallback
+  Cost: $0.000633 | Latency: 19773ms
+
+3f2d9e4b-1a74-4f35-8bb2-9d8f8df0b6a7
+  Score: 9.9 | Type: hardship
+  Coaching Points: 1
+  RAG: Fallback
+  Cost: $0.000841 | Latency: 33679ms
+
+6a4a8f17-6c6f-4a2a-9b1b-5c0d8e2e42c9
+  Score: 9.4 | Type: wrong_party_contact
+  Coaching Points: 1
+  RAG: Fallback
+  Cost: $0.000600 | Latency: 19746ms
+
+9c8f3c2a-4fd2-4e7b-9b41-2fb2b4e6a2d1
+  Score: 7.6 | Type: Payment/Complaint
+  Coaching Points: 2
+  RAG: Fallback
+  Cost: $0.000741 | Latency: 33887ms
+
+a1b2c3d4-toxic-agent-test-0001
+  Score: 1.2 | Type: payment
+  Coaching Points: 4
+  RAG: Fallback
+  Cost: $0.001578 | Latency: 33869ms
+
+a7c3d1e8-5b2f-4a9d-8c6e-1f4b7a3d9e5c
+  Score: 9.4 | Type: dispute
+  Coaching Points: 2
+  RAG: Fallback
+  Cost: $0.000751 | Latency: 21370ms
+
+b8d4e2f9-6c3a-4b8e-9d7f-2a5c8b4e0f6d
+  Score: 8.2 | Type: payment
+  Coaching Points: 2
+  RAG: Fallback
+  Cost: $0.000573 | Latency: 21644ms
+
+c9e5f3a0-7d4b-4c9f-0e8a-3b6d9c5f1a7e
+  Score: 6.8 | Type: escalation
+  Coaching Points: 2
+  RAG: Fallback
+  Cost: $0.000782 | Latency: 23819ms
+
+e5f6g7h8-exemplary-agent-test-0001
+  Score: 9.7 | Type: hardship
+  Coaching Points: 3
+  RAG: Fallback
+  Cost: $0.001148 | Latency: 32974ms
+
+
+AGGREGATE METRICS
+--------------------------------------------------------------------------------
+Average Score: 7.94
+Total Cost: $0.007647
+RAG Fallback Rate: 100.0%

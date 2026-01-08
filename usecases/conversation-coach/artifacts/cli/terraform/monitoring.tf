@@ -27,21 +27,21 @@ resource "google_monitoring_dashboard" "conversation_coach" {
           }
         },
 
-        # Row 2: E2E Success Rate
+        # Row 2: Total Requests (OTEL counter with ALIGN_DELTA)
         {
           xPos   = 0
           yPos   = 1
           width  = 3
           height = 4
           widget = {
-            title = "E2E Success Rate"
+            title = "Total Requests"
             scorecard = {
               timeSeriesQuery = {
                 timeSeriesFilter = {
-                  filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.e2e_success.name}\" resource.type=\"global\""
+                  filter = "metric.type=\"workload.googleapis.com/cc_coach_requests_total\" resource.type=\"generic_node\""
                   aggregation = {
-                    alignmentPeriod    = "86400s"
-                    perSeriesAligner   = "ALIGN_COUNT"
+                    alignmentPeriod    = "604800s"
+                    perSeriesAligner   = "ALIGN_DELTA"
                     crossSeriesReducer = "REDUCE_SUM"
                   }
                 }
@@ -50,21 +50,21 @@ resource "google_monitoring_dashboard" "conversation_coach" {
           }
         },
 
-        # Row 2: Total Requests
+        # Row 2: Success Count (OTEL counter with ALIGN_DELTA)
         {
           xPos   = 3
           yPos   = 1
           width  = 3
           height = 4
           widget = {
-            title = "Total Requests (Today)"
+            title = "Successful Requests"
             scorecard = {
               timeSeriesQuery = {
                 timeSeriesFilter = {
-                  filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.e2e_success.name}\" resource.type=\"global\""
+                  filter = "metric.type=\"workload.googleapis.com/cc_coach_requests_total\" metric.label.success=\"true\" resource.type=\"generic_node\""
                   aggregation = {
-                    alignmentPeriod    = "86400s"
-                    perSeriesAligner   = "ALIGN_SUM"
+                    alignmentPeriod    = "604800s"
+                    perSeriesAligner   = "ALIGN_DELTA"
                     crossSeriesReducer = "REDUCE_SUM"
                   }
                 }
@@ -73,34 +73,41 @@ resource "google_monitoring_dashboard" "conversation_coach" {
           }
         },
 
-        # Row 2: E2E Latency P50 (using MQL for proper distribution percentile)
+        # Row 2: E2E Latency Avg (OTEL - using ALIGN_DELTA for histogram count)
         {
           xPos   = 6
           yPos   = 1
           width  = 3
           height = 4
           widget = {
-            title = "E2E Latency P50 (ms)"
+            title = "Requests Processed"
             scorecard = {
               timeSeriesQuery = {
-                timeSeriesQueryLanguage = "fetch global | metric 'logging.googleapis.com/user/conversation-coach/e2e_latency' | align delta(1d) | group_by [], [value_e2e_latency_percentile: percentile(value.e2e_latency, 50)]"
+                timeSeriesFilter = {
+                  filter = "metric.type=\"workload.googleapis.com/cc_coach_request_duration_ms\" resource.type=\"generic_node\""
+                  aggregation = {
+                    alignmentPeriod    = "3600s"
+                    perSeriesAligner   = "ALIGN_DELTA"
+                    crossSeriesReducer = "REDUCE_SUM"
+                  }
+                }
               }
             }
           }
         },
 
-        # Row 2: Daily Cost (count of requests - cost tracking)
+        # Row 2: Total Cost (OTEL Real-time - micro USD)
         {
           xPos   = 9
           yPos   = 1
           width  = 3
           height = 4
           widget = {
-            title = "Requests with Cost"
+            title = "Total Cost (micro-USD)"
             scorecard = {
               timeSeriesQuery = {
                 timeSeriesFilter = {
-                  filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.request_cost.name}\" resource.type=\"global\""
+                  filter = "metric.type=\"workload.googleapis.com/cc_coach_cost_micro_usd\" resource.type=\"generic_node\""
                   aggregation = {
                     alignmentPeriod    = "86400s"
                     perSeriesAligner   = "ALIGN_DELTA"
@@ -112,20 +119,20 @@ resource "google_monitoring_dashboard" "conversation_coach" {
           }
         },
 
-        # Row 3: E2E Success/Failure Over Time
+        # Row 3: Request Rate by Success (OTEL Real-time)
         {
           xPos   = 0
           yPos   = 5
           width  = 6
           height = 4
           widget = {
-            title = "E2E Success vs Failure"
+            title = "Request Rate by Success (Real-time)"
             xyChart = {
               dataSets = [
                 {
                   timeSeriesQuery = {
                     timeSeriesFilter = {
-                      filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.e2e_success.name}\" resource.type=\"global\""
+                      filter = "metric.type=\"workload.googleapis.com/cc_coach_requests_total\" metric.label.success=\"true\" resource.type=\"generic_node\""
                       aggregation = {
                         alignmentPeriod    = "60s"
                         perSeriesAligner   = "ALIGN_RATE"
@@ -139,7 +146,7 @@ resource "google_monitoring_dashboard" "conversation_coach" {
                 {
                   timeSeriesQuery = {
                     timeSeriesFilter = {
-                      filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.e2e_failure.name}\" resource.type=\"global\""
+                      filter = "metric.type=\"workload.googleapis.com/cc_coach_requests_total\" metric.label.success=\"false\" resource.type=\"generic_node\""
                       aggregation = {
                         alignmentPeriod    = "60s"
                         perSeriesAligner   = "ALIGN_RATE"
@@ -160,59 +167,34 @@ resource "google_monitoring_dashboard" "conversation_coach" {
           }
         },
 
-        # Row 3: E2E Latency Distribution
+        # Row 3: E2E Request Count Over Time (OTEL histogram count)
         {
           xPos   = 6
           yPos   = 5
           width  = 6
           height = 4
           widget = {
-            title = "E2E Latency Distribution"
+            title = "Request Count Over Time"
             xyChart = {
               dataSets = [
                 {
                   timeSeriesQuery = {
                     timeSeriesFilter = {
-                      filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.e2e_latency.name}\" resource.type=\"global\""
+                      filter = "metric.type=\"workload.googleapis.com/cc_coach_request_duration_ms\" resource.type=\"generic_node\""
                       aggregation = {
-                        alignmentPeriod  = "60s"
-                        perSeriesAligner = "ALIGN_PERCENTILE_50"
+                        alignmentPeriod    = "300s"
+                        perSeriesAligner   = "ALIGN_DELTA"
+                        crossSeriesReducer = "REDUCE_SUM"
                       }
                     }
                   }
                   plotType   = "LINE"
-                  legendTemplate = "P50"
-                },
-                {
-                  timeSeriesQuery = {
-                    timeSeriesFilter = {
-                      filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.e2e_latency.name}\" resource.type=\"global\""
-                      aggregation = {
-                        alignmentPeriod  = "60s"
-                        perSeriesAligner = "ALIGN_PERCENTILE_95"
-                      }
-                    }
-                  }
-                  plotType   = "LINE"
-                  legendTemplate = "P95"
-                },
-                {
-                  timeSeriesQuery = {
-                    timeSeriesFilter = {
-                      filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.e2e_latency.name}\" resource.type=\"global\""
-                      aggregation = {
-                        alignmentPeriod  = "60s"
-                        perSeriesAligner = "ALIGN_PERCENTILE_99"
-                      }
-                    }
-                  }
-                  plotType   = "LINE"
-                  legendTemplate = "P99"
+                  legendTemplate = "Requests"
                 }
               ]
               timeshiftDuration = "0s"
               yAxis = {
-                label = "Latency (ms)"
+                label = "Request Count"
                 scale = "LINEAR"
               }
             }
@@ -319,20 +301,20 @@ resource "google_monitoring_dashboard" "conversation_coach" {
           }
         },
 
-        # Row 7: Request Volume Over Time (from token distribution count)
+        # Row 7: Token Usage Over Time (OTEL Real-time)
         {
           xPos   = 0
           yPos   = 15
           width  = 6
           height = 4
           widget = {
-            title = "Request Volume (from token metrics)"
+            title = "Token Usage (Real-time)"
             xyChart = {
               dataSets = [
                 {
                   timeSeriesQuery = {
                     timeSeriesFilter = {
-                      filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.input_tokens.name}\" resource.type=\"global\""
+                      filter = "metric.type=\"workload.googleapis.com/cc_coach_tokens_total\" metric.label.type=\"input\" resource.type=\"generic_node\""
                       aggregation = {
                         alignmentPeriod    = "300s"
                         perSeriesAligner   = "ALIGN_DELTA"
@@ -341,32 +323,46 @@ resource "google_monitoring_dashboard" "conversation_coach" {
                     }
                   }
                   plotType   = "LINE"
-                  legendTemplate = "Requests (Input Token Metric)"
+                  legendTemplate = "Input Tokens"
+                },
+                {
+                  timeSeriesQuery = {
+                    timeSeriesFilter = {
+                      filter = "metric.type=\"workload.googleapis.com/cc_coach_tokens_total\" metric.label.type=\"output\" resource.type=\"generic_node\""
+                      aggregation = {
+                        alignmentPeriod    = "300s"
+                        perSeriesAligner   = "ALIGN_DELTA"
+                        crossSeriesReducer = "REDUCE_SUM"
+                      }
+                    }
+                  }
+                  plotType   = "LINE"
+                  legendTemplate = "Output Tokens"
                 }
               ]
               timeshiftDuration = "0s"
               yAxis = {
-                label = "Request Count"
+                label = "Tokens"
                 scale = "LINEAR"
               }
             }
           }
         },
 
-        # Row 7: Cost Request Volume Over Time
+        # Row 7: Cost Over Time (OTEL Real-time)
         {
           xPos   = 6
           yPos   = 15
           width  = 6
           height = 4
           widget = {
-            title = "Requests with Cost Tracking"
+            title = "Cost Accumulation (micro-USD, Real-time)"
             xyChart = {
               dataSets = [
                 {
                   timeSeriesQuery = {
                     timeSeriesFilter = {
-                      filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.request_cost.name}\" resource.type=\"global\""
+                      filter = "metric.type=\"workload.googleapis.com/cc_coach_cost_micro_usd\" resource.type=\"generic_node\""
                       aggregation = {
                         alignmentPeriod    = "3600s"
                         perSeriesAligner   = "ALIGN_DELTA"
@@ -375,12 +371,12 @@ resource "google_monitoring_dashboard" "conversation_coach" {
                     }
                   }
                   plotType   = "STACKED_BAR"
-                  legendTemplate = "Requests with Cost"
+                  legendTemplate = "Cost (micro-USD)"
                 }
               ]
               timeshiftDuration = "0s"
               yAxis = {
-                label = "Request Count"
+                label = "Cost (micro-USD)"
                 scale = "LINEAR"
               }
             }
@@ -402,53 +398,41 @@ resource "google_monitoring_dashboard" "conversation_coach" {
           }
         },
 
-        # Row 9: Model Latency
+        # Row 9: Model Call Count (OTEL histogram count)
         {
           xPos   = 0
           yPos   = 20
           width  = 6
           height = 4
           widget = {
-            title = "Model Call Latency"
+            title = "Model Calls Over Time"
             xyChart = {
               dataSets = [
                 {
                   timeSeriesQuery = {
                     timeSeriesFilter = {
-                      filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.model_call_latency.name}\" resource.type=\"global\""
+                      filter = "metric.type=\"workload.googleapis.com/cc_coach_model_latency_ms\" resource.type=\"generic_node\""
                       aggregation = {
-                        alignmentPeriod  = "60s"
-                        perSeriesAligner = "ALIGN_PERCENTILE_50"
+                        alignmentPeriod    = "300s"
+                        perSeriesAligner   = "ALIGN_DELTA"
+                        crossSeriesReducer = "REDUCE_SUM"
                       }
                     }
                   }
                   plotType   = "LINE"
-                  legendTemplate = "P50"
-                },
-                {
-                  timeSeriesQuery = {
-                    timeSeriesFilter = {
-                      filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.model_call_latency.name}\" resource.type=\"global\""
-                      aggregation = {
-                        alignmentPeriod  = "60s"
-                        perSeriesAligner = "ALIGN_PERCENTILE_95"
-                      }
-                    }
-                  }
-                  plotType   = "LINE"
-                  legendTemplate = "P95"
+                  legendTemplate = "Model Calls"
                 }
               ]
               timeshiftDuration = "0s"
               yAxis = {
-                label = "Latency (ms)"
+                label = "Call Count"
                 scale = "LINEAR"
               }
             }
           }
         },
 
-        # Row 9: Errors
+        # Row 9: Errors (OTEL counter)
         {
           xPos   = 6
           yPos   = 20
@@ -461,10 +445,10 @@ resource "google_monitoring_dashboard" "conversation_coach" {
                 {
                   timeSeriesQuery = {
                     timeSeriesFilter = {
-                      filter = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.component_failure.name}\" resource.type=\"global\""
+                      filter = "metric.type=\"workload.googleapis.com/cc_coach_errors_total\" resource.type=\"generic_node\""
                       aggregation = {
-                        alignmentPeriod    = "60s"
-                        perSeriesAligner   = "ALIGN_RATE"
+                        alignmentPeriod    = "300s"
+                        perSeriesAligner   = "ALIGN_DELTA"
                         crossSeriesReducer = "REDUCE_SUM"
                         groupByFields      = ["metric.label.error_type"]
                       }
@@ -476,7 +460,105 @@ resource "google_monitoring_dashboard" "conversation_coach" {
               ]
               timeshiftDuration = "0s"
               yAxis = {
-                label = "Errors/min"
+                label = "Errors"
+                scale = "LINEAR"
+              }
+            }
+          }
+        },
+
+        # Row 10: RAG Performance
+        {
+          xPos   = 0
+          yPos   = 24
+          width  = 12
+          height = 1
+          widget = {
+            title = ""
+            text = {
+              content = "## RAG Performance"
+              format  = "MARKDOWN"
+            }
+          }
+        },
+
+        # Row 11: RAG Requests
+        {
+          xPos   = 0
+          yPos   = 25
+          width  = 6
+          height = 4
+          widget = {
+            title = "RAG Requests (Real-time)"
+            xyChart = {
+              dataSets = [
+                {
+                  timeSeriesQuery = {
+                    timeSeriesFilter = {
+                      filter = "metric.type=\"workload.googleapis.com/cc_coach_rag_requests_total\" metric.label.fallback_used=\"false\" resource.type=\"generic_node\""
+                      aggregation = {
+                        alignmentPeriod    = "300s"
+                        perSeriesAligner   = "ALIGN_DELTA"
+                        crossSeriesReducer = "REDUCE_SUM"
+                      }
+                    }
+                  }
+                  plotType   = "LINE"
+                  legendTemplate = "RAG Used"
+                },
+                {
+                  timeSeriesQuery = {
+                    timeSeriesFilter = {
+                      filter = "metric.type=\"workload.googleapis.com/cc_coach_rag_requests_total\" metric.label.fallback_used=\"true\" resource.type=\"generic_node\""
+                      aggregation = {
+                        alignmentPeriod    = "300s"
+                        perSeriesAligner   = "ALIGN_DELTA"
+                        crossSeriesReducer = "REDUCE_SUM"
+                      }
+                    }
+                  }
+                  plotType   = "LINE"
+                  legendTemplate = "Fallback Used"
+                }
+              ]
+              timeshiftDuration = "0s"
+              yAxis = {
+                label = "Requests"
+                scale = "LINEAR"
+              }
+            }
+          }
+        },
+
+        # Row 11: Documents Retrieved
+        {
+          xPos   = 6
+          yPos   = 25
+          width  = 6
+          height = 4
+          widget = {
+            title = "Documents Retrieved Distribution"
+            xyChart = {
+              dataSets = [
+                {
+                  timeSeriesQuery = {
+                    timeSeriesFilter = {
+                      filter = "metric.type=\"workload.googleapis.com/cc_coach_rag_requests_total\" resource.type=\"generic_node\""
+                      aggregation = {
+                        alignmentPeriod    = "300s"
+                        perSeriesAligner   = "ALIGN_DELTA"
+                        crossSeriesReducer = "REDUCE_SUM"
+                        groupByFields      = ["metric.label.docs_retrieved"]
+                      }
+                    }
+                  }
+                  plotType   = "STACKED_BAR"
+                  legendTemplate = "$${metric.label.docs_retrieved} docs"
+                }
+              ]
+              timeshiftDuration = "0s"
+              yAxis = {
+                label = "Requests"
                 scale = "LINEAR"
               }
             }

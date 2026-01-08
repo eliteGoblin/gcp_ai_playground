@@ -1,9 +1,21 @@
-"""Metrics aggregation for AI system monitoring.
+"""Metrics aggregation and real-time export for AI system monitoring.
 
-Aggregates log data into metrics summaries for dashboards and analysis.
+Provides two complementary metrics approaches:
+1. Log-based aggregation: Reads JSONL logs and computes summaries
+2. Real-time OTEL export: Exports metrics directly to Cloud Monitoring
+
+Real-time metrics exported (via OpenTelemetry):
+- cc_coach_requests_total: Counter of coaching requests
+- cc_coach_request_duration_ms: Histogram of E2E latency
+- cc_coach_model_latency_ms: Histogram of model call latency
+- cc_coach_tokens_total: Counter of tokens (input/output)
+- cc_coach_cost_micro_usd: Counter of cost in micro-USD
+- cc_coach_errors_total: Counter of errors by type
+- cc_coach_rag_requests_total: Counter of RAG requests
 """
 
 import json
+import os
 import statistics
 from collections import defaultdict
 from dataclasses import dataclass, field
@@ -12,6 +24,292 @@ from pathlib import Path
 from typing import Optional
 
 from cc_coach.monitoring.logging import DEFAULT_LOG_DIR, read_logs
+
+# ============================================================================
+# Real-time OTEL Metrics
+# ============================================================================
+
+# Environment configuration for OTEL metrics
+ENABLE_OTEL_METRICS = os.getenv("CC_ENABLE_METRICS", "true").lower() == "true"
+OTEL_SERVICE_NAME = os.getenv("OTEL_SERVICE_NAME", "conversation-coach")
+OTEL_SERVICE_VERSION = os.getenv("SERVICE_VERSION", "dev")
+
+# Global meter and instruments (lazy initialized)
+_meter = None
+_provider = None
+_request_counter = None
+_request_duration = None
+_model_latency = None
+_token_counter = None
+_cost_counter = None
+_error_counter = None
+_rag_counter = None
+
+
+def setup_otel_metrics(
+    service_name: str = OTEL_SERVICE_NAME,
+    enable_cloud_monitoring: bool = True,
+):
+    """Setup OpenTelemetry metrics with Cloud Monitoring export.
+
+    Args:
+        service_name: Name of the service for metric attribution
+        enable_cloud_monitoring: Whether to export to Cloud Monitoring
+
+    Returns:
+        Configured meter instance
+    """
+    global _provider, _meter
+    global _request_counter, _request_duration, _model_latency
+    global _token_counter, _cost_counter, _error_counter, _rag_counter
+
+    if not ENABLE_OTEL_METRICS:
+        return None
+
+    try:
+        from opentelemetry import metrics
+        from opentelemetry.sdk.metrics import MeterProvider
+        from opentelemetry.sdk.resources import Resource
+    except ImportError:
+        import logging
+        logging.getLogger(__name__).warning(
+            "OpenTelemetry SDK not installed. Real-time metrics disabled."
+        )
+        return None
+
+    # Create resource with service info
+    resource = Resource.create({
+        "service.name": service_name,
+        "service.version": OTEL_SERVICE_VERSION,
+    })
+
+    if enable_cloud_monitoring:
+        try:
+            from opentelemetry.exporter.cloud_monitoring import (
+                CloudMonitoringMetricsExporter,
+            )
+            from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
+
+            # Get project ID
+            project_id = os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("GCP_PROJECT_ID")
+            if not project_id:
+                creds_file = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+                if creds_file and os.path.exists(creds_file):
+                    with open(creds_file) as f:
+                        creds = json.load(f)
+                        project_id = creds.get("project_id")
+
+            if not project_id:
+                import logging
+                logging.getLogger(__name__).warning(
+                    "No project ID found. Cloud Monitoring export disabled."
+                )
+                _provider = MeterProvider(resource=resource)
+            else:
+                # Create exporter and reader
+                exporter = CloudMonitoringMetricsExporter(project_id=project_id)
+                reader = PeriodicExportingMetricReader(
+                    exporter,
+                    export_interval_millis=15000,  # Export every 15 seconds
+                )
+                _provider = MeterProvider(resource=resource, metric_readers=[reader])
+
+                import logging
+                logging.getLogger(__name__).info(
+                    f"Cloud Monitoring metrics enabled for project: {project_id}"
+                )
+
+        except ImportError:
+            import logging
+            logging.getLogger(__name__).warning(
+                "opentelemetry-exporter-gcp-monitoring not installed. "
+                "Real-time Cloud Monitoring export disabled."
+            )
+            _provider = MeterProvider(resource=resource)
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).warning(
+                f"Could not setup Cloud Monitoring exporter: {e}. "
+                "Metrics will not be exported."
+            )
+            _provider = MeterProvider(resource=resource)
+    else:
+        _provider = MeterProvider(resource=resource)
+
+    metrics.set_meter_provider(_provider)
+    _meter = metrics.get_meter(service_name, OTEL_SERVICE_VERSION)
+
+    # Create metric instruments
+    _request_counter = _meter.create_counter(
+        name="cc_coach_requests_total",
+        description="Total coaching requests",
+        unit="1",
+    )
+
+    _request_duration = _meter.create_histogram(
+        name="cc_coach_request_duration_ms",
+        description="E2E request duration in milliseconds",
+        unit="ms",
+    )
+
+    _model_latency = _meter.create_histogram(
+        name="cc_coach_model_latency_ms",
+        description="Model call latency in milliseconds",
+        unit="ms",
+    )
+
+    _token_counter = _meter.create_counter(
+        name="cc_coach_tokens_total",
+        description="Total tokens used",
+        unit="1",
+    )
+
+    _cost_counter = _meter.create_counter(
+        name="cc_coach_cost_micro_usd",
+        description="Cost in micro-USD (USD * 1,000,000)",
+        unit="1",
+    )
+
+    _error_counter = _meter.create_counter(
+        name="cc_coach_errors_total",
+        description="Total errors by type",
+        unit="1",
+    )
+
+    _rag_counter = _meter.create_counter(
+        name="cc_coach_rag_requests_total",
+        description="RAG retrieval requests",
+        unit="1",
+    )
+
+    return _meter
+
+
+def get_otel_meter():
+    """Get or create the global OTEL meter.
+
+    Returns:
+        Meter instance or None if not available
+    """
+    global _meter
+    if _meter is None and ENABLE_OTEL_METRICS:
+        setup_otel_metrics()
+    return _meter
+
+
+def shutdown_otel_metrics():
+    """Shutdown OTEL metrics and flush any pending exports."""
+    global _provider
+    if _provider is not None:
+        _provider.shutdown()
+
+
+# Convenience functions for recording OTEL metrics
+
+def record_request(success: bool, call_type: str = "unknown"):
+    """Record a coaching request to OTEL metrics.
+
+    Args:
+        success: Whether the request succeeded
+        call_type: Type of call (hardship, collections, etc.)
+    """
+    global _request_counter
+    if _request_counter is None:
+        get_otel_meter()
+    if _request_counter:
+        _request_counter.add(
+            1,
+            {"success": str(success).lower(), "call_type": call_type}
+        )
+
+
+def record_duration(duration_ms: float, component: str = "e2e"):
+    """Record request duration to OTEL metrics.
+
+    Args:
+        duration_ms: Duration in milliseconds
+        component: Component name (e2e, model, rag, etc.)
+    """
+    global _request_duration, _model_latency
+    if _request_duration is None:
+        get_otel_meter()
+    if component == "e2e" and _request_duration:
+        _request_duration.record(duration_ms, {"component": component})
+    elif component == "model" and _model_latency:
+        _model_latency.record(duration_ms, {"component": component})
+
+
+def record_tokens(input_tokens: int, output_tokens: int, model: str = "gemini"):
+    """Record token usage to OTEL metrics.
+
+    Args:
+        input_tokens: Number of input tokens
+        output_tokens: Number of output tokens
+        model: Model name
+    """
+    global _token_counter
+    if _token_counter is None:
+        get_otel_meter()
+    if _token_counter:
+        _token_counter.add(input_tokens, {"type": "input", "model": model})
+        _token_counter.add(output_tokens, {"type": "output", "model": model})
+
+
+def record_cost(cost_usd: float, model: str = "gemini"):
+    """Record cost to OTEL metrics.
+
+    Args:
+        cost_usd: Cost in USD
+        model: Model name
+    """
+    global _cost_counter
+    if _cost_counter is None:
+        get_otel_meter()
+    if _cost_counter:
+        # Convert to micro-USD for precision (x1,000,000)
+        micro_usd = int(cost_usd * 1_000_000)
+        _cost_counter.add(micro_usd, {"model": model})
+
+
+def record_error(error_type: str, component: str = "unknown"):
+    """Record an error to OTEL metrics.
+
+    Args:
+        error_type: Type of error
+        component: Component where error occurred
+    """
+    global _error_counter
+    if _error_counter is None:
+        get_otel_meter()
+    if _error_counter:
+        _error_counter.add(1, {"error_type": error_type, "component": component})
+
+
+def record_rag_request(success: bool, docs_retrieved: int, fallback_used: bool):
+    """Record RAG retrieval request to OTEL metrics.
+
+    Args:
+        success: Whether retrieval succeeded
+        docs_retrieved: Number of documents retrieved
+        fallback_used: Whether fallback policy was used
+    """
+    global _rag_counter
+    if _rag_counter is None:
+        get_otel_meter()
+    if _rag_counter:
+        _rag_counter.add(
+            1,
+            {
+                "success": str(success).lower(),
+                "fallback_used": str(fallback_used).lower(),
+                "docs_retrieved": str(min(docs_retrieved, 10)),
+            }
+        )
+
+
+# ============================================================================
+# Log-based Metrics Aggregation (Original Implementation)
+# ============================================================================
 
 
 @dataclass

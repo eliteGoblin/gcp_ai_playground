@@ -1,0 +1,63 @@
+=== WEEKLY SUMMARY TEST ===
+Agent: M7741, Week: 2025-12-29
+Timestamp: 2026-01-07T03:21:30Z
+
+Generating weekly summary for M7741 week of 2025-12-29...
+
+Weekly Summary: M7741
+Week of: 2025-12-29 | Calls: 7
+------------------------------------------------------------
+             Week Scores             
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┓
+┃ Dimension       ┃  Score ┃ Change ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━┩
+│ Empathy         │ 1.0/10 │    N/A │
+│ Compliance      │ 1.0/10 │    N/A │
+│ Resolution      │ 1.0/10 │    N/A │
+│ Professionalism │ 1.0/10 │    N/A │
+│ Efficiency      │ 1.7/10 │    N/A │
+│ De-escalation   │ 1.0/10 │    N/A │
+└─────────────────┴────────┴────────┘
+
+Summary:
+  Agent M7741's performance this week was critically deficient, with an overall 
+average score of 1.1 out of 10 across 7 calls. All core metrics, including 
+Empathy, Compliance, and Resolution, consistently scored 1.0, indicating a 
+complete failure to meet basic expectations. Key issues identified include 
+threatening legal action, failing to offer hardship options, and using 
+dismissive language, as evidenced in the calls needing review. While basic call 
+opening protocols were sometimes followed, these were overshadowed by severe 
+deficiencies in customer interaction and policy adherence.
+
+Trend Analysis:
+  Performance remained consistently low across the two days with calls, showing 
+no improvement in any dimension. The 0% resolution rate and uniform 1.0 scores 
+across all critical metrics highlight a pervasive and unaddressed performance 
+gap throughout the week.
+
+Action Plan:
+  1. Immediately review and adhere to all compliance guidelines, specifically 
+regarding legal action threats and mandatory hardship offer procedures. 2. Focus
+on active listening and empathetic communication, ensuring customer situations 
+are acknowledged and addressed without dismissive language or blame-shifting. 3.
+Thoroughly review the Hardship Program Guide to correctly identify and offer 
+appropriate solutions to customers in financial difficulty.
+
+Recommended Training:
+  - Compliance Basics
+  - Empathy Building
+  - Hardship Program Guide
+
+Top Issues:
+  - THREAT_LEGAL_ACTION
+  - MISSING_HARDSHIP_OFFER
+  - NO_ACKNOWLEDGMENT
+
+Strengths:
+  + The agent correctly identified the customer at the beginning of the call.
+  + The agent clearly stated the purpose of the call and the outstanding debt 
+amount.
+  + The agent correctly identified themselves and the company at the beginning 
+of the call (Turn 1, Turn 3).
+
+Weekly summary saved to BigQuery

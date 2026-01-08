@@ -1,0 +1,139 @@
+{
+  "conversation_id": "2b6f5c61-9e3a-4e47-8b8c-3f0c5f6c2d0e",
+  "analyzed_at": "2026-01-08T20:51:05.851540+00:00",
+  "output": {
+    "empathy_score": 9,
+    "compliance_score": 10,
+    "resolution_score": 9,
+    "professionalism_score": 9,
+    "de_escalation_score": 9,
+    "efficiency_score": 9,
+    "overall_score": 9.25,
+    "assessments": [
+      {
+        "dimension": "empathy",
+        "score": 9,
+        "issue_types": [
+          "EXCELLENT_EMPATHY"
+        ],
+        "evidence": [
+          {
+            "turn_index": 9,
+            "speaker": "AGENT",
+            "quote": "You're absolutely right to raise that, and I apologise for the stress it caused.",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "The agent validated the customer's feelings and apologized for the stress caused by the system message, demonstrating strong empathy."
+          }
+        ],
+        "coaching_point": "Continue to actively listen and verbalize understanding of the customer's emotional state, as you did effectively in this call."
+      },
+      {
+        "dimension": "compliance",
+        "score": 10,
+        "issue_types": [
+          "PERFECT_COMPLIANCE"
+        ],
+        "evidence": [
+          {
+            "turn_index": 3,
+            "speaker": "AGENT",
+            "quote": "First, I just need to verify your identity. Can I get your full name please?",
+            "issue_type": "PERFECT_COMPLIANCE",
+            "severity": "LOW",
+            "explanation": "The agent correctly initiated identity verification before discussing account details, adhering to policy."
+          }
+        ],
+        "coaching_point": "Maintain this high standard of compliance, ensuring all necessary verification steps are followed and prohibited language is avoided."
+      },
+      {
+        "dimension": "resolution",
+        "score": 9,
+        "issue_types": [
+          "EFFECTIVE_RESOLUTION"
+        ],
+        "evidence": [
+          {
+            "turn_index": 15,
+            "speaker": "AGENT",
+            "quote": "Perfect, I've got that down. I've updated your contact preference to after 5:30pm only on your mobile. And I've added a note about the repayment alert wording for our product team.",
+            "issue_type": "EFFECTIVE_RESOLUTION",
+            "severity": "LOW",
+            "explanation": "The agent addressed all customer concerns: applying a grace note for the payment, updating contact preferences, and logging feedback for the alarming message, leading to a comprehensive resolution."
+          }
+        ],
+        "coaching_point": "Ensure that the promised email with the case reference and grace note details is sent promptly to finalize the resolution and manage customer expectations."
+      },
+      {
+        "dimension": "de_escalation",
+        "score": 9,
+        "issue_types": [],
+        "evidence": [
+          {
+            "turn_index": 17,
+            "speaker": "AGENT",
+            "quote": "Totally fair, Samantha. I'll email you a case reference number and the grace note details within the hour.",
+            "issue_type": "EFFECTIVE_RESOLUTION",
+            "severity": "LOW",
+            "explanation": "The agent's calm, validating response and clear action plan effectively calmed the customer, who had expressed being 'pretty mad' earlier in the call."
+          }
+        ],
+        "coaching_point": "Your ability to acknowledge customer frustration and immediately offer solutions is excellent for de-escalation. Continue to use this approach when customers present with negative sentiment."
+      }
+    ],
+    "issue_types": [
+      "EXCELLENT_EMPATHY",
+      "PERFECT_COMPLIANCE",
+      "EFFECTIVE_RESOLUTION"
+    ],
+    "critical_issues": [],
+    "issue_count": 0,
+    "compliance_breach_count": 0,
+    "resolution_achieved": true,
+    "escalation_required": false,
+    "customer_started_negative": true,
+    "coaching_summary": "The agent demonstrated exceptional empathy and de-escalation skills, effectively resolving all customer concerns. Focus on maintaining these high standards and ensuring timely follow-up actions.",
+    "coaching_points": [
+      {
+        "priority": 1,
+        "title": "Maintain High Standards",
+        "description": "Your performance across all dimensions was exemplary. Continue to apply your strong empathy, compliance, and resolution skills in future interactions.",
+        "example_turn": null,
+        "suggested_alternative": null
+      },
+      {
+        "priority": 2,
+        "title": "Timely Follow-up Confirmation",
+        "description": "You promised to email the case reference and grace note details within the hour. Always ensure such commitments are met promptly to reinforce trust and complete the resolution cycle.",
+        "example_turn": 17,
+        "suggested_alternative": "I will send that email right away, and you should receive it within the next 15 minutes."
+      }
+    ],
+    "strengths": [
+      "Exceptional empathy and validation of customer feelings",
+      "Perfect adherence to compliance requirements, including identity verification",
+      "Effective de-escalation of a frustrated customer",
+      "Comprehensive resolution addressing all customer concerns",
+      "Clear and professional communication throughout the call"
+    ],
+    "situation_summary": "The customer called regarding a failed repayment notification from the app, despite believing they had paid. They were also frustrated about receiving calls during work hours and the alarming nature of the app's message.",
+    "behavior_summary": "The agent, Alex, handled the call with exceptional professionalism and empathy. They quickly verified identity, investigated the payment issue, applied a grace note, updated contact preferences, and logged feedback for the product team. Alex effectively de-escalated the customer's frustration through validation and concrete actions.",
+    "key_moment": {
+      "turn_index": 9,
+      "quote": "You're absolutely right to raise that, and I apologise for the stress it caused. I'll log some feedback about the wording of those messages. For now, what I can do is place a short grace note on your account so you won't be penalised while the payment clears through.",
+      "why_notable": "This turn demonstrates the agent's excellent empathy by validating the customer's feelings and immediately offering a solution (grace note) while also addressing the root cause (feedback on message wording). It was a pivotal moment in de-escalating the customer's frustration.",
+      "is_positive": true
+    },
+    "call_type": "payment",
+    "example_type": "GOOD_EXAMPLE",
+    "citations": [],
+    "rag_context_used": true
+  },
+  "rag_context": "[FALLBACK: Embedded policy used - no RAG context available]",
+  "metrics": {
+    "input_tokens": 2094,
+    "output_tokens": 1585,
+    "latency_ms": 19773,
+    "cost_usd": 0.00063255
+  }
+}

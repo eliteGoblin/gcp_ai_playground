@@ -1,0 +1,26 @@
+# CoachingInput (Model Input Metadata)
+# Conversation: a1b2c3d4-toxic-agent-test-0001
+# Generated: 2026-01-08T21:04:15.024811+00:00
+# ======================================================================
+
+{
+  "conversation_id": "a1b2c3d4-toxic-agent-test-0001",
+  "turn_count": 39,
+  "metadata": {
+    "agent_id": "M7741",
+    "business_line": "COLLECTIONS",
+    "direction": "OUTBOUND",
+    "queue": "HARDSHIP",
+    "call_outcome": "UNRESOLVED",
+    "duration_seconds": 630
+  },
+  "ci_flags": {
+    "has_compliance_violations": false,
+    "missing_required_disclosures": false,
+    "no_empathy_shown": false,
+    "customer_escalated": false
+  },
+  "customer_sentiment_score": -1.0,
+  "ci_summary": null,
+  "phrase_match_count": 0
+}

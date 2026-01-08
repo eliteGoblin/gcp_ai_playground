@@ -1,0 +1,212 @@
+{
+  "conversation_id": "e5f6g7h8-exemplary-agent-test-0001",
+  "analyzed_at": "2026-01-08T20:56:00.494233+00:00",
+  "output": {
+    "empathy_score": 10,
+    "compliance_score": 9,
+    "resolution_score": 10,
+    "professionalism_score": 10,
+    "de_escalation_score": 10,
+    "efficiency_score": 9,
+    "overall_score": 9.65,
+    "assessments": [
+      {
+        "dimension": "empathy",
+        "score": 10,
+        "issue_types": [
+          "EXCELLENT_EMPATHY"
+        ],
+        "evidence": [
+          {
+            "turn_index": 3,
+            "speaker": "AGENT",
+            "quote": "I'm really sorry to hear that. Waiting that long must have been incredibly frustrating, especially when you're already dealing with a stressful situation. I can hear how upset you are, and I want you to know I'm here to help resolve this today.",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "Agent immediately acknowledges and validates the customer's frustration and emotional state."
+          },
+          {
+            "turn_index": 7,
+            "speaker": "AGENT",
+            "quote": "David, I am so sorry. I can't imagine what you and your wife are going through right now. That is an incredibly difficult situation, and the last thing you need is added stress from us.",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "Agent expresses deep empathy and understanding of the customer's difficult personal circumstances."
+          },
+          {
+            "turn_index": 25,
+            "speaker": "AGENT",
+            "quote": "But honestly, knowing I've been able to help you focus on what really matters - your wife's recovery - that's the best part of my job.",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "Agent connects the resolution back to the customer's personal situation, showing genuine care."
+          }
+        ],
+        "coaching_point": "Continue to lead with such strong empathy and validation, as it was instrumental in de-escalating a highly frustrated customer."
+      },
+      {
+        "dimension": "compliance",
+        "score": 9,
+        "issue_types": [
+          "PERFECT_COMPLIANCE"
+        ],
+        "evidence": [
+          {
+            "turn_index": 9,
+            "speaker": "AGENT",
+            "quote": "I'm looking at the notes from that call now, David, and I have to say - that doesn't align with our hardship policy at all. I apologise that you were given that information.",
+            "issue_type": "PERFECT_COMPLIANCE",
+            "severity": "LOW",
+            "explanation": "Agent proactively identifies and corrects a previous agent's compliance violation (threat of legal action) and apologizes for it."
+          },
+          {
+            "turn_index": 11,
+            "speaker": "AGENT",
+            "quote": "Based on what you've told me, I'm going to recommend we put your account on a hardship hold. This means we'll pause all collection activity - no more calls, no letters, no late fees accruing - for 90 days.",
+            "issue_type": "PERFECT_COMPLIANCE",
+            "severity": "LOW",
+            "explanation": "Agent correctly identifies the customer's financial difficulty and offers the hardship program as required by policy."
+          },
+          {
+            "turn_index": 13,
+            "speaker": "AGENT",
+            "quote": "When you are ready to resume payments, we can set something up that actually fits your budget - even if that's $50 a month.",
+            "issue_type": "PERFECT_COMPLIANCE",
+            "severity": "LOW",
+            "explanation": "Agent offers flexible payment plan options, adhering to policy."
+          }
+        ],
+        "coaching_point": "While the agent's actions effectively addressed the customer's concerns about the debt, ensure to explicitly mention the 'right to dispute the debt' as a standard disclosure, even when offering a hardship hold."
+      },
+      {
+        "dimension": "resolution",
+        "score": 10,
+        "issue_types": [
+          "EFFECTIVE_RESOLUTION"
+        ],
+        "evidence": [
+          {
+            "turn_index": 11,
+            "speaker": "AGENT",
+            "quote": "Based on what you've told me, I'm going to recommend we put your account on a hardship hold. This means we'll pause all collection activity - no more calls, no letters, no late fees accruing - for 90 days.",
+            "issue_type": "EFFECTIVE_RESOLUTION",
+            "severity": "LOW",
+            "explanation": "Agent provides a clear and immediate solution to the customer's financial stress."
+          },
+          {
+            "turn_index": 15,
+            "speaker": "AGENT",
+            "quote": "I also want to mention - we have a partnership with a financial counselling service. They're completely free and independent from us. They can help you look at all your debts and expenses holistically. Would you like me to text you their details?",
+            "issue_type": "EFFECTIVE_RESOLUTION",
+            "severity": "LOW",
+            "explanation": "Agent offers additional, holistic support beyond the immediate account issue, demonstrating a commitment to long-term customer well-being."
+          },
+          {
+            "turn_index": 21,
+            "speaker": "AGENT",
+            "quote": "Given your circumstances and the fact that you've been trying to work with us in good faith, I'm going to waive both of those fees right now. I've just processed that - you should see a credit of $150 on your next statement.",
+            "issue_type": "EFFECTIVE_RESOLUTION",
+            "severity": "LOW",
+            "explanation": "Agent proactively identifies and resolves an additional customer pain point (late fees), further enhancing satisfaction."
+          }
+        ],
+        "coaching_point": "The agent provided a comprehensive and highly satisfactory resolution, addressing both immediate and underlying issues. Continue to look for opportunities to offer holistic support like financial counseling."
+      },
+      {
+        "dimension": "de_escalation",
+        "score": 10,
+        "issue_types": [],
+        "evidence": [
+          {
+            "turn_index": 3,
+            "speaker": "AGENT",
+            "quote": "I'm really sorry to hear that. Waiting that long must have been incredibly frustrating, especially when you're already dealing with a stressful situation. I can hear how upset you are, and I want you to know I'm here to help resolve this today.",
+            "issue_type": "NO_ISSUE",
+            "severity": "LOW",
+            "explanation": "Agent immediately acknowledges and validates the customer's frustration, setting a calm and helpful tone."
+          },
+          {
+            "turn_index": 9,
+            "speaker": "AGENT",
+            "quote": "I'm looking at the notes from that call now, David, and I have to say - that doesn't align with our hardship policy at all. I apologise that you were given that information. Let me be clear: when someone is facing genuine financial hardship like you are, we have much more flexibility than that.",
+            "issue_type": "NO_ISSUE",
+            "severity": "LOW",
+            "explanation": "Agent takes ownership of the company's previous failure and provides clear, reassuring information that directly contradicts the previous, escalating interaction."
+          },
+          {
+            "turn_index": 22,
+            "speaker": "CUSTOMER",
+            "quote": "Sarah, seriously, thank you. You have no idea how much this means. When I called, I honestly thought about just hanging up and ignoring everything. This is such a relief.",
+            "issue_type": "NO_ISSUE",
+            "severity": "LOW",
+            "explanation": "Customer's statement clearly indicates a complete de-escalation and transformation of their sentiment due to the agent's actions."
+          }
+        ],
+        "coaching_point": "The agent demonstrated masterful de-escalation skills by actively listening, validating emotions, taking ownership, and providing concrete solutions. This approach successfully transformed a highly angry customer into a satisfied one. Continue to apply these techniques, especially when customers start with high negative sentiment."
+      }
+    ],
+    "issue_types": [
+      "EXCELLENT_EMPATHY",
+      "PERFECT_COMPLIANCE",
+      "EFFECTIVE_RESOLUTION"
+    ],
+    "critical_issues": [],
+    "issue_count": 0,
+    "compliance_breach_count": 0,
+    "resolution_achieved": true,
+    "escalation_required": true,
+    "customer_started_negative": true,
+    "coaching_summary": "The agent delivered an exceptional performance, masterfully de-escalating a highly frustrated customer and providing a comprehensive resolution. Their empathy, proactive problem-solving, and adherence to hardship policies were exemplary. The primary coaching opportunity is to reinforce these outstanding behaviors.",
+    "coaching_points": [
+      {
+        "priority": 1,
+        "title": "Reinforce Proactive Hardship Support",
+        "description": "Continue to proactively identify and address hardship situations with comprehensive solutions, including hardship holds, fee waivers, and external support like financial counseling. This approach significantly improves customer outcomes and sentiment.",
+        "example_turn": 11,
+        "suggested_alternative": null
+      },
+      {
+        "priority": 2,
+        "title": "Masterful De-escalation",
+        "description": "The agent's ability to acknowledge, validate, and then provide clear, corrective action for a highly upset customer was outstanding. Continue to use active listening and take ownership of company errors to rebuild trust and de-escalate difficult situations.",
+        "example_turn": 3,
+        "suggested_alternative": null
+      },
+      {
+        "priority": 3,
+        "title": "Explicit Disclosure of Right to Dispute",
+        "description": "While the agent's actions effectively addressed the customer's concerns about the debt and previous threats, ensure to explicitly mention the 'right to dispute the debt' as a standard disclosure, even when offering a hardship hold. This ensures full compliance with all disclosure requirements.",
+        "example_turn": null,
+        "suggested_alternative": "In addition to the hardship hold, I want to make sure you're aware of your right to dispute the validity of this debt or any portion of it."
+      }
+    ],
+    "strengths": [
+      "Exceptional empathy and emotional intelligence, consistently validating customer feelings.",
+      "Masterful de-escalation skills, transforming a highly angry customer into a satisfied advocate.",
+      "Proactive and comprehensive resolution, including hardship hold, fee waivers, and external financial counseling referrals.",
+      "Strong compliance, correcting previous agent's misconduct and adhering to hardship policies.",
+      "Excellent professionalism and clear communication throughout the call."
+    ],
+    "situation_summary": "The customer, David Park, called the hardship line after experiencing significant frustration due to long wait times, aggressive collection calls, and incorrect information from a previous agent regarding legal action. He revealed his wife's cancer diagnosis and their severe financial hardship, leading to an inability to pay their debt.",
+    "behavior_summary": "The agent, Sarah, handled the call with exemplary empathy and professionalism. She immediately acknowledged the customer's frustration, validated his feelings, and expressed genuine concern for his situation. She proactively offered a 90-day hardship hold, waived late fees, referred him to financial counseling, and escalated the previous agent's misconduct. Her actions completely de-escalated the customer, turning his anger into gratitude and relief.",
+    "key_moment": {
+      "turn_index": 22,
+      "quote": "Sarah, seriously, thank you. You have no idea how much this means. When I called, I honestly thought about just hanging up and ignoring everything. This is such a relief.",
+      "why_notable": "This turn marks the complete transformation of the customer's sentiment from extreme frustration and anger to profound relief and gratitude, directly attributable to the agent's effective handling of the call.",
+      "is_positive": true
+    },
+    "call_type": "hardship",
+    "example_type": "GOOD_EXAMPLE",
+    "citations": [
+      "POLICY REFERENCE (Collections - v2025.1)"
+    ],
+    "rag_context_used": true
+  },
+  "rag_context": "[FALLBACK: Embedded policy used - no RAG context available]",
+  "metrics": {
+    "input_tokens": 3206,
+    "output_tokens": 3026,
+    "latency_ms": 32974,
+    "cost_usd": 0.00114825
+  }
+}

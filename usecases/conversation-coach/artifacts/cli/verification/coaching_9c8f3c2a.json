@@ -1,0 +1,157 @@
+{
+  "conversation_id": "9c8f3c2a-4fd2-4e7b-9b41-2fb2b4e6a2d1",
+  "analyzed_at": "2026-01-08T20:53:01.016695+00:00",
+  "output": {
+    "empathy_score": 9,
+    "compliance_score": 3,
+    "resolution_score": 9,
+    "professionalism_score": 10,
+    "de_escalation_score": 9,
+    "efficiency_score": 9,
+    "overall_score": 7.6,
+    "assessments": [
+      {
+        "dimension": "empathy",
+        "score": 9,
+        "issue_types": [
+          "EXCELLENT_EMPATHY"
+        ],
+        "evidence": [
+          {
+            "turn_index": 11,
+            "speaker": "AGENT",
+            "quote": "I'm really sorry it's felt that way, Daniel. That's not our intention. My goal here is to sort this out with you so we can stop the calls.",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "The agent effectively acknowledged the customer's frustration and validated their feelings, setting a positive tone for de-escalation."
+          }
+        ],
+        "coaching_point": "Continue to use empathetic language and active listening to build rapport and de-escalate tense situations."
+      },
+      {
+        "dimension": "compliance",
+        "score": 3,
+        "issue_types": [
+          "MISSING_HARDSHIP_OFFER"
+        ],
+        "evidence": [
+          {
+            "turn_index": 20,
+            "speaker": "CUSTOMER",
+            "quote": "No, I'm not paying anything today. Money is really tight right now. You guys just don't listen.",
+            "issue_type": "MISSING_HARDSHIP_OFFER",
+            "severity": "CRITICAL",
+            "explanation": "The customer explicitly stated 'Money is really tight right now,' which is a direct trigger for offering the hardship program according to policy. The agent proceeded to discuss payment plans without mentioning hardship options."
+          }
+        ],
+        "coaching_point": "Review the Hardship Handling policy. When a customer indicates financial difficulty (e.g., 'money is really tight'), always offer the hardship program as a primary option before discussing standard payment plans."
+      },
+      {
+        "dimension": "resolution",
+        "score": 9,
+        "issue_types": [
+          "EFFECTIVE_RESOLUTION"
+        ],
+        "evidence": [
+          {
+            "turn_index": 23,
+            "speaker": "AGENT",
+            "quote": "Understood. I've recorded your contact preferences and we will follow them. If $30 a week works for you, we can set that up starting next Friday. Does Friday suit for the payments?",
+            "issue_type": "EFFECTIVE_RESOLUTION",
+            "severity": "LOW",
+            "explanation": "The agent successfully established a payment plan that met the customer's stated capacity and updated all contact preferences, leading to a clear and mutually agreed-upon resolution."
+          }
+        ],
+        "coaching_point": "Continue to focus on finding practical solutions and confirming all agreed-upon actions with the customer."
+      },
+      {
+        "dimension": "de_escalation",
+        "score": 9,
+        "issue_types": [],
+        "evidence": [
+          {
+            "turn_index": 11,
+            "speaker": "AGENT",
+            "quote": "I'm really sorry it's felt that way, Daniel. That's not our intention. My goal here is to sort this out with you so we can stop the calls.",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "The agent effectively acknowledged the customer's frustration and immediately offered a path to resolution, which helped calm the customer down from an agitated state."
+          }
+        ],
+        "coaching_point": "Continue to use active listening and solution-oriented language to effectively de-escalate customer concerns."
+      },
+      {
+        "dimension": "professionalism",
+        "score": 10,
+        "issue_types": [],
+        "evidence": [],
+        "coaching_point": "Maintain the high standard of professionalism demonstrated in this call."
+      },
+      {
+        "dimension": "efficiency",
+        "score": 9,
+        "issue_types": [],
+        "evidence": [],
+        "coaching_point": "Continue to manage call flow effectively, ensuring all necessary information is gathered and actions are taken efficiently."
+      }
+    ],
+    "issue_types": [
+      "EXCELLENT_EMPATHY",
+      "MISSING_HARDSHIP_OFFER",
+      "EFFECTIVE_RESOLUTION"
+    ],
+    "critical_issues": [
+      "MISSING_HARDSHIP_OFFER"
+    ],
+    "issue_count": 1,
+    "compliance_breach_count": 1,
+    "resolution_achieved": true,
+    "escalation_required": false,
+    "customer_started_negative": true,
+    "coaching_summary": "The agent demonstrated strong empathy, professionalism, and de-escalation skills, successfully resolving the customer's payment and contact preference issues. However, a critical compliance breach occurred as the agent failed to offer the hardship program despite the customer explicitly stating financial difficulty.",
+    "coaching_points": [
+      {
+        "priority": 1,
+        "title": "Offer Hardship Program",
+        "description": "When a customer explicitly states financial difficulty (e.g., 'Money is really tight right now' in Turn 20), it is a critical policy requirement to offer the hardship program. This was missed. Always ensure you present this option before proceeding with standard payment plans.",
+        "example_turn": 21,
+        "suggested_alternative": "I hear you, Daniel. Since money is really tight, I want to make sure you're aware of our hardship program, which might offer more flexible options. Would you like to hear more about that, or should we look at setting up a payment plan?"
+      },
+      {
+        "priority": 2,
+        "title": "Proactive Disclosure of Rights",
+        "description": "While not a critical omission in this specific call, consider proactively mentioning the customer's right to dispute the debt, especially when they express frustration or feel 'harassed.' This can build trust and ensure full transparency.",
+        "example_turn": 10,
+        "suggested_alternative": "I'm really sorry it's felt that way, Daniel. That's not our intention. Just so you know, you always have the right to dispute this debt if you believe there's an error. My goal here is to sort this out with you..."
+      }
+    ],
+    "strengths": [
+      "Excellent use of empathetic language and active listening.",
+      "Effective de-escalation of a frustrated customer.",
+      "Thorough identity verification process.",
+      "Successful resolution of payment arrangement and contact preferences.",
+      "Maintained a highly professional demeanor throughout the call."
+    ],
+    "situation_summary": "The customer was contacted regarding an overdue balance and expressed significant frustration about repeated calls, particularly to their workplace, and current financial difficulty. The agent successfully verified identity, de-escalated the customer's anger, updated contact preferences, and arranged a payment plan.",
+    "behavior_summary": "The agent demonstrated strong interpersonal skills by actively listening to the customer's complaints, apologizing appropriately, and taking immediate action to address contact preferences. They maintained professionalism throughout the call and efficiently moved towards a resolution, though a critical policy step regarding hardship programs was missed.",
+    "key_moment": {
+      "turn_index": 20,
+      "quote": "No, I'm not paying anything today. Money is really tight right now. You guys just don't listen.",
+      "why_notable": "This is the critical moment where the customer explicitly states financial difficulty, triggering the policy requirement to offer a hardship program, which the agent missed.",
+      "is_positive": false
+    },
+    "call_type": "Payment/Complaint",
+    "example_type": "NEEDS_WORK",
+    "citations": [
+      "POL-002 v2025.1 (Hardship Handling)"
+    ],
+    "rag_context_used": true
+  },
+  "rag_context": "[FALLBACK: Embedded policy used - no RAG context available]",
+  "metrics": {
+    "input_tokens": 2304,
+    "output_tokens": 1894,
+    "latency_ms": 33887,
+    "cost_usd": 0.000741
+  }
+}

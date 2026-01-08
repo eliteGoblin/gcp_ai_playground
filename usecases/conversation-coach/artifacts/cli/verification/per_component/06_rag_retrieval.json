@@ -1,0 +1,24 @@
+# RAG Retrieval Results
+# Conversation: a1b2c3d4-toxic-agent-test-0001
+# Generated: 2026-01-08T21:04:21.280018+00:00
+# ======================================================================
+
+{
+  "rag_config_valid": true,
+  "rag_config_errors": [],
+  "data_store_id": "cc-coach-kb-v3",
+  "search_app_id": "cc-coach-search",
+  "extracted_topics": [
+    "legal action",
+    "hardship provisions",
+    "hardship triggers",
+    "compliance",
+    "de-escalation",
+    "complaint handling",
+    "escalation procedures",
+    "prohibited language"
+  ],
+  "docs_retrieved": 0,
+  "retrieved_docs": [],
+  "rag_context": "[No context returned - RAG empty]"
+}

@@ -1,0 +1,38 @@
+# Coaching Scores Summary
+# Conversation: a1b2c3d4-toxic-agent-test-0001
+# Generated: 2026-01-08T21:04:22.910696+00:00
+# ======================================================================
+
+{
+  "overall_score": 1.2,
+  "empathy_score": 1,
+  "compliance_score": 1,
+  "resolution_score": 1,
+  "professionalism_score": 1,
+  "de_escalation_score": 1,
+  "efficiency_score": 3,
+  "call_type": "payment",
+  "coaching_summary": "The agent demonstrated a critical failure across all core competencies, particularly in empathy, compliance, and de-escalation. Their behavior was highly unprofessional, dismissive, and threatening, leading to a complete breakdown of the customer relationship and significant compliance breaches. Urgent and comprehensive retraining is required.",
+  "coaching_points": [
+    "[P1] Mandatory Compliance Review: Hardship & Prohibited Language: The agent failed to offer a hardship program despite clear triggers (job loss, medical bills) and repeatedly used prohibited language including threats of legal action, wage garnishment, and property liens. This is a critical compliance failure. The agent must immediately review and demonstrate understanding of the 'Hardship Handling' and 'Prohibited Language' sections of the Collections Policy (v2025.1).",
+    "[P1] De-escalation and Empathy Training: The agent actively escalated the customer's distress through dismissive, blaming, and sarcastic language. They failed to acknowledge the customer's situation and instead engaged in personal attacks. The agent needs intensive training on active listening, empathetic communication, and de-escalation techniques to prevent further damage to customer relationships.",
+    "[P2] Professionalism and Tone Management: The agent's tone was consistently rude, condescending, and confrontational. They engaged in arguments, dismissed the customer's right to complain, and used mocking language. This is unacceptable. The agent must learn to maintain a professional demeanor, avoid personal opinions, and focus on problem-solving rather than conflict.",
+    "[P3] Effective Resolution Strategies: The agent made unrealistic demands and dismissed all customer offers, leading to no resolution. The agent needs coaching on exploring flexible payment options, understanding customer capacity, and guiding the conversation towards a mutually agreeable solution, rather than issuing ultimatums."
+  ],
+  "strengths": [
+    "The agent correctly verified the customer's identity at the beginning of the call."
+  ],
+  "critical_issues": [
+    "DISMISSIVE_LANGUAGE",
+    "NO_ACKNOWLEDGMENT",
+    "BLAME_SHIFTING",
+    "LACK_OF_PATIENCE",
+    "MISSING_HARDSHIP_OFFER",
+    "THREAT_LEGAL_ACTION",
+    "HARASSMENT",
+    "UNREALISTIC_DEMANDS",
+    "UNRESOLVED_WITHOUT_ACTION",
+    "UNPROFESSIONAL_TONE",
+    "FAILED_DE_ESCALATION"
+  ]
+}

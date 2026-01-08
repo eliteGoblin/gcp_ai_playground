@@ -21,10 +21,16 @@ dependencies = [
     "google-cloud-storage>=2.14.0",
     "google-cloud-aiplatform>=1.50.0",
     "google-cloud-discoveryengine>=0.13.0",  # Vertex AI Search
+    "google-cloud-logging>=3.8.0",  # Cloud Logging
     "google-adk>=0.5.0",
     "rich>=13.0.0",
     "python-dateutil>=2.8.0",
     "pyyaml>=6.0",
+    # OpenTelemetry for tracing and metrics
+    "opentelemetry-api>=1.20.0",
+    "opentelemetry-sdk>=1.20.0",
+    "opentelemetry-exporter-gcp-trace>=1.6.0",  # Cloud Trace export
+    "opentelemetry-exporter-gcp-monitoring>=1.6.0",  # Cloud Monitoring export
 ]
 
 [project.optional-dependencies]

@@ -1,0 +1,51 @@
+=== DAILY SUMMARY TEST ===
+Agent: M7741, Date: 2026-01-04
+Timestamp: 2026-01-07T03:20:59Z
+
+Generating daily summary for M7741 on 2026-01-04...
+
+Daily Summary: M7741
+Date: 2026-01-04 | Calls: 6
+------------------------------------------------------------
+           Scores           
+┌─────────────────┬────────┐
+│ Empathy         │ 1.0/10 │
+│ Compliance      │ 1.0/10 │
+│ Resolution      │ 1.0/10 │
+│ Professionalism │ 1.0/10 │
+│ Efficiency      │ 1.8/10 │
+│ De-escalation   │ 1.0/10 │
+│ Resolution Rate │     0% │
+└─────────────────┴────────┘
+
+Summary:
+  M7741, your performance today was critically low with an overall score of 
+1.1/10 and a 0% resolution rate across 6 calls. The language used, such as 
+'Everyone's got an excuse' and 'Compassion doesn't pay bills,' demonstrates a 
+severe lack of professionalism and empathy, directly contributing to issues like
+dismissive language and blame-shifting.
+
+Focus Area: professionalism
+
+Quick Wins:
+  - Review the company's Code of Conduct and policies regarding customer 
+interaction and hardship handling before your next shift.
+  - Practice active listening and acknowledge the customer's statements, even if
+you cannot immediately offer a solution, to show respect.
+  - Strictly follow the approved collections script, particularly when 
+discussing payment options or responding to hardship disclosures, to ensure 
+compliance and professionalism.
+
+Top Issues:
+  - THREAT_LEGAL_ACTION
+  - MISSING_HARDSHIP_OFFER
+  - NO_ACKNOWLEDGMENT
+
+Strengths:
+  + The agent correctly identified themselves and the company at the beginning 
+of the call (Turn 1, Turn 3).
+  + The agent correctly identified the customer at the beginning of the call.
+  + None identified. The agent's performance was critically deficient across all
+aspects of the call.
+
+Daily summary saved to BigQuery

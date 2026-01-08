@@ -1,0 +1,188 @@
+{
+  "conversation_id": "3f2d9e4b-1a74-4f35-8bb2-9d8f8df0b6a7",
+  "analyzed_at": "2026-01-08T20:51:48.871066+00:00",
+  "output": {
+    "empathy_score": 10,
+    "compliance_score": 10,
+    "resolution_score": 10,
+    "professionalism_score": 10,
+    "de_escalation_score": 10,
+    "efficiency_score": 9,
+    "overall_score": 9.9,
+    "assessments": [
+      {
+        "dimension": "empathy",
+        "score": 10,
+        "issue_types": [
+          "EXCELLENT_EMPATHY"
+        ],
+        "evidence": [
+          {
+            "turn_index": 3,
+            "speaker": "AGENT",
+            "quote": "I'm sorry you're going through that. I can definitely help look at some options with you.",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "Agent immediately acknowledges customer's stress and offers support."
+          },
+          {
+            "turn_index": 11,
+            "speaker": "AGENT",
+            "quote": "I completely understand, and thanks for being open about that. It sounds like you're under some real pressure right now.",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "Agent validates customer's feelings and shows deep understanding of their situation."
+          },
+          {
+            "turn_index": 25,
+            "speaker": "AGENT",
+            "quote": "Of course, Priya. You're not alone in this\u2014we'll work through it step by step. Take care.",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "Agent provides reassurance and a supportive closing statement."
+          }
+        ],
+        "coaching_point": "The agent consistently demonstrated exceptional empathy, actively listening to the customer's situation and validating their feelings throughout the call."
+      },
+      {
+        "dimension": "compliance",
+        "score": 10,
+        "issue_types": [
+          "PERFECT_COMPLIANCE"
+        ],
+        "evidence": [
+          {
+            "turn_index": 3,
+            "speaker": "AGENT",
+            "quote": "Before we discuss the account details though, I just need to confirm your identity.",
+            "issue_type": "PERFECT_COMPLIANCE",
+            "severity": "LOW",
+            "explanation": "Agent correctly initiated identity verification before discussing account specifics."
+          },
+          {
+            "turn_index": 11,
+            "speaker": "AGENT",
+            "quote": "Look, we do have hardship options and flexible payment plans available.",
+            "issue_type": "PERFECT_COMPLIANCE",
+            "severity": "LOW",
+            "explanation": "Agent proactively offered hardship options and payment plans when the customer indicated financial difficulty."
+          },
+          {
+            "turn_index": 19,
+            "speaker": "AGENT",
+            "quote": "Just one more thing\u2014are there any sensitive circumstances we should be aware of so we can handle your account appropriately?",
+            "issue_type": "PERFECT_COMPLIANCE",
+            "severity": "LOW",
+            "explanation": "Agent appropriately inquired about sensitive circumstances to ensure respectful handling of the account."
+          }
+        ],
+        "coaching_point": "The agent adhered to all compliance requirements, including identity verification, hardship disclosure, and respectful handling of sensitive information, without any violations."
+      },
+      {
+        "dimension": "resolution",
+        "score": 10,
+        "issue_types": [
+          "EFFECTIVE_RESOLUTION"
+        ],
+        "evidence": [
+          {
+            "turn_index": 13,
+            "speaker": "AGENT",
+            "quote": "That's a reasonable starting point, Priya. We can absolutely set up $25 a week and review it in about a month to see how you're going.",
+            "issue_type": "EFFECTIVE_RESOLUTION",
+            "severity": "LOW",
+            "explanation": "Agent offered a flexible and manageable payment solution based on customer's input."
+          },
+          {
+            "turn_index": 21,
+            "speaker": "AGENT",
+            "quote": "So we'll set up $25 a week from next Friday and review it in four weeks. Does that work?",
+            "issue_type": "EFFECTIVE_RESOLUTION",
+            "severity": "LOW",
+            "explanation": "Agent clearly summarized the agreed-upon plan and confirmed it with the customer."
+          },
+          {
+            "turn_index": 23,
+            "speaker": "AGENT",
+            "quote": "I'll email you the payment plan summary today. And if anything changes in your situation, just give us a call and we can adjust things.",
+            "issue_type": "EFFECTIVE_RESOLUTION",
+            "severity": "LOW",
+            "explanation": "Agent provided clear next steps, documentation, and flexibility for future adjustments."
+          }
+        ],
+        "coaching_point": "The agent successfully resolved the customer's payment issue by establishing a manageable plan and addressed all specific contact preferences, leaving the customer feeling supported."
+      },
+      {
+        "dimension": "efficiency",
+        "score": 9,
+        "issue_types": [],
+        "evidence": [
+          {
+            "turn_index": 15,
+            "speaker": "AGENT",
+            "quote": "No worries. What time window should we avoid for calls, and when's best to contact you?",
+            "issue_type": "NO_ACKNOWLEDGMENT",
+            "severity": "LOW",
+            "explanation": "Agent asked about contact times."
+          },
+          {
+            "turn_index": 17,
+            "speaker": "AGENT",
+            "quote": "Thanks for that. And if we need to send you the plan details, do you prefer email?",
+            "issue_type": "NO_ACKNOWLEDGMENT",
+            "severity": "LOW",
+            "explanation": "Agent asked about email preference separately, which could have been combined with the previous contact preference question."
+          }
+        ],
+        "coaching_point": "The agent was generally efficient. To further optimize, consider combining related questions about contact preferences (e.g., preferred contact method, time, and channel) into a single query to streamline information gathering slightly."
+      }
+    ],
+    "issue_types": [
+      "EXCELLENT_EMPATHY",
+      "PERFECT_COMPLIANCE",
+      "EFFECTIVE_RESOLUTION"
+    ],
+    "critical_issues": [],
+    "issue_count": 0,
+    "compliance_breach_count": 0,
+    "resolution_achieved": true,
+    "escalation_required": false,
+    "customer_started_negative": true,
+    "coaching_summary": "This was an excellent call where the agent demonstrated exceptional empathy and compliance. The agent effectively de-escalated a stressed customer and provided a clear resolution. A minor improvement opportunity exists in streamlining information gathering for contact preferences.",
+    "coaching_points": [
+      {
+        "priority": 1,
+        "title": "Streamline Contact Preference Questions",
+        "description": "While effective, the agent asked about preferred contact times (Turn 15) and then email preference (Turn 17) in separate turns. To enhance efficiency, try to combine these into a single, comprehensive question. For example, 'What's the best way to send you the plan details, and what are your preferred contact times and methods for any future communications?'",
+        "example_turn": 15,
+        "suggested_alternative": "What's the best way to send you the plan details, and what are your preferred contact times and methods for any future communications?"
+      }
+    ],
+    "strengths": [
+      "Exceptional empathy and validation of customer's feelings.",
+      "Perfect adherence to all compliance requirements, including identity verification and hardship disclosure.",
+      "Effective de-escalation of a stressed customer.",
+      "Successful resolution with a flexible and clear payment plan.",
+      "Professional and respectful communication throughout the call."
+    ],
+    "situation_summary": "The customer called regarding an overdue account, expressing significant stress due to reduced work hours, being behind on rent, and mental health challenges. They stated they couldn't pay the full amount and were seeking options.",
+    "behavior_summary": "The agent, Chris, handled the call with exemplary empathy and professionalism. They quickly verified identity, acknowledged the customer's distress, proactively offered hardship and payment plan options, and collaboratively established a manageable weekly payment plan. The agent also meticulously documented customer contact preferences and sensitive circumstances, ensuring a positive and compliant resolution.",
+    "key_moment": {
+      "turn_index": 11,
+      "quote": "I completely understand, and thanks for being open about that. It sounds like you're under some real pressure right now. Look, we do have hardship options and flexible payment plans available.",
+      "why_notable": "This turn is pivotal as the agent not only validates the customer's emotional state but immediately pivots to offering solutions, effectively de-escalating the situation and setting the stage for a positive resolution.",
+      "is_positive": true
+    },
+    "call_type": "hardship",
+    "example_type": "GOOD_EXAMPLE",
+    "citations": [],
+    "rag_context_used": false
+  },
+  "rag_context": "[FALLBACK: Embedded policy used - no RAG context available]",
+  "metrics": {
+    "input_tokens": 2287,
+    "output_tokens": 2230,
+    "latency_ms": 33679,
+    "cost_usd": 0.000840525
+  }
+}

@@ -20,6 +20,7 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         env_prefix="CC_",
         case_sensitive=False,
+        extra="ignore",  # Allow extra env vars used by other configs (RAG, etc.)
     )
 
     # GCP Project

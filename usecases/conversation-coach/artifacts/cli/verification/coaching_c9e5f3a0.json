@@ -1,0 +1,151 @@
+{
+  "conversation_id": "c9e5f3a0-7d4b-4c9f-0e8a-3b6d9c5f1a7e",
+  "analyzed_at": "2026-01-08T20:55:16.255756+00:00",
+  "output": {
+    "empathy_score": 7,
+    "compliance_score": 4,
+    "resolution_score": 8,
+    "professionalism_score": 9,
+    "de_escalation_score": 9,
+    "efficiency_score": 7,
+    "overall_score": 6.85,
+    "assessments": [
+      {
+        "dimension": "empathy",
+        "score": 7,
+        "issue_types": [],
+        "evidence": [],
+        "coaching_point": "While the agent acknowledged the customer's job situation and frustration, consider deeper empathetic statements earlier in the call, especially after the customer's initial agitated responses in turns 2 and 4. Acknowledge their feelings before proceeding with verification."
+      },
+      {
+        "dimension": "compliance",
+        "score": 4,
+        "issue_types": [
+          "MISSING_HARDSHIP_OFFER"
+        ],
+        "evidence": [
+          {
+            "turn_index": 8,
+            "speaker": "CUSTOMER",
+            "quote": "I told the last person I lost my job. Nobody listens. I want to speak to a manager.",
+            "issue_type": "MISSING_HARDSHIP_OFFER",
+            "severity": "HIGH",
+            "explanation": "The customer explicitly states they lost their job, which, according to policy, triggers the requirement to offer a hardship program. The agent acknowledged the job situation but did not explicitly offer the program."
+          },
+          {
+            "turn_index": 9,
+            "speaker": "AGENT",
+            "quote": "I'm sorry to hear about your job situation, Kevin. I can definitely help you with options. Before I transfer you, can I understand\u2014",
+            "issue_type": "MISSING_HARDSHIP_OFFER",
+            "severity": "HIGH",
+            "explanation": "The agent acknowledged the job loss but failed to explicitly offer the hardship program as required by policy. Offering 'options' is too vague in this context."
+          }
+        ],
+        "coaching_point": "When a customer mentions job loss or other financial difficulties, it is a mandatory compliance requirement to explicitly offer the hardship program. Simply stating 'I can help you with options' is not sufficient. Please refer to the Hardship Handling policy."
+      },
+      {
+        "dimension": "resolution",
+        "score": 8,
+        "issue_types": [],
+        "evidence": [],
+        "coaching_point": "The agent effectively resolved the customer's immediate concerns by placing a hold on calls and transferring to a team leader. Ensure that the team leader is fully briefed on the customer's hardship mention."
+      },
+      {
+        "dimension": "professionalism",
+        "score": 9,
+        "issue_types": [
+          "EXCELLENT_EMPATHY"
+        ],
+        "evidence": [
+          {
+            "turn_index": 11,
+            "speaker": "AGENT",
+            "quote": "I understand you're frustrated, and I apologise for the experience. I can transfer you to my team leader. Can I first put a hold on your account so no further calls go out while we sort this?",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "The agent maintained a professional and calm demeanor despite the customer's agitation, offering a proactive solution to address the customer's complaint about excessive calls."
+          }
+        ],
+        "coaching_point": "The agent maintained an exemplary professional tone throughout the call, even when faced with an agitated customer. This helped in de-escalating the situation effectively."
+      },
+      {
+        "dimension": "de_escalation",
+        "score": 9,
+        "issue_types": [],
+        "evidence": [
+          {
+            "turn_index": 11,
+            "speaker": "AGENT",
+            "quote": "I understand you're frustrated, and I apologise for the experience. I can transfer you to my team leader. Can I first put a hold on your account so no further calls go out while we sort this?",
+            "issue_type": "POSITIVE",
+            "severity": "LOW",
+            "explanation": "The agent effectively de-escalated the situation by acknowledging the customer's frustration, apologizing, and proactively offering a solution (placing a hold on calls) before transferring to a manager. This led to a positive shift in customer sentiment."
+          },
+          {
+            "turn_index": 14,
+            "speaker": "CUSTOMER",
+            "quote": "Thank you. Finally someone taking this seriously.",
+            "issue_type": "POSITIVE",
+            "severity": "LOW",
+            "explanation": "The customer's sentiment shifted positively after the agent's de-escalation efforts, indicating the effectiveness of the agent's actions."
+          }
+        ],
+        "coaching_point": "The agent demonstrated excellent de-escalation skills by actively listening to the customer's complaints, validating their feelings, and offering a tangible solution (placing a hold on calls) which significantly improved the customer's disposition."
+      }
+    ],
+    "issue_types": [
+      "MISSING_HARDSHIP_OFFER",
+      "EXCELLENT_EMPATHY",
+      "POSITIVE"
+    ],
+    "critical_issues": [],
+    "issue_count": 1,
+    "compliance_breach_count": 1,
+    "resolution_achieved": true,
+    "escalation_required": true,
+    "customer_started_negative": true,
+    "coaching_summary": "The agent demonstrated strong professionalism and de-escalation skills, effectively calming an agitated customer and addressing their immediate concerns. However, a critical compliance gap was identified as the agent failed to explicitly offer a hardship program after the customer mentioned job loss.",
+    "coaching_points": [
+      {
+        "priority": 1,
+        "title": "Mandatory Hardship Program Offer",
+        "description": "When a customer mentions job loss or other financial hardship, it is a mandatory compliance requirement to explicitly offer the hardship program. Simply stating 'I can help you with options' is not sufficient. You must clearly state the availability of the hardship program.",
+        "example_turn": 9,
+        "suggested_alternative": "I'm sorry to hear about your job situation, Kevin. Given that, I want to make sure you're aware of our hardship program, which might be able to provide some relief. I can definitely help you with options, including discussing that program."
+      },
+      {
+        "priority": 2,
+        "title": "Proactive Empathy",
+        "description": "While you showed empathy later in the call, consider providing a more direct empathetic statement earlier, especially when the customer expresses significant frustration or distress (e.g., 'I'm done with you people' in turn 4). This can help build rapport and de-escalate sooner.",
+        "example_turn": 4,
+        "suggested_alternative": "I hear your frustration, Kevin, and I apologize for the repeated calls. I just need to confirm a couple of details to ensure I'm speaking with the right person and can help you effectively. Can you confirm your date of birth?"
+      }
+    ],
+    "strengths": [
+      "Maintained a professional and calm demeanor throughout the call.",
+      "Effectively de-escalated the customer's frustration by acknowledging their feelings and offering a proactive solution (placing a hold on calls).",
+      "Promptly honored the customer's request to speak with a manager/team leader."
+    ],
+    "situation_summary": "The customer, Kevin Nguyen, was agitated due to repeated collection calls and having previously informed the company about job loss. He expressed frustration, claimed harassment, and repeatedly requested to speak with a manager.",
+    "behavior_summary": "The agent, Lisa, maintained professionalism, verified the customer's identity, and acknowledged the customer's job situation and frustration. She proactively offered to place a hold on collection calls and transferred the customer to a team leader as requested, effectively de-escalating the situation. However, she missed a key compliance requirement by not explicitly offering a hardship program after the customer mentioned job loss.",
+    "key_moment": {
+      "turn_index": 11,
+      "quote": "I understand you're frustrated, and I apologise for the experience. I can transfer you to my team leader. Can I first put a hold on your account so no further calls go out while we sort this?",
+      "why_notable": "This turn marks a significant turning point in the conversation where the agent effectively de-escalated the customer's anger by acknowledging their feelings, apologizing, and proactively offering a solution to their primary complaint (excessive calls). This led to a positive shift in the customer's sentiment.",
+      "is_positive": true
+    },
+    "call_type": "escalation",
+    "example_type": "NEEDS_WORK",
+    "citations": [
+      "POLICY REFERENCE (Collections - v2025.1) - Hardship Handling"
+    ],
+    "rag_context_used": true
+  },
+  "rag_context": "[FALLBACK: Embedded policy used - no RAG context available]",
+  "metrics": {
+    "input_tokens": 1872,
+    "output_tokens": 2139,
+    "latency_ms": 23819,
+    "cost_usd": 0.0007821
+  }
+}

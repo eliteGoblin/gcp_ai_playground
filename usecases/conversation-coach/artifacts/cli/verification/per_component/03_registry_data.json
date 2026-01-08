@@ -1,0 +1,29 @@
+# Conversation Registry Data
+# Conversation: a1b2c3d4-toxic-agent-test-0001
+# Generated: 2026-01-08T21:04:15.023857+00:00
+# ======================================================================
+
+{
+  "conversation_id": "a1b2c3d4-toxic-agent-test-0001",
+  "transcript_uri_raw": "gs://vertexdemo-481519-cc-dev/2025-12-28/a1b2c3d4-toxic-agent-test-0001/transcription.json",
+  "metadata_uri_raw": "gs://vertexdemo-481519-cc-dev/2025-12-28/a1b2c3d4-toxic-agent-test-0001/metadata.json",
+  "audio_uri_raw": null,
+  "transcript_uri_sanitized": null,
+  "metadata_uri_sanitized": null,
+  "audio_uri_sanitized": null,
+  "has_transcript": true,
+  "has_metadata": true,
+  "has_audio": false,
+  "status": "COACHED",
+  "redaction_version": null,
+  "pii_types_found": [],
+  "ci_conversation_name": "projects/38797000650/locations/us-central1/conversations/a1b2c3d4-toxic-agent-test-0001",
+  "ci_analysis_id": "projects/38797000650/locations/us-central1/conversations/a1b2c3d4-toxic-agent-test-0001/analyses/7894435395727306467",
+  "last_error": "2 validation errors for ConversationMetadata\nqueue\n  Input should be 'STANDARD', 'HARDSHIP', 'DISPUTE', 'SUPPORT' or 'ESCALATION' [type=enum, input_value='HIGH_RISK', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/enum\ncall_outcome\n  Input should be 'PAYMENT_PLAN_AGREED', 'PAYMENT_MADE', 'CALLBACK_SCHEDULED', 'TRANSFERRED', 'WRONG_PARTY', 'NO_ANSWER', 'VOICEMAIL', 'RESOLVED_WITH_ACTION', 'UNRESOLVED', 'COMPLAINT_LODGED' or 'DISPUTE_RAISED' [type=enum, input_value='FAILED_NO_RESOLUTION', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/enum",
+  "retry_count": 1,
+  "created_at": "2025-12-29 00:27:44.539101+00:00",
+  "updated_at": "2026-01-08 20:53:44.255320+00:00",
+  "ingested_at": "2025-12-29 00:29:16.851188+00:00",
+  "enriched_at": "2025-12-31 20:16:48.848492+00:00",
+  "coached_at": "2026-01-08 20:53:44.255320+00:00"
+}

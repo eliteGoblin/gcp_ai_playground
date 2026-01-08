@@ -1,0 +1,146 @@
+{
+  "conversation_id": "6a4a8f17-6c6f-4a2a-9b1b-5c0d8e2e42c9",
+  "analyzed_at": "2026-01-08T20:52:17.793286+00:00",
+  "output": {
+    "empathy_score": 9,
+    "compliance_score": 10,
+    "resolution_score": 10,
+    "professionalism_score": 9,
+    "de_escalation_score": 9,
+    "efficiency_score": 9,
+    "overall_score": 9.4,
+    "assessments": [
+      {
+        "dimension": "empathy",
+        "score": 9,
+        "issue_types": [
+          "EXCELLENT_EMPATHY"
+        ],
+        "evidence": [
+          {
+            "turn_index": 5,
+            "speaker": "AGENT",
+            "quote": "I apologise for that. I completely understand.",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "Agent immediately acknowledges the customer's frustration and apologizes."
+          },
+          {
+            "turn_index": 7,
+            "speaker": "AGENT",
+            "quote": "I hear you and I'm sorry about that.",
+            "issue_type": "EXCELLENT_EMPATHY",
+            "severity": "LOW",
+            "explanation": "Agent reiterates understanding and apology, further validating the customer's feelings."
+          }
+        ],
+        "coaching_point": "Continue to use empathetic phrases and active listening to acknowledge customer feelings, as demonstrated in this call."
+      },
+      {
+        "dimension": "compliance",
+        "score": 10,
+        "issue_types": [
+          "PERFECT_COMPLIANCE"
+        ],
+        "evidence": [
+          {
+            "turn_index": 3,
+            "speaker": "AGENT",
+            "quote": "I'm not able to discuss any details unless I'm speaking directly with Jordan. Are you Jordan?",
+            "issue_type": "PERFECT_COMPLIANCE",
+            "severity": "LOW",
+            "explanation": "Agent correctly identifies the need for identity verification and refuses to disclose information to a potential wrong party."
+          },
+          {
+            "turn_index": 5,
+            "speaker": "AGENT",
+            "quote": "I won't discuss anything further with you.",
+            "issue_type": "PERFECT_COMPLIANCE",
+            "severity": "LOW",
+            "explanation": "Agent explicitly states they will not discuss account details with the wrong party, adhering to privacy policies."
+          }
+        ],
+        "coaching_point": "Maintain this excellent standard of identity verification and privacy protection in all interactions."
+      },
+      {
+        "dimension": "resolution",
+        "score": 10,
+        "issue_types": [
+          "EFFECTIVE_RESOLUTION"
+        ],
+        "evidence": [
+          {
+            "turn_index": 5,
+            "speaker": "AGENT",
+            "quote": "Can I just confirm\u2014are you requesting that this number be removed from our contact records?",
+            "issue_type": "EFFECTIVE_RESOLUTION",
+            "severity": "LOW",
+            "explanation": "Agent quickly identifies the customer's core request and confirms the desired action."
+          },
+          {
+            "turn_index": 9,
+            "speaker": "AGENT",
+            "quote": "The number ending 2207 has been flagged for removal and you shouldn't receive any further calls from us.",
+            "issue_type": "EFFECTIVE_RESOLUTION",
+            "severity": "LOW",
+            "explanation": "Agent clearly communicates the resolution and sets appropriate expectations for the customer."
+          }
+        ],
+        "coaching_point": "Continue to focus on identifying the customer's core need and providing clear, actionable resolutions."
+      },
+      {
+        "dimension": "efficiency",
+        "score": 9,
+        "issue_types": [],
+        "evidence": [],
+        "coaching_point": "While the call was efficient, consider confirming the number for removal (Turn 7) immediately after the customer requests removal (Turn 6) to streamline the process slightly, before stating the action is taken."
+      }
+    ],
+    "issue_types": [
+      "EXCELLENT_EMPATHY",
+      "PERFECT_COMPLIANCE",
+      "EFFECTIVE_RESOLUTION"
+    ],
+    "critical_issues": [],
+    "issue_count": 3,
+    "compliance_breach_count": 0,
+    "resolution_achieved": true,
+    "escalation_required": false,
+    "customer_started_negative": true,
+    "coaching_summary": "The agent demonstrated exceptional compliance in handling a wrong party contact and effectively de-escalated an annoyed customer. Focus on slightly refining the flow of information for maximum efficiency.",
+    "coaching_points": [
+      {
+        "priority": 1,
+        "title": "Streamline Information Flow",
+        "description": "To enhance efficiency, consider confirming details like the phone number for removal immediately after the customer's request, before stating the action has been taken. This ensures all necessary information is gathered upfront for the resolution.",
+        "example_turn": 7,
+        "suggested_alternative": "After the customer says 'Yes! Remove it.' (Turn 6), you could immediately ask 'Can I just confirm the number I've reached you on\u2014does it end in 2207?' before stating 'I'll mark this as a 'wrong party' situation and have the number removed.'"
+      }
+    ],
+    "strengths": [
+      "Excellent adherence to identity verification and privacy policies by not disclosing account details to the wrong party.",
+      "Strong empathetic communication, including sincere apologies and acknowledgment of customer's frustration.",
+      "Effective de-escalation of an annoyed customer by quickly identifying and resolving their core issue.",
+      "Clear and concise communication leading to a swift and complete resolution."
+    ],
+    "situation_summary": "The agent initiated an outbound call for Jordan Lee and reached a wrong party who was annoyed by previous calls. The customer requested their number be removed from contact records.",
+    "behavior_summary": "The agent expertly handled the wrong party contact by adhering to identity verification protocols, empathizing with the customer's frustration, and efficiently resolving the request to remove the number from their records.",
+    "key_moment": {
+      "turn_index": 3,
+      "quote": "I'm not able to discuss any details unless I'm speaking directly with Jordan. Are you Jordan?",
+      "why_notable": "This turn demonstrates excellent compliance by the agent, who correctly identifies the need for identity verification and refuses to disclose any account-specific information to a potential wrong party, which is critical in collections.",
+      "is_positive": true
+    },
+    "call_type": "wrong_party_contact",
+    "example_type": "GOOD_EXAMPLE",
+    "citations": [],
+    "rag_context_used": false
+  },
+  "rag_context": "[FALLBACK: Embedded policy used - no RAG context available]",
+  "metrics": {
+    "input_tokens": 1754,
+    "output_tokens": 1563,
+    "latency_ms": 19746,
+    "cost_usd": 0.00060045
+  }
+}

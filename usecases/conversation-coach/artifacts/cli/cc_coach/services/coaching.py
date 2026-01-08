@@ -15,6 +15,10 @@ from google.cloud import bigquery
 from cc_coach.agents.conversation_coach import CoachingService
 from cc_coach.config import Settings, get_settings
 from cc_coach.monitoring.logging import ComponentLogger, new_request_context, conversation_id_ctx
+from cc_coach.monitoring.metrics import (
+    record_request, record_duration, record_tokens, record_cost,
+    record_error, record_rag_request
+)
 from cc_coach.monitoring.tracing import get_tracer, get_current_trace_id
 from cc_coach.rag.config import RAGConfig
 from cc_coach.rag.retriever import RAGRetriever, RetrievedDocument
@@ -163,7 +167,16 @@ class CoachingOrchestrator:
                         result["fallback_used"] = not rag_context and self.allow_fallback
                         span.set_attribute("fallback_used", not rag_context and self.allow_fallback)
 
+                        # Record RAG metrics
+                        fallback_used = not rag_context and self.allow_fallback
+                        record_rag_request(
+                            success=bool(rag_context),
+                            docs_retrieved=len(retrieved_docs),
+                            fallback_used=fallback_used
+                        )
+
                 # 4. Run coach with RAG context
+                model_start_time = time.time()
                 with self.tracer.start_as_current_span("model_call") as span:
                     span.set_attribute("model", self.coach.model)
                     with self.monitor.component("model_call", model=self.coach.model) as result:
@@ -179,6 +192,10 @@ class CoachingOrchestrator:
                         span.set_attribute("gen_ai.usage.input_tokens", self.coach.last_input_tokens)
                         span.set_attribute("gen_ai.usage.output_tokens", self.coach.last_output_tokens)
                         span.set_attribute("cost_usd", self.coach.last_cost_usd)
+
+                        # Record model latency metric
+                        model_duration_ms = int((time.time() - model_start_time) * 1000)
+                        record_duration(model_duration_ms, component="model")
 
                 # 5. Process output
                 with self.tracer.start_as_current_span("output_processing") as span:
@@ -207,6 +224,18 @@ class CoachingOrchestrator:
                 root_span.set_attribute("success", True)
                 root_span.set_attribute("duration_ms", total_duration_ms)
 
+                # Record real-time OTEL metrics
+                record_request(success=True, call_type=output.call_type if output else "unknown")
+                record_duration(total_duration_ms, component="e2e")
+                if self.coach.last_input_tokens or self.coach.last_output_tokens:
+                    record_tokens(
+                        self.coach.last_input_tokens or 0,
+                        self.coach.last_output_tokens or 0,
+                        model=self.coach.model
+                    )
+                if self.coach.last_cost_usd:
+                    record_cost(self.coach.last_cost_usd, model=self.coach.model)
+
                 # Get trace_id for correlation
                 trace_id = get_current_trace_id()
                 self.monitor.log_e2e_result(
@@ -224,6 +253,11 @@ class CoachingOrchestrator:
                 root_span.set_attribute("success", False)
                 root_span.set_attribute("error", str(e))
                 root_span.record_exception(e)
+
+                # Record real-time OTEL metrics for failure
+                record_request(success=False, call_type="unknown")
+                record_duration(total_duration_ms, component="e2e")
+                record_error(error_type=type(e).__name__, component="e2e")
 
                 self.monitor.log_e2e_result(
                     conversation_id=conversation_id,

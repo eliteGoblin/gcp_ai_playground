@@ -1,0 +1,205 @@
+# Parsed Transcript (Turns)
+# Conversation: a1b2c3d4-toxic-agent-test-0001
+# Generated: 2026-01-08T21:04:15.024291+00:00
+# ======================================================================
+
+{
+  "turn_count": 39,
+  "turns": [
+    {
+      "index": 1,
+      "speaker": "AGENT",
+      "text": "This is Marcus from Apex Collections calling for Michael Chen. Is this Michael?"
+    },
+    {
+      "index": 2,
+      "speaker": "CUSTOMER",
+      "text": "Yes, this is Michael. What's this about?"
+    },
+    {
+      "index": 3,
+      "speaker": "AGENT",
+      "text": "Mr Chen, I'm calling about your overdue account with FastCash Loans. You currently owe $12,847.50 and this account is now 97 days past due. This is your seventh contact attempt."
+    },
+    {
+      "index": 4,
+      "speaker": "CUSTOMER",
+      "text": "Right, yes, I know about this. Look, I've been meaning to call you guys. I had some unexpected medical bills and I lost my job back in October. I'm trying to get back on my feet."
+    },
+    {
+      "index": 5,
+      "speaker": "AGENT",
+      "text": "Mr Chen, I've heard every excuse in the book. Medical bills, job loss, car problems. Everyone has a story. What I need from you right now is a commitment to pay. Can you pay the full amount today?"
+    },
+    {
+      "index": 6,
+      "speaker": "CUSTOMER",
+      "text": "The full amount? No, I just told you I lost my job. I can maybe do $200 a month when I start my new position next week."
+    },
+    {
+      "index": 7,
+      "speaker": "AGENT",
+      "text": "$200 a month? That's nothing. At that rate, with interest accruing at 24.9%, you'd be paying this off for the next decade. Look, I need at least $3,000 today to stop this from going to legal."
+    },
+    {
+      "index": 8,
+      "speaker": "CUSTOMER",
+      "text": "I don't have $3,000. I literally just explained my situation. Can you not listen?"
+    },
+    {
+      "index": 9,
+      "speaker": "AGENT",
+      "text": "I am listening, Mr Chen. But what you're not understanding is the seriousness of this. We're talking about legal action here. We can garnish your wages, put a lien on your property. Do you own your ho"
+    },
+    {
+      "index": 10,
+      "speaker": "CUSTOMER",
+      "text": "What? How do you know my address? Are you threatening to take my house?"
+    },
+    {
+      "index": 11,
+      "speaker": "AGENT",
+      "text": "I'm not threatening anything. I'm informing you of the consequences. And yes, we have all your details. Date of birth 15th March 1985, mobile 0412 555 789, employer... well, former employer... Westfie"
+    },
+    {
+      "index": 12,
+      "speaker": "CUSTOMER",
+      "text": "This feels really intimidating. I'm trying to work with you here but you're making it very difficult."
+    },
+    {
+      "index": 13,
+      "speaker": "AGENT",
+      "text": "Difficult? You want to talk about difficult? Try being in my position, calling people who refuse to pay their debts day after day. You took the money, you spent it, now it's time to pay up. Simple as "
+    },
+    {
+      "index": 14,
+      "speaker": "CUSTOMER",
+      "text": "I didn't refuse to pay. I had a medical emergency. My wife was in hospital for three weeks. Do you have any compassion at all?"
+    },
+    {
+      "index": 15,
+      "speaker": "AGENT",
+      "text": "Compassion doesn't pay bills, Mr Chen. Your wife's medical situation, while unfortunate, is not our problem. The contract you signed doesn't have a 'life got hard' clause. Now, can we get back to how "
+    },
+    {
+      "index": 16,
+      "speaker": "CUSTOMER",
+      "text": "Today? I already told you I don't have it today. What part of that don't you understand? You're being completely unreasonable."
+    },
+    {
+      "index": 17,
+      "speaker": "AGENT",
+      "text": "I'm unreasonable? You're the one who borrowed $8,000 and now owes almost $13,000 because you couldn't be bothered to make payments. That's irresponsible, Mr Chen. That's on you."
+    },
+    {
+      "index": 18,
+      "speaker": "CUSTOMER",
+      "text": "The interest rate you people charge is criminal. 24.9%? That should be illegal."
+    },
+    {
+      "index": 19,
+      "speaker": "AGENT",
+      "text": "Well it's not illegal, and you agreed to it when you signed. Should have read the fine print before you took the money. Too late for buyer's remorse now."
+    },
+    {
+      "index": 20,
+      "speaker": "CUSTOMER",
+      "text": "I want to speak to your supervisor. This conversation is completely unprofessional."
+    },
+    {
+      "index": 21,
+      "speaker": "AGENT",
+      "text": "My supervisor will tell you exactly the same thing. Actually, they'll probably be less patient than I am. Look, I'm trying to help you here. If this goes to our legal team, they'll add another $2,500 "
+    },
+    {
+      "index": 22,
+      "speaker": "CUSTOMER",
+      "text": "Are you seriously trying to scare me right now? This is harassment."
+    },
+    {
+      "index": 23,
+      "speaker": "AGENT",
+      "text": "It's not harassment, it's reality. I'm doing you a favor by being straight with you. Most collectors would have already handed this to the lawyers. I'm giving you one last chance."
+    },
+    {
+      "index": 24,
+      "speaker": "CUSTOMER",
+      "text": "One last chance? You've called me seven times! Each time someone demands money I don't have. What do you want me to do, sell my organs?"
+    },
+    {
+      "index": 25,
+      "speaker": "AGENT",
+      "text": "Don't be dramatic. You could sell that car of yours. We know you have a 2019 Toyota Camry registered to your address. That's worth at least $25,000. Sell it, pay us, problem solved."
+    },
+    {
+      "index": 26,
+      "speaker": "CUSTOMER",
+      "text": "That's my wife's car! She needs it to get to her dialysis appointments! Are you out of your mind?"
+    },
+    {
+      "index": 27,
+      "speaker": "AGENT",
+      "text": "Everyone's got an excuse. Dialysis, chemo, dying grandmother. I've heard it all. The fact remains you owe money and you need to pay it. Period. End of story."
+    },
+    {
+      "index": 28,
+      "speaker": "CUSTOMER",
+      "text": "You're a disgusting human being. You know that? My wife is actually sick and you're mocking it? What is wrong with you?"
+    },
+    {
+      "index": 29,
+      "speaker": "AGENT",
+      "text": "What's wrong with me? I'm just doing my job. You're the one who can't manage your finances. Maybe if you'd been more responsible, you wouldn't be in this mess. But no, you wanted the easy money and no"
+    },
+    {
+      "index": 30,
+      "speaker": "CUSTOMER",
+      "text": "I'm going to file a complaint. This call is probably recorded, right? I hope your managers hear how you treat people."
+    },
+    {
+      "index": 31,
+      "speaker": "AGENT",
+      "text": "Go ahead and complain. Won't change the fact that you owe $12,847.50 and it's going up every day. While you're busy complaining, that interest keeps ticking. Tick, tick, tick. Your choice."
+    },
+    {
+      "index": 32,
+      "speaker": "CUSTOMER",
+      "text": "Fine. I'll pay $500 a month. That's all I can do. Take it or leave it."
+    },
+    {
+      "index": 33,
+      "speaker": "AGENT",
+      "text": "$500 a month still doesn't cover the interest. You'd never pay this off. Look, I need a minimum of $5,000 upfront or we're sending this to legal tomorrow morning. I'm not joking. Tomorrow. First thing"
+    },
+    {
+      "index": 34,
+      "speaker": "CUSTOMER",
+      "text": "I DON'T HAVE $5,000! How many times do I have to say it? You're not listening to anything I'm saying!"
+    },
+    {
+      "index": 35,
+      "speaker": "AGENT",
+      "text": "Then I guess we'll see you in court, Mr Chen. Maybe a judge can explain to you what personal responsibility means. I'll make a note on your file that you refused to cooperate."
+    },
+    {
+      "index": 36,
+      "speaker": "CUSTOMER",
+      "text": "Refused to cooperate?! I offered to pay! You're the one who won't accept it! This is insane!"
+    },
+    {
+      "index": 37,
+      "speaker": "AGENT",
+      "text": "I've wasted enough time on this call. Legal action will commence tomorrow. Have a nice day, Mr Chen. You'll be hearing from our lawyers."
+    },
+    {
+      "index": 38,
+      "speaker": "CUSTOMER",
+      "text": "You're going to regret this. I'm recording this whole conversation and I'm going to\u2014"
+    },
+    {
+      "index": 39,
+      "speaker": "AGENT",
+      "text": "Goodbye, Mr Chen."
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+# Embedded Policy (Fallback Mode)
+# Conversation: a1b2c3d4-toxic-agent-test-0001
+# Generated: 2026-01-08T21:04:21.280109+00:00
+# ======================================================================
+
+
+## POLICY REFERENCE (Collections - v2025.1)
+
+### Identity Verification
+Before discussing account details, agent must:
+- Confirm they are speaking to the account holder
+- If wrong party, immediately end discussion of account
+
+### Hardship Handling
+If customer mentions ANY of these, agent must offer hardship program:
+- Job loss / unemployment
+- Medical issues / illness
+- Divorce / separation
+- Death in family
+- Natural disaster impact
+
+### Payment Arrangements
+Agent should always:
+- Offer multiple payment options
+- Explain consequences of non-payment clearly (without threats)
+- Document any promises to pay
+
+### Escalation Triggers
+Immediately escalate if customer:
+- Mentions suicide or self-harm
+- Threatens violence
+- Claims identity theft
+- Requests supervisor 3+ times

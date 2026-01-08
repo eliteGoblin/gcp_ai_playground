@@ -1,0 +1,22 @@
+# CI Enrichment - Key Summary Fields
+# Conversation: a1b2c3d4-toxic-agent-test-0001
+# Generated: 2026-01-08T21:04:13.627508+00:00
+# ======================================================================
+
+{
+  "conversation_id": "a1b2c3d4-toxic-agent-test-0001",
+  "ci_summary_text": null,
+  "customer_sentiment_score": -1.0,
+  "turn_count": 39,
+  "duration_sec": 630,
+  "ci_flags": [],
+  "labels": {
+    "agent_id": "M7741",
+    "business_line": "COLLECTIONS",
+    "call_outcome": "UNRESOLVED",
+    "direction": "OUTBOUND",
+    "queue": "HARDSHIP",
+    "site": "MEL",
+    "team": "COLLECTIONS_TEAM_3"
+  }
+}
